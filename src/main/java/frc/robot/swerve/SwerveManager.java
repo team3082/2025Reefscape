@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
-import frc.robot.utils.swerve.SwerveMath;
 
 import static frc.robot.Constants.Swerve.*;
 import static frc.robot.Tuning.OI.KDYAW;
@@ -154,7 +153,7 @@ public final class SwerveManager {
             double thetaf = mod.getSteerAngle();
             //divided by 50 to get the change per frame instead of seconds
             double dpos = mod.getDriveVelocity() / 50;
-            velSum.add(SwerveMath.poseExponentiation(dpos, thetaf - dtheta, dtheta));
+            velSum.add(Odometry.poseExponentiation(dpos, thetaf - dtheta, dtheta));
         }
         // multiplied by 50 to return to inches per second
         return velSum.div(mods.length).mul(50);

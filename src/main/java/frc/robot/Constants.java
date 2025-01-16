@@ -3,7 +3,7 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
-import frc.robot.Vision.AprilTag;
+import frc.robot.vision.AprilTag;
 
 public class Constants {
     
