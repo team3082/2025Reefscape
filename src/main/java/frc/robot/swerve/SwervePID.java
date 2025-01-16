@@ -1,6 +1,6 @@
 package frc.robot.swerve;
 
-import static frc.robot.configs.Tuning.*;
+import static frc.robot.Tuning.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;

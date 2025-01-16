@@ -20,7 +20,7 @@ public class Pigeon {
         pigeon = new Pigeon2(0, "CANivore");
 
         // pigeon.configFactoryDefault();
-        Pigeon2Configuration pigeonConfig = new Pigeon2Configuration();
+        // Pigeon2Configuration pigeonConfig = new Pigeon2Configuration();
         pigeon.getConfigurator().apply(new Pigeon2Configuration());
     }
 

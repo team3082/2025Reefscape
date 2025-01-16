@@ -1,6 +1,6 @@
 package frc.robot;
 
-import static frc.robot.configs.Tuning.OI.*;
+import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;

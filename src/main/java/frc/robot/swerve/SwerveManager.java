@@ -6,8 +6,8 @@ import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.swerve.SwerveMath;
 
-import static frc.robot.configs.Constants.Swerve.*;
-import static frc.robot.configs.Tuning.OI.KDYAW;
+import static frc.robot.Constants.Swerve.*;
+import static frc.robot.Tuning.OI.KDYAW;
 
 public final class SwerveManager {
     

@@ -16,9 +16,6 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 @SuppressWarnings("removal")
 public class SwerveModule {
-    
-    private static final double ticksPerRotationSteer = 2048 * 150 / 7;
-    private static final double ticksPerRotationDrive = 2048 * 6.12;
 
     public TalonFX steer;
     public TalonFX drive;
@@ -30,7 +27,6 @@ public class SwerveModule {
 
     private final double cancoderOffset;
 
-    private static final double simMaxTicksPerSecond = 40000;
     private double simSteerAng;
     private double simDriveVel;
 
@@ -127,7 +123,7 @@ public class SwerveModule {
 
     public void resetSteerSensor() {
         double pos = absEncoder.getAbsolutePosition() - cancoderOffset;
-        pos = pos / 360.0 * ticksPerRotationSteer;
+        pos = pos / 360.0;
         //steer.setSelectedSensorPosition(pos);
         steer.getConfigurator().setPosition(pos);
     }
@@ -136,15 +132,15 @@ public class SwerveModule {
         // drive.set(TalonFXControlMode.PercentOutput, power * (inverted ? -1.0 : 1.0));
         drive.setControl(requestToApplyDrive.withOutput(11.9));
 
-        simDriveVel = simMaxTicksPerSecond * power * (inverted ? -1.0 : 1.0);
+        simDriveVel = power * (inverted ? -1.0 : 1.0);
     }
 
     // Rotates to angle given in radians
     public void rotateToRad(double angle) {
-        rotate((angle - Math.PI / 2) / (2 * Math.PI) * ticksPerRotationSteer);
+        rotate((angle - Math.PI / 2) / (2 * Math.PI));
     }
 
-    // Rotates to a position given in ticks
+    // Rotates to a position given in rotations
     @SuppressWarnings("rawtypes")
     public void rotate(double toAngle) {
         double motorPos;
@@ -157,12 +153,12 @@ public class SwerveModule {
             motorPos = steerPosition.getValueAsDouble();
 
         // The number of full rotations the motor has made
-        int numRot = (int) Math.floor(motorPos / ticksPerRotationSteer);
+        int numRot = (int) Math.floor(motorPos);
 
-        // The target motor position dictated by the joystick, in motor ticks
-        double joystickTarget = numRot * ticksPerRotationSteer + toAngle;
-        double joystickTargetPlus = joystickTarget + ticksPerRotationSteer;
-        double joystickTargetMinus = joystickTarget - ticksPerRotationSteer;
+        // The target motor position dictated by the joystick, in rotations
+        double joystickTarget = numRot + toAngle;
+        double joystickTargetPlus = joystickTarget + 1.0;
+        double joystickTargetMinus = joystickTarget - 1.0;
 
         // The true destination for the motor to rotate to
         double destination;
@@ -181,12 +177,12 @@ public class SwerveModule {
         // If the target position is farther than a quarter rotation away from the
         // current position, invert its direction instead of rotating it the full
         // distance
-        if (Math.abs(destination - motorPos) > ticksPerRotationSteer / 4.0) {
+        if (Math.abs(destination - motorPos) > 0.25) {
             inverted = true;
             if (destination > motorPos)
-                destination -= ticksPerRotationSteer / 2.0;
+                destination -= 0.5;
             else
-                destination += ticksPerRotationSteer / 2.0;
+                destination += 0.5;
         } else {
             inverted = false;
         }
@@ -202,12 +198,10 @@ public class SwerveModule {
     @SuppressWarnings("rawtypes")
     public double getSteerAngle() {
         if (RobotBase.isSimulation()) {
-            return simSteerAng / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
+            return simSteerAng * Math.PI * 2 + Math.PI / 2;
         }
-        // old; pheonix v5
-        // return steer.getSelectedSensorPosition() / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
         StatusSignal pos = steer.getPosition();
-        return pos.getValueAsDouble() / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
+        return pos.getValueAsDouble() * Math.PI * 2 + Math.PI / 2;
     }
 
     private double lastSteerAngle = Double.NaN;
@@ -233,11 +227,11 @@ public class SwerveModule {
     @SuppressWarnings("rawtypes")
     public double getDriveVelocity() {
         if (RobotBase.isSimulation()) {
-            return simDriveVel * 10 / ticksPerRotationDrive * (4 * Math.PI);
+            return simDriveVel * 10 * (4 * Math.PI);
         }
         //the 10 is there to convert from units per 100ms to units per second
         StatusSignal vel = drive.getVelocity();
-        return vel.getValueAsDouble() * 10 / ticksPerRotationDrive * (4 * Math.PI);
+        return vel.getValueAsDouble() * 10 * (4 * Math.PI);
         
     }
 
@@ -247,7 +241,7 @@ public class SwerveModule {
     public double getDrivePosition(){
         if(RobotBase.isReal()){
             StatusSignal pos = drive.getPosition();
-            return pos.getValueAsDouble() / ticksPerRotationDrive * (4 * Math.PI);
+            return pos.getValueAsDouble() * (4 * Math.PI);
         }
         //IF in sim
 
