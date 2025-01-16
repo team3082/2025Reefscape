@@ -1,6 +1,6 @@
 package frc.robot;
 
-import frc.robot.vision.AprilTag;
+import frc.robot.Vision.AprilTag;
 
 public class Constants {
     

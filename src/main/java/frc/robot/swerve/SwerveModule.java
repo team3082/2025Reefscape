@@ -1,12 +1,11 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -35,6 +34,10 @@ public class SwerveModule {
     private double simSteerAng;
     private double simDriveVel;
 
+    // should probably only use one for both drive & steer but I'll keep both for now
+    VoltageOut requestToApplyDrive;
+    VoltageOut requestToApplySteer;
+
 
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
         steer = new TalonFX(steerID, "CANivore");
@@ -58,7 +61,7 @@ public class SwerveModule {
         steerConfig.Slot0.kP = 0.4;
         steerConfig.Slot0.kI = 0.0;
         steerConfig.Slot0.kD = 0.2;
-        /*steer.configMotionCruiseVelocity(40000, 30);
+        /* steer.configMotionCruiseVelocity(40000, 30);
         steer.configMotionAcceleration(40000, 30); -- v5 to v6 */ 
         steerConfig.MotionMagic.MotionMagicCruiseVelocity = 40000;
         steerConfig.MotionMagic.MotionMagicAcceleration = 40000;
@@ -82,22 +85,38 @@ public class SwerveModule {
         
         drive.setInverted(true);
         steer.setInverted(true);
-        drive.setNeutralMode(NeutralMode.Brake);
-        steer.setNeutralMode(NeutralMode.Brake);
+        //drive.setNeutralMode(NeutralMode.Brake);
+        driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake; 
+        //steer.setNeutralMode(NeutralMode.Brake);
+        steerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         absEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
         absEncoder.configMagnetOffset(0);
         absEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
 
-        SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
-        drive.configSupplyCurrentLimit(currentLimit);
-        drive.configVoltageCompSaturation(11.9);
-        drive.enableVoltageCompensation(true);
+        // SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 39, 39, 0 );
+        driveConfig.CurrentLimits.SupplyCurrentLimit = 39;
+        driveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        SupplyCurrentLimitConfiguration steerCurrentLimit = new SupplyCurrentLimitConfiguration(true, 30, 30, 0 );
-        steer.configSupplyCurrentLimit(steerCurrentLimit);
-        steer.configVoltageCompSaturation(11.9);
-        steer.enableVoltageCompensation(true);
+       // -----
+       // drive.configVoltageCompSaturation(11.9);
+       // drive.enableVoltageCompensation(true);
+
+       // when in main robot code, set withOutput of drive motor to 11.9 (part of pheonix v6 migration)
+       requestToApplyDrive = new VoltageOut(0);
+
+        // -----
+        // SupplyCurrentLimitConfiguration steerCurrentLimit = new SupplyCurrentLimitConfiguration(true, 30, 30, 0 );
+        // steer.configSupplyCurrentLimit(steerCurrentLimit);
+        steerConfig.CurrentLimits.SupplyCurrentLimit = 30;
+        steerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
+        // -----
+        //steer.configVoltageCompSaturation(11.9);
+        //steer.enableVoltageCompensation(true);
+
+        // when in main robot code, set withOutput of steer motor to 11.9 (part of pheonix v6 migration)
+        requestToApplySteer = new VoltageOut(0);
 
         this.cancoderOffset = cancoderOffset;
 
@@ -114,7 +133,8 @@ public class SwerveModule {
     }
 
     public void drive(double power) {
-        drive.set(TalonFXControlMode.PercentOutput, power * (inverted ? -1.0 : 1.0));
+        // drive.set(TalonFXControlMode.PercentOutput, power * (inverted ? -1.0 : 1.0));
+        drive.setControl(requestToApplyDrive.withOutput(11.9));
 
         simDriveVel = simMaxTicksPerSecond * power * (inverted ? -1.0 : 1.0);
     }
@@ -125,12 +145,16 @@ public class SwerveModule {
     }
 
     // Rotates to a position given in ticks
+    @SuppressWarnings("rawtypes")
     public void rotate(double toAngle) {
         double motorPos;
+        StatusSignal steerPosition = steer.getRotorPosition();
+        
         if (RobotBase.isSimulation())
             motorPos = simSteerAng;
         else 
-            motorPos = steer.getSelectedSensorPosition();
+            // motorPos = steer.getSelectedSensorPosition();
+            motorPos = steerPosition.getValueAsDouble();
 
         // The number of full rotations the motor has made
         int numRot = (int) Math.floor(motorPos / ticksPerRotationSteer);
@@ -167,17 +191,23 @@ public class SwerveModule {
             inverted = false;
         }
 
-        steer.set(TalonFXControlMode.Position, destination);
+        // steer.set(TalonFXControlMode.Position, destination);
+        // can someone please check this, I don't know what voltage to put here at the moment so I put a placeholder
+        steer.setControl(requestToApplySteer.withOutput(5.0));
 
         simSteerAng = destination;
     }
 
     // Returns an angle in radians
+    @SuppressWarnings("rawtypes")
     public double getSteerAngle() {
         if (RobotBase.isSimulation()) {
             return simSteerAng / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
         }
-        return steer.getSelectedSensorPosition() / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
+        // old; pheonix v5
+        // return steer.getSelectedSensorPosition() / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
+        StatusSignal pos = steer.getPosition();
+        return pos.getValueAsDouble() / ticksPerRotationSteer * Math.PI * 2 + Math.PI / 2;
     }
 
     private double lastSteerAngle = Double.NaN;
@@ -200,19 +230,24 @@ public class SwerveModule {
      * returns the current velocity of the drive motor in inches per second
      * @return
      */
+    @SuppressWarnings("rawtypes")
     public double getDriveVelocity() {
         if (RobotBase.isSimulation()) {
             return simDriveVel * 10 / ticksPerRotationDrive * (4 * Math.PI);
         }
         //the 10 is there to convert from units per 100ms to units per second
-        return drive.getSelectedSensorVelocity() * 10 / ticksPerRotationDrive * (4 * Math.PI);
+        StatusSignal vel = drive.getVelocity();
+        return vel.getValueAsDouble() * 10 / ticksPerRotationDrive * (4 * Math.PI);
+        
     }
 
     private double simDrivePosition;
 
+    @SuppressWarnings("rawtypes")
     public double getDrivePosition(){
         if(RobotBase.isReal()){
-            return drive.getSelectedSensorPosition() / ticksPerRotationDrive * (4 * Math.PI);
+            StatusSignal pos = drive.getPosition();
+            return pos.getValueAsDouble() / ticksPerRotationDrive * (4 * Math.PI);
         }
         //IF in sim
 

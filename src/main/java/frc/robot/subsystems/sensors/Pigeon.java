@@ -1,12 +1,13 @@
 package frc.robot.subsystems.sensors;
 
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.utils.RTime;
 
-@SuppressWarnings("removal")
 public class Pigeon {
 
     public static Pigeon2 pigeon;
@@ -17,7 +18,10 @@ public class Pigeon {
 
     public static void init() {
         pigeon = new Pigeon2(0, "CANivore");
-        pigeon.configFactoryDefault();
+
+        // pigeon.configFactoryDefault();
+        Pigeon2Configuration pigeonConfig = new Pigeon2Configuration();
+        pigeon.getConfigurator().apply(new Pigeon2Configuration());
     }
 
     public static void update() {
@@ -53,8 +57,10 @@ public class Pigeon {
      * Tilts forward and backward
      * @return Pitch in radians
      */
+    @SuppressWarnings("rawtypes")
     public static double getPitchRad() {
-        return Math.PI * pigeon.getPitch() / 180;
+        StatusSignal pitch = pigeon.getPitch();
+        return Math.PI * pitch.getValueAsDouble() / 180;
     }
 
     /**
@@ -62,11 +68,14 @@ public class Pigeon {
      * Yaw, rotates around the Y, up and down, axis
      * @return Yaw in radians
      */
+    @SuppressWarnings("rawtypes")
     public static double getRotationRad() {
         if (RobotBase.isSimulation()) {
             return simulatedRot;
         }
-        return Math.PI * pigeon.getYaw() / 180;
+
+        StatusSignal yaw = pigeon.getYaw();
+        return Math.PI * yaw.getValueAsDouble() / 180;
     }
 
     /**
@@ -75,8 +84,10 @@ public class Pigeon {
      * Tilts left and right
      * @return Roll in radians
      */
+    @SuppressWarnings("rawtypes")
     public static double getRollRad() {
-        return Math.PI * pigeon.getRoll() / 180;
+        StatusSignal roll = pigeon.getRoll();
+        return Math.PI * roll.getValueAsDouble() / 180;
     }
 
     /**

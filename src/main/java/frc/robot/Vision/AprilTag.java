@@ -1,4 +1,4 @@
-package frc.robot.vision;
+package frc.robot.Vision;
 
 public class AprilTag {
 

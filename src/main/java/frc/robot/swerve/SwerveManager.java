@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
-import frc.robot.utils.swerve.SwerveInstruction;
 import frc.robot.utils.swerve.SwerveMath;
 
 import static frc.robot.configs.Constants.Swerve.*;
@@ -34,9 +33,6 @@ public final class SwerveManager {
         }
     }
 
-    public static void rotateAndDrive(SwerveInstruction si) {
-        rotateAndDrive(si.rotation, si.movement);
-    }
 
     /**
      * Only call this method from OI
@@ -115,15 +111,6 @@ public final class SwerveManager {
     }
 
     /**
-     * Gets the raw encoder position of a specified SwerveMod's drive motor
-     * @param id the ID of the SwerveModule to check
-     * @return the raw encoder position, in ticks
-     */
-    public static double getEncoderPos(int id){
-        return mods[id].drive.getSelectedSensorPosition();
-    }
-
-    /**
      * Gets the velocity a given SwerveModule is driving at
      * @param id the ID of the SwerveModule to check
      * @return the drive velocity of the SwerveModule, in inches/second
@@ -193,16 +180,6 @@ public final class SwerveManager {
 
     public static void pointWheels(double radians) {
         for (SwerveModule mSwerveMod : mods) mSwerveMod.rotateToRad(radians);
-    }
-
-    /**
-     * Locks the robot in position by rotating all wheels towards the center of the robot
-     */
-    public static void lockWheels(){
-        for(SwerveModule mSwerveMod : mods){
-            mSwerveMod.rotateToRad(mSwerveMod.pos.atan2());
-            mSwerveMod.drive.neutralOutput();
-        }
     }
 
     public static SwerveModuleState[] returnStates() {
