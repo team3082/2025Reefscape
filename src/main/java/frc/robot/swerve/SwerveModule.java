@@ -45,8 +45,6 @@ public class SwerveModule {
         // Configure encoders/PID
 
         TalonFXConfiguration steerConfig = new TalonFXConfiguration();
-        steer.getConfigurator().apply(new TalonFXConfiguration());
-
 
         //steer.configNeutralDeadband(0.001, 30); -- v5 to v6
         steerConfig.MotorOutput.DutyCycleNeutralDeadband = 0.001;
@@ -62,9 +60,8 @@ public class SwerveModule {
         steerConfig.MotionMagic.MotionMagicCruiseVelocity = 40000;
         steerConfig.MotionMagic.MotionMagicAcceleration = 40000;
 
-
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-        drive.getConfigurator().apply(new TalonFXConfiguration());
+       
 
         //drive.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
         driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 
@@ -118,6 +115,9 @@ public class SwerveModule {
 
         inverted = false;
 
+        drive.getConfigurator().apply(driveConfig);
+        steer.getConfigurator().apply(steerConfig);
+        
         resetSteerSensor();
     }
 
@@ -144,13 +144,11 @@ public class SwerveModule {
     @SuppressWarnings("rawtypes")
     public void rotate(double toAngle) {
         double motorPos;
-        StatusSignal steerPosition = steer.getRotorPosition();
         
         if (RobotBase.isSimulation())
             motorPos = simSteerAng;
         else 
-            // motorPos = steer.getSelectedSensorPosition();
-            motorPos = steerPosition.getValueAsDouble();
+            motorPos = steer.getRotorPosition().getValueAsDouble();
 
         // The number of full rotations the motor has made
         int numRot = (int) Math.floor(motorPos);
@@ -200,8 +198,8 @@ public class SwerveModule {
         if (RobotBase.isSimulation()) {
             return simSteerAng * Math.PI * 2 + Math.PI / 2;
         }
-        StatusSignal pos = steer.getPosition();
-        return pos.getValueAsDouble() * Math.PI * 2 + Math.PI / 2;
+        
+        return steer.getPosition().getValueAsDouble() * Math.PI * 2 + Math.PI / 2;
     }
 
     private double lastSteerAngle = Double.NaN;
@@ -230,8 +228,7 @@ public class SwerveModule {
             return simDriveVel * 10 * (4 * Math.PI);
         }
         //the 10 is there to convert from units per 100ms to units per second
-        StatusSignal vel = drive.getVelocity();
-        return vel.getValueAsDouble() * 10 * (4 * Math.PI);
+        return drive.getVelocity().getValueAsDouble() * 10 * (4 * Math.PI);
         
     }
 
@@ -240,8 +237,7 @@ public class SwerveModule {
     @SuppressWarnings("rawtypes")
     public double getDrivePosition(){
         if(RobotBase.isReal()){
-            StatusSignal pos = drive.getPosition();
-            return pos.getValueAsDouble() * (4 * Math.PI);
+            return drive.getPosition().getValueAsDouble() * (4 * Math.PI);
         }
         //IF in sim
 
