@@ -100,26 +100,12 @@ public final class Tuning {
     }
 
     public static final class Intake {
-        public static final double INTAKEPIVOTKP = 0.0;
-        public static final double INTAKEPIVOTKI = 0.0;
-        public static final double INTAKEPIVOTKD = 0.0;
+        public static final double STOW_ANGLE = 0.0;
+        public static final double FEED_ANGLE = 0.0;
+        public static final double HOLD_ANGLE = 0.0;
+        public static final double EJECT_ANGLE = 0.0;
 
-        public static final double INTAKEGROUNDPOS = 18714 + 112911;
-
-        public static final double INTAKEPIVOTMAXVEL = 0.0;
-        public static final double INTAKEPIVOTMAXACCEL = 0.0;
-        public static final int INTAKEPIVOTJERKSTRENGTH = 0;
-
-        public static final double INTAKEBELTKP = 0.0;
-        public static final double INTAKEBELTKI = 0.0;
-        public static final double INTAKEBELTKD = 0.0;
-
-        public static final double CONVEYORKP = 0.0;
-        public static final double CONVEYORKI = 0.0;
-        public static final double CONVEYORKD = 0.0;
-
-        public static final double INTAKESTRENGTH = -0.8;
-        public static final double FEEDSTRENGTH = -0.8;
-
+        public static final double FEED_SPEED = 0.0;
+        public static final double EJECT_SPEED = 0.0;
     }
 }

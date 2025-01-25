@@ -136,6 +136,15 @@ public class Constants {
 
     }
 
+    public static final class AlgaeIntake {
+        public static final int INTAKEPIVOT_ID = 0;
+        public static final int TOP_MOTOR_ID = 0;
+        public static final int SENSOR_CHANNEL = 0;
+
+        public static final double INTAKE_GEAR_RATIO = 0.0;
+    }
+
+
     
     public static final double METERSTOINCHES = 39.3701;
 }
