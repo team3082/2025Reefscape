@@ -49,56 +49,32 @@ public final class Tuning {
         public static final double ROTSPEED = 0.3;
     }
 
-    //NOTE CONTROL
-    public static final class ShooterTuning {
-        public static double FLYWHEELKD = 0.0;
-        public static double FLYWHEELKF = 0.0;
+    public static final class Elevator {
+        public static final double ELEVATOR_P = 0.0;
+        public static final double ELEVATOR_I = 0.0;
+        public static final double ELEVATOR_D = 0.0;
 
-        public static final double PIVOTKP = 0.15;
-        public static final double PIVOTKI = 0.0;
-        public static final double PIVOTKD = 0.008;
-        public static final double PIVOTKF = 0.0;
+        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 0.0;
+        public static final double MOTION_MAGIC_ACCELERATION = 0.0;
+        public static final double JERK = 0.0;
 
-        public static final double PIVOT_CRUISE_VEL = 15000.0; // Ticks per 100ms
-        public static final double PIVOT_MAX_ACCEL = 15000.0; // In ticks per 100ms per second
-        public static final int PIVOT_JERK_STRENGTH = 1; // [0,8], higher number means lower jerk 
-
-        public static final double PIVOT_DEADBAND_POS = 0.0; // In motorticks
-        public static final double PIVOT_DEADBAND_VEL = 0.0; // In motor ticks per 100ms
-
-        public static double PIVOT_AFF_GRAVITY = 0.0;
-        public static double PIVOT_AFF_SPRING = 0.0;
- 
-        public static final double SPEAKER_SPEED_TOP = 0.0; //in motorticks per 100ms
-        public static final double SPEAKER_SPEED_BOTTOM = 0.0;
-
-        public static final double AMP_SPEED_TOP = 0.0;
-        public static final double AMP_SPEED_BOTTOM = 0.0;
-
-        public static final double AMP_WHEEL_SPEED_DEADBAND = 0.0;
-        public static final double SPEAKER_WHEEL_SPEED_DEADBAND = 0.0;
-        public static final double VELOCITY_WHEEL_SPEED_DEADBAND = 0.0;
-
-        // public static final double SHOOTER_STOW_ANGLE = 0.0;
+        public static final double HEIGHT_DEADBAND = 1.0; // in inches
     }
 
-    public static final class Climbers {
-        public static final double CLIMBER_KP = 0.0;
-        public static final double CLIMBER_KI = 0.0;
-        public static final double CLIMBER_KD = 0.0;
-        public static final double CLIMBER_KF = 0.0;
+    public static final class EndEffector {
+        public static final double PIVOT_P = 0.0;
+        public static final double PIVOT_I = 0.0;
+        public static final double PIVOT_D = 0.0;
 
-        public static final double CLIMBER_CRUISE_VEL = 0.0;
-        public static final double CLIMBER_MAX_ACCEL = 0.0;
-        public static final int CLIMBER_JERK_STRENGTH = 1;
+        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 0.0;
+        public static final double MOTION_MAGIC_ACCELERATION = 0.0;
+        public static final double JERK = 0.0;
 
-        public static final double CLIMBER_AFF_LOADED = 0.0;//aff for when holding the robot
-        public static final double CLIMBER_AFF_UNLOADED = 0.0;//aff when not holding the robot
+        public static final double SAFE_ANGLE = 0.0; // for moving the elevator so the end effector doesn't hit anything
 
-        
-
+        public static final double PIVOT_DEADBAND = Math.toRadians(1.0);
     }
-
+  
     public static final class Intake {
         public static final double STOW_ANGLE = 0.0;
         public static final double FEED_ANGLE = 0.0;
