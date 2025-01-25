@@ -37,6 +37,20 @@ public class Constants {
         
     };
 
+    public static final class Elevator {
+        public static final int MOTORID1 = 0;
+        public static final int MOTORID2 = 0;
+
+        public static final double GEARRATIO = 25.0; 
+        public static final double INCHESPERROTATION = 2.865 * GEARRATIO; // sprocket chain pitch diameter * gear ratio
+    }
+
+    public static final class EndEffector {
+        public static final int PIVOTID = 0;
+
+        public static final double GEARRATIO = 0.0;
+    }
+
     public static final class Swerve {
 
         public static final int DRIVEID0 = 5;
