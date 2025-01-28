@@ -3,18 +3,22 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.CommandAuto;
+import frc.robot.subsystems.ScoringManager;
 
 public class Robot extends TimedRobot {
   @Override
-  public void robotPeriodic() {}
+  public void robotInit() {
+    OI.init();
+    ScoringManager.init();
+  }
 
+  @Override
+  public void robotPeriodic() {}
 
   @Override
   public void autonomousInit() {
-
     CommandScheduler.getInstance().enable();
   }
-  
   
   @Override
   public void autonomousPeriodic() {
@@ -22,7 +26,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    OI.userInput();
+  }
 
   @Override
   public void teleopPeriodic() {}

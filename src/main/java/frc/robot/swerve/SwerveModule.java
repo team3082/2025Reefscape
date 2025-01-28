@@ -34,7 +34,6 @@ public class SwerveModule {
     VoltageOut requestToApplyDrive;
     VoltageOut requestToApplySteer;
 
-
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
         steer = new TalonFX(steerID, "CANivore");
         drive = new TalonFX(driveID, "CANivore");
@@ -61,7 +60,6 @@ public class SwerveModule {
         steerConfig.MotionMagic.MotionMagicAcceleration = 40000;
 
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-       
 
         //drive.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
         driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 

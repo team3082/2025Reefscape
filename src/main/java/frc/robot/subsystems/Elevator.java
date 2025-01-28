@@ -7,11 +7,15 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Tuning;
+import frc.robot.subsystems.sim.ElevatorSim;
 
 public class Elevator {
     
     public TalonFX motor1, motor2;
+
+    private double targetHeight;
 
     public Elevator() {
         motor1 = new TalonFX(Constants.Elevator.MOTORID1, "CANivore");
@@ -38,23 +42,41 @@ public class Elevator {
         Follower follower = new Follower(Constants.Elevator.MOTORID1, true);
 
         motor2.setControl(follower);
+    }
 
+    public void update() {
+        motor1.setControl(new MotionMagicDutyCycle(inchToRot(targetHeight)));
+
+        // UPDATE SIM
+        if (Robot.isSimulation()) {
+            ElevatorSim.setPosition(targetHeight);
+            ElevatorSim.update();
+        }
     }
 
     /**
      * sets the height of the elevator
-     * @param height target height in inches
+     * @param targetHeight target height in inches
      */
-    public void setElevatorHeight(double height) {
-        motor1.setControl(new MotionMagicDutyCycle(height / Constants.Elevator.INCHESPERROTATION));
+    public void setElevatorHeight(double targetHeight) {
+        this.targetHeight = targetHeight;
     }
 
     public double getElevatorHeight() {
-        return motor1.getPosition().getValueAsDouble() * Constants.Elevator.INCHESPERROTATION;
+        if (Robot.isReal()) return rotToInch(motor1.getPosition().getValueAsDouble());
+        else return ElevatorSim.getPosition();
     }
 
-    public boolean atPosition(double targetHeight) {
+    public boolean atPosition() {
         return Math.abs(getElevatorHeight() - targetHeight) < Tuning.Elevator.HEIGHT_DEADBAND;
+    }
+
+    private double inchToRot(double inch) {
+        return inch / Constants.Elevator.INCHESPERROTATION;
+    }
+
+    private double rotToInch(double rot) {
+        return rot * Constants.Elevator.INCHESPERROTATION;
     }
 
 }

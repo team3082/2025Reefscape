@@ -7,7 +7,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Tuning;
+import frc.robot.subsystems.sim.AlgaeIntakeSim;
 
 public class AlgaeIntake {
 
@@ -71,55 +73,32 @@ public class AlgaeIntake {
 
     public static void update() {
         switch (state) {
-            case STOW:
-                stow();
-            case FEED:
-                feed();
-            case HOLD:
-                hold();
-            case EJECT:
-                eject();
             case DISABLED:
-                disable();
+                pivotMotor.setNeutralMode(NeutralModeValue.Coast);
+                topWheelMotor.setNeutralMode(NeutralModeValue.Coast);
+
+                // UPDATE TARGET POS IN SIM
+                // if (Robot.isSimulation()) {
+                //     AlgaeIntakeSim.setPosition(AlgaeIntakeSim.getPosition());
+                //     AlgaeIntakeSim.setSpeed(state.targetSpeed);
+                // }
+            break;
+
+            default:
+                pivotMotor.setPosition(radToRot(state.targetAngle));
+                topWheelMotor.set(state.targetSpeed);
+
+                // UPDATE TARGET POS IN SIM
+                // if (Robot.isSimulation()) {
+                //     AlgaeIntakeSim.setPosition(state.targetAngle);
+                //     AlgaeIntakeSim.setSpeed(state.targetSpeed);
+                // }
             break;
         }
+
+        // UPDATE SIM
+        // if (Robot.isSimulation()) AlgaeIntakeSim.update();
     }
-
-    // Stow for autonomous and climb
-    public static void stow() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-        topWheelMotor.set(0.0);
-    };
-
-    // Angle down and pick up algae
-    public static void feed() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-
-        // Bring intake up if we have piece
-        if (!sensor.get()) {
-            AlgaeIntake.setState(IntakeState.HOLD);
-        } else {
-            topWheelMotor.set(state.targetSpeed);
-        }
-    };
-
-    // Hold piece with algae in it
-    public static void hold() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-        topWheelMotor.set(state.targetSpeed);
-    };
-
-    // Get rid of piece
-    public static void eject() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-        topWheelMotor.set(state.targetSpeed);
-    }
-
-    // Disable motors
-    public static void disable() {
-        pivotMotor.setNeutralMode(NeutralModeValue.Coast);
-        topWheelMotor.setNeutralMode(NeutralModeValue.Coast);
-    };
 
     public static void setState(IntakeState newState) {
         state = newState;
