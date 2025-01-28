@@ -73,6 +73,8 @@ public final class Tuning {
         public static final double SAFE_ANGLE = 0.0; // for moving the elevator so the end effector doesn't hit anything
 
         public static final double PIVOT_DEADBAND = Math.toRadians(1.0);
+
+        public static final double INTAKE_SPEED = 0.4;
     }
   
     public static final class Intake {

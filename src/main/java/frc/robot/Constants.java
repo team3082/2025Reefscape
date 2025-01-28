@@ -42,11 +42,12 @@ public class Constants {
         public static final int MOTORID2 = 0;
 
         public static final double GEARRATIO = 25.0; 
-        public static final double INCHESPERROTATION = 2.865 * GEARRATIO; // sprocket chain pitch diameter * gear ratio
+        public static final double INCHESPERROTATION = 2.865 * GEARRATIO / 3.0; // sprocket chain pitch diameter * gear ratio
     }
 
     public static final class EndEffector {
         public static final int PIVOTID = 0;
+        public static final int END_EFFECTOR_SENSOR_ID = 0;
 
         public static final double GEARRATIO = 0.0;
     }

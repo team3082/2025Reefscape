@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.lang.annotation.ElementType;
-
 import frc.robot.Tuning;
 
 public class ScoringManager {
