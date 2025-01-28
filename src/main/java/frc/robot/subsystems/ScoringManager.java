@@ -34,10 +34,12 @@ public class ScoringManager {
 
     private static ScoringPosition scoringPosition = ScoringPosition.STOW;
     private static TransitoryState transitoryState = TransitoryState.FINISHED;
+    private static Elevator elevator;
+    private static EndEffector endEffector;
 
     public static void init() {
-        Elevator.init();
-        EndEffector.init();
+        elevator = new Elevator();
+        endEffector = new EndEffector();
     }
 
     public static void setScoringLevel(ScoringPosition targetPosition) {
@@ -55,9 +57,9 @@ public class ScoringManager {
         switch (transitoryState) {
             case ELEVATOR_WAITING:
 
-                EndEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
+            endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
 
-                if (EndEffector.atPosition(Tuning.EndEffector.SAFE_ANGLE)) {
+                if (endEffector.atPosition(Tuning.EndEffector.SAFE_ANGLE)) {
                     transitoryState = TransitoryState.ELEVATOR_MOVING;
                 }
                 
@@ -65,9 +67,9 @@ public class ScoringManager {
         
             case ELEVATOR_MOVING:
 
-                Elevator.setElevatorHeight(scoringPosition.targetHeight);
+            elevator.setElevatorHeight(scoringPosition.targetHeight);
 
-                if (Elevator.atPosition(scoringPosition.targetHeight)) {
+                if (elevator.atPosition(scoringPosition.targetHeight)) {
                     transitoryState = TransitoryState.WRIST_MOVING;
                 }
 
@@ -75,9 +77,9 @@ public class ScoringManager {
 
             case WRIST_MOVING:
 
-                EndEffector.setPivotAngle(scoringPosition.targetAngle);
+            endEffector.setPivotAngle(scoringPosition.targetAngle);
 
-                if (EndEffector.atPosition(scoringPosition.targetAngle)) {
+                if (endEffector.atPosition(scoringPosition.targetAngle)) {
                     transitoryState = TransitoryState.FINISHED;
                 }
 

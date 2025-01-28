@@ -11,9 +11,9 @@ import frc.robot.Tuning;
 
 public class Elevator {
     
-    public static TalonFX motor1, motor2;
+    public TalonFX motor1, motor2;
 
-    public static void init() {
+    public Elevator() {
         motor1 = new TalonFX(Constants.Elevator.MOTORID1, "CANivore");
         motor2 = new TalonFX(Constants.Elevator.MOTORID2, "CANivore");
 
@@ -45,15 +45,15 @@ public class Elevator {
      * sets the height of the elevator
      * @param height target height in inches
      */
-    public static void setElevatorHeight(double height) {
+    public void setElevatorHeight(double height) {
         motor1.setControl(new MotionMagicDutyCycle(height / Constants.Elevator.INCHESPERROTATION));
     }
 
-    public static double getElevatorHeight() {
+    public double getElevatorHeight() {
         return motor1.getPosition().getValueAsDouble() * Constants.Elevator.INCHESPERROTATION;
     }
 
-    public static boolean atPosition(double targetHeight) {
+    public boolean atPosition(double targetHeight) {
         return Math.abs(getElevatorHeight() - targetHeight) < Tuning.Elevator.HEIGHT_DEADBAND;
     }
 

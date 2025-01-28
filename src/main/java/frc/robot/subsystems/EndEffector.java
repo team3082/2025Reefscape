@@ -18,16 +18,16 @@ public class EndEffector {
         DROP_PIECE,
     }
 
-    public static TalonFX pivot;
-    public static TalonFX intake;
+    public TalonFX pivot;
+    public TalonFX intake;
 
-    public static IntakeState intakeState;
+    public IntakeState intakeState;
 
-    public static DigitalInput sensor;
+    public DigitalInput sensor;
 
-    public static boolean holdingPiece;
-    
-    public static void init() {
+    public boolean holdingPiece;
+
+    public EndEffector() {
 
         pivot = new TalonFX(Constants.EndEffector.PIVOTID, "CANivore");
         pivot.getConfigurator().apply(new TalonFXConfiguration());
@@ -52,7 +52,7 @@ public class EndEffector {
 
     }
 
-    public static void update() {
+    public void update() {
 
         holdingPiece = sensor.get();
 
@@ -60,7 +60,7 @@ public class EndEffector {
             case OFF:
 
                 intake.setControl(new DutyCycleOut(0));
-                
+
                 break;
 
             case INTAKE_PIECE:
@@ -88,21 +88,20 @@ public class EndEffector {
         }
     }
 
-    public static void setIntakeState(IntakeState newState) {
+    public void setIntakeState(IntakeState newState) {
         intakeState = newState;
     }
 
-    public static void setPivotAngle(double targetAngle) {
+    public void setPivotAngle(double targetAngle) {
         pivot.setControl(new MotionMagicDutyCycle(targetAngle / (2.0 * Math.PI) * Constants.EndEffector.GEARRATIO));
     }
 
-    public static double getPivotAngle() {
+    public double getPivotAngle() {
         return pivot.getPosition().getValueAsDouble() / Constants.EndEffector.GEARRATIO;
     }
 
-    public static boolean atPosition(double targetAngle) {
-        return Math.abs(EndEffector.getPivotAngle() - targetAngle) <= Tuning.EndEffector.PIVOT_DEADBAND;
+    public boolean atPosition(double targetAngle) {
+        return Math.abs(getPivotAngle() - targetAngle) <= Tuning.EndEffector.PIVOT_DEADBAND;
     }
-
 
 }
