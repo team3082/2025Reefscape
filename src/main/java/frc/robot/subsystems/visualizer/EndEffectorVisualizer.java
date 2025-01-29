@@ -8,6 +8,10 @@ import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 import frc.robot.subsystems.ScoringManager;
 
+
+/*
+ * Visualizer for the end effector using mech 2d, reads values from subsystems and updates the visualizer
+ */
 public class EndEffectorVisualizer {
 
     // Wheel positions relative to pivot point
@@ -52,7 +56,7 @@ public class EndEffectorVisualizer {
         endEffectorPivot_root.setPosition(20, pivotHeight + 8.0);
 
         // set wheel angles to show rotation
-        wheelAngle += RTime.deltaTime() * ScoringManager.endEffector.intakeState.speed * 2.0 * Math.PI * 5.0;
+        wheelAngle += RTime.deltaTime() * ScoringManager.endEffector.intakeState.speed * 2.0 * Math.PI * 10.0;
         endEffectorWheel1.setAngle(Math.toDegrees(wheelAngle));
         endEffectorWheel2.setAngle(-Math.toDegrees(wheelAngle));
         endEffectorWheel3.setAngle(-Math.toDegrees(wheelAngle));

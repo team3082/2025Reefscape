@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Telemetry;
 import frc.robot.subsystems.ScoringManager;
 
+/*
+ * Visualizer for the elevator using mech 2d, reads values from subsystems and updates the visualizer
+ */
 public class ElevatorVisualizer {
     private static MechanismRoot2d elevatorBase_root = Telemetry.subsytemView.getRoot("Elevator Base Root", 40, 0);
     private static MechanismRoot2d elevatorStage1_root = Telemetry.subsytemView.getRoot("Elevator Stage 1 Root", 38, 0);

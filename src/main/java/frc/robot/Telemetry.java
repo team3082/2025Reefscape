@@ -5,11 +5,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import frc.robot.Constants.EndEffector;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
 
+/*
+ * handles telemetry for the robot
+ * reads values from subsystems and updates tables and visualizers
+ * includes the field view and subsystem views
+ */
 public class Telemetry {
     private static ShuffleboardTab robotTab = Shuffleboard.getTab("Robot Views");
     private static ShuffleboardTab scoringManagerTab = Shuffleboard.getTab("Scoring Manager");
@@ -43,6 +47,7 @@ public class Telemetry {
     }
 
     public static void update() {
+        // update table values
         SCORING_TRANSITORY_STATE.setString(ScoringManager.transitoryState.name());
         SCORING_POSITION.setString(ScoringManager.scoringPosition.name());
 

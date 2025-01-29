@@ -3,6 +3,10 @@ package frc.robot.subsystems.sim;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RTime;
 
+/*
+ * Simulates the end effector, uses simple PID control to move to a target position, and ramp up to a target wheel speed
+ * this is read from during sim instead of real motor values
+ */
 public class EndEffectorSim {
 
     private static PIDController posPID = new PIDController(3, 0, 0, 0, 0, 3.0);
@@ -14,7 +18,6 @@ public class EndEffectorSim {
 
     public static void update() {
         // update pos
-        System.out.println("End Effector Sim Pos: " + pos);
         pos += posPID.updateOutput(pos) * RTime.deltaTime();
 
         // update speed
@@ -27,7 +30,6 @@ public class EndEffectorSim {
     }
 
     public static void setPosition(double setPos) {
-        System.out.println("End Effector Sim Set Pos: " + setPos);
         if (targetPos != setPos) {
             targetPos = setPos;
             posPID.setDest(targetPos);
