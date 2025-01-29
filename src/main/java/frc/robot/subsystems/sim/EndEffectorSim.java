@@ -5,7 +5,7 @@ import frc.robot.utils.RTime;
 
 public class EndEffectorSim {
 
-    private static PIDController posPID = new PIDController(0, 0, 0, 0, 0, 0);
+    private static PIDController posPID = new PIDController(3, 0, 0, 0, 0, 3.0);
 
     private static double targetPos, targetSpeed; // Radians, PercentOut
     private static double pos, speed; // Radians, PercentOut
@@ -14,6 +14,7 @@ public class EndEffectorSim {
 
     public static void update() {
         // update pos
+        System.out.println("End Effector Sim Pos: " + pos);
         pos += posPID.updateOutput(pos) * RTime.deltaTime();
 
         // update speed
@@ -26,6 +27,7 @@ public class EndEffectorSim {
     }
 
     public static void setPosition(double setPos) {
+        System.out.println("End Effector Sim Set Pos: " + setPos);
         if (targetPos != setPos) {
             targetPos = setPos;
             posPID.setDest(targetPos);

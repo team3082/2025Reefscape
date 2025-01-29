@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
-import javax.xml.stream.events.EndDocument;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -17,7 +14,7 @@ public class EndEffector {
 
     public enum IntakeState {
         OFF(0.0),
-        INTAKE_PIECE(0.15),
+        INTAKE_PIECE(-0.15),
         HOLD_PIECE(0.0),
         DROP_PIECE(-0.5);
 
@@ -31,7 +28,7 @@ public class EndEffector {
     public TalonFX pivot;
     public TalonFX intake;
 
-    private double targetAngle; // Radians
+    public double targetAngle; // Radians
 
     public IntakeState intakeState;
 

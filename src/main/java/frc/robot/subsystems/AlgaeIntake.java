@@ -7,9 +7,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.Tuning;
-import frc.robot.subsystems.sim.AlgaeIntakeSim;
 
 public class AlgaeIntake {
 
@@ -77,27 +75,14 @@ public class AlgaeIntake {
                 pivotMotor.setNeutralMode(NeutralModeValue.Coast);
                 topWheelMotor.setNeutralMode(NeutralModeValue.Coast);
 
-                // UPDATE TARGET POS IN SIM
-                // if (Robot.isSimulation()) {
-                //     AlgaeIntakeSim.setPosition(AlgaeIntakeSim.getPosition());
-                //     AlgaeIntakeSim.setSpeed(state.targetSpeed);
-                // }
             break;
 
             default:
                 pivotMotor.setPosition(radToRot(state.targetAngle));
                 topWheelMotor.set(state.targetSpeed);
 
-                // UPDATE TARGET POS IN SIM
-                // if (Robot.isSimulation()) {
-                //     AlgaeIntakeSim.setPosition(state.targetAngle);
-                //     AlgaeIntakeSim.setSpeed(state.targetSpeed);
-                // }
             break;
         }
-
-        // UPDATE SIM
-        // if (Robot.isSimulation()) AlgaeIntakeSim.update();
     }
 
     public static void setState(IntakeState newState) {

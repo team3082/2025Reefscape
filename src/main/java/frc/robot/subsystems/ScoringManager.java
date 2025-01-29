@@ -4,7 +4,7 @@ import frc.robot.Tuning;
 
 public class ScoringManager {
     
-    // TODO set these positions
+    // TODO set these positions - current numbers are fake
     public enum ScoringPosition {
         DISABLED(0.0, 0.0),
         STOW(0.0, 0.0),
@@ -12,16 +12,16 @@ public class ScoringManager {
         ALGAE1(0.0, 0.0),
         ALGAE2(0.0, 0.0),
         L1(0.0, 0.0),
-        L2(0.0, 0.0),
-        L3(0.0, 0.0),
-        L4(0.0, 0.0);
+        L2(24, Math.toRadians(30.0)),
+        L3(36, Math.toRadians(30.0)),
+        L4(60, Math.toRadians(45.0));
 
-        public final double targetHeight;
-        public final double targetAngle;
+        public double targetHeight;
+        public double targetAngle;
 
-        ScoringPosition(double height, double angle) {
-            targetHeight = height;
-            targetAngle = angle;
+        ScoringPosition(double targetHeight, double targetAngle) {
+            this.targetHeight = targetHeight;
+            this.targetAngle = targetAngle;
         }
     }
 
@@ -32,8 +32,8 @@ public class ScoringManager {
         FINISHED,
     }
 
-    private static ScoringPosition scoringPosition = ScoringPosition.STOW;
-    private static TransitoryState transitoryState = TransitoryState.FINISHED;
+    public static ScoringPosition scoringPosition = ScoringPosition.STOW;
+    public static TransitoryState transitoryState = TransitoryState.FINISHED;
     public static Elevator elevator;
     public static EndEffector endEffector;
 
@@ -89,8 +89,8 @@ public class ScoringManager {
             case FINISHED: // doesn't need anything, maybe add manual control if needed
 
                 break;
-
         }
+
         endEffector.update();
         elevator.update();
     }

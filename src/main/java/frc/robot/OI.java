@@ -45,10 +45,11 @@ public class OI {
      */
     public static void init() {
         driverStick = new Joystick(0);
+        operatorStick = new Joystick(0); // Temporarily port 0 for sim testing
     }
 
     public static void userInput() {
-        driverInput();
+        // driverInput();
         operatorInput();
     }
 

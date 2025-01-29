@@ -15,7 +15,7 @@ public class Elevator {
     
     public TalonFX motor1, motor2;
 
-    private double targetHeight;
+    public double targetHeight;
 
     public Elevator() {
         motor1 = new TalonFX(Constants.Elevator.MOTORID1, "CANivore");

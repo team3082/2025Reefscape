@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Telemetry;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
-import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.ScoringManager;
 
 public class EndEffectorVisualizer {
@@ -49,24 +48,24 @@ public class EndEffectorVisualizer {
         // set pivot position and angle
         pivotAngle = ScoringManager.endEffector.getPivotAngle();
         pivotHeight = ScoringManager.elevator.getElevatorHeight();
-        endEffectorPivot.setAngle(Math.toDegrees(-pivotAngle));
-        endEffectorPivot_root.setPosition(0, pivotHeight);
+        endEffectorPivot.setAngle(Math.toDegrees(pivotAngle) + 90.0);
+        endEffectorPivot_root.setPosition(20, pivotHeight + 8.0);
 
         // set wheel angles to show rotation
         wheelAngle += RTime.deltaTime() * ScoringManager.endEffector.intakeState.speed * 2.0 * Math.PI * 5.0;
         endEffectorWheel1.setAngle(Math.toDegrees(wheelAngle));
-        endEffectorWheel2.setAngle(Math.toDegrees(wheelAngle));
-        endEffectorWheel3.setAngle(Math.toDegrees(wheelAngle));
+        endEffectorWheel2.setAngle(-Math.toDegrees(wheelAngle));
+        endEffectorWheel3.setAngle(-Math.toDegrees(wheelAngle));
         endEffectorWheel4.setAngle(Math.toDegrees(wheelAngle));
 
         // find and set wheel position with wrist rotation
-        Vector2 wheelPos1 = WHEEL_1_POS.rotate(-pivotAngle);
-        Vector2 wheelPos2 = WHEEL_2_POS.rotate(-pivotAngle);
-        Vector2 wheelPos3 = WHEEL_3_POS.rotate(-pivotAngle);
-        Vector2 wheelPos4 = WHEEL_4_POS.rotate(-pivotAngle);
-        endEffectorWheel1_root.setPosition(wheelPos1.x + pivotHeight, wheelPos1.y);
-        endEffectorWheel2_root.setPosition(wheelPos2.x + pivotHeight, wheelPos2.y);
-        endEffectorWheel3_root.setPosition(wheelPos3.x + pivotHeight, wheelPos3.y);
-        endEffectorWheel4_root.setPosition(wheelPos4.x + pivotHeight, wheelPos4.y);
+        Vector2 wheelPos1 = WHEEL_1_POS.rotate(pivotAngle);
+        Vector2 wheelPos2 = WHEEL_2_POS.rotate(pivotAngle);
+        Vector2 wheelPos3 = WHEEL_3_POS.rotate(pivotAngle);
+        Vector2 wheelPos4 = WHEEL_4_POS.rotate(pivotAngle);
+        endEffectorWheel1_root.setPosition(wheelPos1.x + 20, wheelPos1.y + pivotHeight + 8.0);
+        endEffectorWheel2_root.setPosition(wheelPos2.x + 20, wheelPos2.y + pivotHeight + 8.0);
+        endEffectorWheel3_root.setPosition(wheelPos3.x + 20, wheelPos3.y + pivotHeight + 8.0);
+        endEffectorWheel4_root.setPosition(wheelPos4.x + 20, wheelPos4.y + pivotHeight + 8.0);
     }
 }
