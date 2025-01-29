@@ -3,6 +3,7 @@ package frc.robot;
 // AUTO
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.auto.Auto;
 import frc.robot.auto.CommandAuto;
 
 // SUBSYSTEMS
@@ -40,7 +41,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void autonomousPeriodic() {
-    CommandAuto.update();
+    Auto.update();
   }
 
   @Override
