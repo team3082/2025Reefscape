@@ -56,7 +56,7 @@ public class EndEffectorVisualizer {
         endEffectorPivot_root.setPosition(15, pivotHeight + 8.0);
 
         // set wheel angles to show rotation
-        wheelAngle += RTime.deltaTime() * ScoringManager.endEffector.intakeState.speed * 2.0 * Math.PI * 10.0;
+        wheelAngle += RTime.deltaTime() * ScoringManager.endEffector.intakeState.targetSpeed * 2.0 * Math.PI * 10.0;
         endEffectorWheel1.setAngle(Math.toDegrees(wheelAngle));
         endEffectorWheel2.setAngle(-Math.toDegrees(wheelAngle));
         endEffectorWheel3.setAngle(-Math.toDegrees(wheelAngle));

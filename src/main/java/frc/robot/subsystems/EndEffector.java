@@ -18,47 +18,57 @@ public class EndEffector {
         HOLD_PIECE(0.0),
         DROP_PIECE(-0.5);
 
-        public double speed;
+        public double targetSpeed;
 
-        IntakeState(double speed) {
-            this.speed = speed;
+        IntakeState(double targetSpeed) {
+            this.targetSpeed = targetSpeed;
         }
     }
 
-    public TalonFX pivot;
-    public TalonFX intake;
-
-    public double targetAngle; // Radians
-
-    public IntakeState intakeState;
-
+    public TalonFX pivotMotor;
+    public TalonFX intakeMotor;
     public DigitalInput sensor;
 
+    public IntakeState intakeState = IntakeState.HOLD_PIECE;
+
+    public double targetAngle; // Radians
     public boolean holdingPiece;
 
     public EndEffector() {
+        init();
+    }
 
-        pivot = new TalonFX(Constants.EndEffector.PIVOTID, "CANivore");
-        pivot.getConfigurator().apply(new TalonFXConfiguration());
+    public void init() {
+        // Initialize Motors
+        pivotMotor = new TalonFX(Constants.EndEffector.PIVOTID, "CANivore");
 
-        TalonFXConfiguration pivotConfiguration = new TalonFXConfiguration();
-        pivotConfiguration.Slot0.kP = Tuning.EndEffector.PIVOT_P;
-        pivotConfiguration.Slot0.kI = Tuning.EndEffector.PIVOT_I;
-        pivotConfiguration.Slot0.kD = Tuning.EndEffector.PIVOT_D;
+        // Reset to Factory Defaults
+        pivotMotor.getConfigurator().apply(new TalonFXConfiguration());
 
-        pivotConfiguration.MotionMagic.MotionMagicCruiseVelocity = Tuning.EndEffector.MOTION_MAGIC_CRUISE_VELOCITY;
-        pivotConfiguration.MotionMagic.MotionMagicAcceleration = Tuning.EndEffector.MOTION_MAGIC_ACCELERATION;
-        pivotConfiguration.MotionMagic.MotionMagicJerk = Tuning.EndEffector.JERK;
+        // Set Pivot Motor Configs
+        TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
 
-        pivot.getConfigurator().apply(pivotConfiguration);
+        // PID Configs
+        pivotConfig.Slot0.kP = Tuning.EndEffector.PIVOT_P;
+        pivotConfig.Slot0.kI = Tuning.EndEffector.PIVOT_I;
+        pivotConfig.Slot0.kD = Tuning.EndEffector.PIVOT_D;
 
-        intake = new TalonFX(Constants.EndEffector.PIVOTID, "CANivore");
-        intake.getConfigurator().apply(new TalonFXConfiguration());
+        // Motion Magic Configs
+        pivotConfig.MotionMagic.MotionMagicCruiseVelocity = Tuning.EndEffector.MOTION_MAGIC_CRUISE_VELOCITY;
+        pivotConfig.MotionMagic.MotionMagicAcceleration = Tuning.EndEffector.MOTION_MAGIC_ACCELERATION;
+        pivotConfig.MotionMagic.MotionMagicJerk = Tuning.EndEffector.JERK;
 
+        // Apply Configs
+        pivotMotor.getConfigurator().apply(pivotConfig);
+
+        // Initialize Intake Motor
+        intakeMotor = new TalonFX(Constants.EndEffector.PIVOTID, "CANivore");
+
+        // Reset to Factory Defaults
+        intakeMotor.getConfigurator().apply(new TalonFXConfiguration());
+
+        // Initialize Sensor
         sensor = new DigitalInput(Constants.EndEffector.END_EFFECTOR_SENSOR_ID);
-
-        intakeState = IntakeState.HOLD_PIECE;
-
     }
 
     public void update() {
@@ -67,21 +77,21 @@ public class EndEffector {
         switch (intakeState) {
             case INTAKE_PIECE:
                 // Stop Wheels if Holding Piece
-                if (holdingPiece) intake.set(0);
-                else intake.set(intakeState.speed);
+                if (holdingPiece) intakeMotor.set(0);
+                else intakeMotor.set(intakeState.targetSpeed);
             break;
             default:
-                intake.set(intakeState.speed);
+                intakeMotor.set(intakeState.targetSpeed);
             break;
         }
 
         // setting pivot angle
-        pivot.setControl(new MotionMagicDutyCycle(radToRot(targetAngle)));
+        pivotMotor.setControl(new MotionMagicDutyCycle(radToRot(targetAngle)));
 
         // UPDATE SIM
         if (Robot.isSimulation()) {
             EndEffectorSim.setPosition(targetAngle);
-            EndEffectorSim.setSpeed(intakeState.speed);
+            EndEffectorSim.setSpeed(intakeState.targetSpeed);
             EndEffectorSim.update();
         }
     }
@@ -95,7 +105,7 @@ public class EndEffector {
     }
 
     public double getPivotAngle() {
-        if (Robot.isReal()) return rotToRad(pivot.getPosition().getValueAsDouble());
+        if (Robot.isReal()) return rotToRad(pivotMotor.getPosition().getValueAsDouble());
         else return EndEffectorSim.getPosition();
     }
 
