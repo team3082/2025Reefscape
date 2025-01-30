@@ -53,7 +53,7 @@ public class EndEffectorVisualizer {
         pivotAngle = ScoringManager.endEffector.getPivotAngle();
         pivotHeight = ScoringManager.elevator.getElevatorHeight();
         endEffectorPivot.setAngle(Math.toDegrees(pivotAngle) + 90.0);
-        endEffectorPivot_root.setPosition(20, pivotHeight + 8.0);
+        endEffectorPivot_root.setPosition(15, pivotHeight + 8.0);
 
         // set wheel angles to show rotation
         wheelAngle += RTime.deltaTime() * ScoringManager.endEffector.intakeState.speed * 2.0 * Math.PI * 10.0;
@@ -67,9 +67,9 @@ public class EndEffectorVisualizer {
         Vector2 wheelPos2 = WHEEL_2_POS.rotate(pivotAngle);
         Vector2 wheelPos3 = WHEEL_3_POS.rotate(pivotAngle);
         Vector2 wheelPos4 = WHEEL_4_POS.rotate(pivotAngle);
-        endEffectorWheel1_root.setPosition(wheelPos1.x + 20, wheelPos1.y + pivotHeight + 8.0);
-        endEffectorWheel2_root.setPosition(wheelPos2.x + 20, wheelPos2.y + pivotHeight + 8.0);
-        endEffectorWheel3_root.setPosition(wheelPos3.x + 20, wheelPos3.y + pivotHeight + 8.0);
-        endEffectorWheel4_root.setPosition(wheelPos4.x + 20, wheelPos4.y + pivotHeight + 8.0);
+        endEffectorWheel1_root.setPosition(wheelPos1.x + 15, wheelPos1.y + pivotHeight + 8.0);
+        endEffectorWheel2_root.setPosition(wheelPos2.x + 15, wheelPos2.y + pivotHeight + 8.0);
+        endEffectorWheel3_root.setPosition(wheelPos3.x + 15, wheelPos3.y + pivotHeight + 8.0);
+        endEffectorWheel4_root.setPosition(wheelPos4.x + 15, wheelPos4.y + pivotHeight + 8.0);
     }
 }

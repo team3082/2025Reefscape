@@ -22,7 +22,7 @@ public class Telemetry {
 
     // Views
     private static Field2d fieldView = new Field2d();
-    public static Mechanism2d subsytemView = new Mechanism2d(50, 120);
+    public static Mechanism2d subsytemView = new Mechanism2d(65, 120);
 
     // Logging
     // Scoring Manager

@@ -10,10 +10,10 @@ import frc.robot.subsystems.ScoringManager;
  * Visualizer for the elevator using mech 2d, reads values from subsystems and updates the visualizer
  */
 public class ElevatorVisualizer {
-    private static MechanismRoot2d elevatorBase_root = Telemetry.subsytemView.getRoot("Elevator Base Root", 40, 0);
-    private static MechanismRoot2d elevatorStage1_root = Telemetry.subsytemView.getRoot("Elevator Stage 1 Root", 38, 0);
-    private static MechanismRoot2d elevatorStage2_root = Telemetry.subsytemView.getRoot("Elevator Stage 2 Root", 36, 0);
-    private static MechanismRoot2d elevatorStage3_root = Telemetry.subsytemView.getRoot("Elevator Stage 3 Root", 32, 0);
+    private static MechanismRoot2d elevatorBase_root = Telemetry.subsytemView.getRoot("Elevator Base Root", 26, 0);
+    private static MechanismRoot2d elevatorStage1_root = Telemetry.subsytemView.getRoot("Elevator Stage 1 Root", 24, 0);
+    private static MechanismRoot2d elevatorStage2_root = Telemetry.subsytemView.getRoot("Elevator Stage 2 Root", 22, 0);
+    private static MechanismRoot2d elevatorStage3_root = Telemetry.subsytemView.getRoot("Elevator Stage 3 Root", 20, 0);
 
     private static MechanismLigament2d elevatorBase = elevatorBase_root.append(new MechanismLigament2d("Elevator Base", 32, 90.0));
     private static MechanismLigament2d elevatorStage1 = elevatorStage1_root.append(new MechanismLigament2d("Elevator Stage 1", 33, 90.0));
@@ -31,8 +31,8 @@ public class ElevatorVisualizer {
     public static void update() {
         // set positions of elevator stages
         double elevatorHeight = ScoringManager.elevator.getElevatorHeight();
-        elevatorStage1_root.setPosition(35, elevatorHeight / 3.0);
-        elevatorStage2_root.setPosition(30, elevatorHeight / (3.0 / 2.0));
-        elevatorStage3_root.setPosition(25, elevatorHeight);
+        elevatorStage1_root.setPosition(24  , elevatorHeight / 3.0);
+        elevatorStage2_root.setPosition(22, elevatorHeight / (3.0 / 2.0));
+        elevatorStage3_root.setPosition(20, elevatorHeight);
     }
 }
