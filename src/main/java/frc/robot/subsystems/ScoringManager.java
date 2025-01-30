@@ -4,7 +4,7 @@ import frc.robot.Tuning;
 
 public class ScoringManager {
     
-    // TODO set these positions
+    // TODO set these positions - current numbers are fake
     public enum ScoringPosition {
         DISABLED(0.0, 0.0),
         STOW(0.0, 0.0),
@@ -12,16 +12,16 @@ public class ScoringManager {
         ALGAE1(0.0, 0.0),
         ALGAE2(0.0, 0.0),
         L1(0.0, 0.0),
-        L2(0.0, 0.0),
-        L3(0.0, 0.0),
-        L4(0.0, 0.0);
+        L2(24, Math.toRadians(30.0)),
+        L3(36, Math.toRadians(30.0)),
+        L4(60, Math.toRadians(45.0));
 
-        public final double targetHeight;
-        public final double targetAngle;
+        public double targetHeight;
+        public double targetAngle;
 
-        ScoringPosition(double height, double angle) {
-            targetHeight = height;
-            targetAngle = angle;
+        ScoringPosition(double targetHeight, double targetAngle) {
+            this.targetHeight = targetHeight;
+            this.targetAngle = targetAngle;
         }
     }
 
@@ -32,10 +32,10 @@ public class ScoringManager {
         FINISHED,
     }
 
-    private static ScoringPosition scoringPosition = ScoringPosition.STOW;
-    private static TransitoryState transitoryState = TransitoryState.FINISHED;
-    private static Elevator elevator;
-    private static EndEffector endEffector;
+    public static ScoringPosition scoringPosition = ScoringPosition.STOW;
+    public static TransitoryState transitoryState = TransitoryState.FINISHED;
+    public static Elevator elevator;
+    public static EndEffector endEffector;
 
     public static void init() {
         elevator = new Elevator();
@@ -54,12 +54,13 @@ public class ScoringManager {
     }
 
     public static void update() {
+        if (scoringPosition != ScoringPosition.DISABLED) 
         switch (transitoryState) {
             case ELEVATOR_WAITING:
 
             endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
 
-                if (endEffector.atPosition(Tuning.EndEffector.SAFE_ANGLE)) {
+                if (endEffector.atPosition()) {
                     transitoryState = TransitoryState.ELEVATOR_MOVING;
                 }
                 
@@ -69,7 +70,7 @@ public class ScoringManager {
 
             elevator.setElevatorHeight(scoringPosition.targetHeight);
 
-                if (elevator.atPosition(scoringPosition.targetHeight)) {
+                if (elevator.atPosition()) {
                     transitoryState = TransitoryState.WRIST_MOVING;
                 }
 
@@ -79,7 +80,7 @@ public class ScoringManager {
 
             endEffector.setPivotAngle(scoringPosition.targetAngle);
 
-                if (endEffector.atPosition(scoringPosition.targetAngle)) {
+                if (endEffector.atPosition()) {
                     transitoryState = TransitoryState.FINISHED;
                 }
 
@@ -88,7 +89,9 @@ public class ScoringManager {
             case FINISHED: // doesn't need anything, maybe add manual control if needed
 
                 break;
-
         }
+
+        endEffector.update();
+        elevator.update();
     }
 }

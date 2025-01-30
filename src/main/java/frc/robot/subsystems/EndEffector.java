@@ -1,25 +1,34 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Tuning;
+import frc.robot.subsystems.sim.EndEffectorSim;
 
 public class EndEffector {
 
     public enum IntakeState {
-        OFF,
-        INTAKE_PIECE,
-        HOLD_PIECE,
-        DROP_PIECE,
+        OFF(0.0),
+        INTAKE_PIECE(-0.15),
+        HOLD_PIECE(0.0),
+        DROP_PIECE(-0.5);
+
+        public double speed;
+
+        IntakeState(double speed) {
+            this.speed = speed;
+        }
     }
 
     public TalonFX pivot;
     public TalonFX intake;
+
+    public double targetAngle; // Radians
 
     public IntakeState intakeState;
 
@@ -53,38 +62,27 @@ public class EndEffector {
     }
 
     public void update() {
-
-        holdingPiece = sensor.get();
+        holdingPiece = !sensor.get();
 
         switch (intakeState) {
-            case OFF:
-
-                intake.setControl(new DutyCycleOut(0));
-
-                break;
-
             case INTAKE_PIECE:
+                // Stop Wheels if Holding Piece
+                if (holdingPiece) intake.set(0);
+                else intake.set(intakeState.speed);
+            break;
+            default:
+                intake.set(intakeState.speed);
+            break;
+        }
 
-                if (holdingPiece) {
-                    intakeState = IntakeState.HOLD_PIECE;
-                }
+        // setting pivot angle
+        pivot.setControl(new MotionMagicDutyCycle(radToRot(targetAngle)));
 
-                intake.setControl(new DutyCycleOut(Tuning.EndEffector.INTAKE_SPEED));
-
-                break;
-
-            case HOLD_PIECE:
-
-                intake.setControl(new DutyCycleOut(0));
-
-                break;
-
-            case DROP_PIECE:
-
-                intake.setControl(new DutyCycleOut(Tuning.EndEffector.INTAKE_SPEED));
-
-                break;
-
+        // UPDATE SIM
+        if (Robot.isSimulation()) {
+            EndEffectorSim.setPosition(targetAngle);
+            EndEffectorSim.setSpeed(intakeState.speed);
+            EndEffectorSim.update();
         }
     }
 
@@ -93,15 +91,24 @@ public class EndEffector {
     }
 
     public void setPivotAngle(double targetAngle) {
-        pivot.setControl(new MotionMagicDutyCycle(targetAngle / (2.0 * Math.PI) * Constants.EndEffector.GEARRATIO));
+        this.targetAngle = targetAngle;
     }
 
     public double getPivotAngle() {
-        return pivot.getPosition().getValueAsDouble() / Constants.EndEffector.GEARRATIO;
+        if (Robot.isReal()) return rotToRad(pivot.getPosition().getValueAsDouble());
+        else return EndEffectorSim.getPosition();
     }
 
-    public boolean atPosition(double targetAngle) {
+    public boolean atPosition() {
         return Math.abs(getPivotAngle() - targetAngle) <= Tuning.EndEffector.PIVOT_DEADBAND;
+    }
+
+    private double radToRot(double rad) {
+        return rad / (2.0 * Math.PI) * Constants.EndEffector.GEARRATIO;
+    }   
+
+    private double rotToRad(double rot) {
+        return (rot * 2.0 * Math.PI) / Constants.EndEffector.GEARRATIO;
     }
 
 }

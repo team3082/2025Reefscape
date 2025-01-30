@@ -71,55 +71,19 @@ public class AlgaeIntake {
 
     public static void update() {
         switch (state) {
-            case STOW:
-                stow();
-            case FEED:
-                feed();
-            case HOLD:
-                hold();
-            case EJECT:
-                eject();
             case DISABLED:
-                disable();
+                pivotMotor.setNeutralMode(NeutralModeValue.Coast);
+                topWheelMotor.setNeutralMode(NeutralModeValue.Coast);
+
+            break;
+
+            default:
+                pivotMotor.setPosition(radToRot(state.targetAngle));
+                topWheelMotor.set(state.targetSpeed);
+
             break;
         }
     }
-
-    // Stow for autonomous and climb
-    public static void stow() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-        topWheelMotor.set(0.0);
-    };
-
-    // Angle down and pick up algae
-    public static void feed() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-
-        // Bring intake up if we have piece
-        if (!sensor.get()) {
-            AlgaeIntake.setState(IntakeState.HOLD);
-        } else {
-            topWheelMotor.set(state.targetSpeed);
-        }
-    };
-
-    // Hold piece with algae in it
-    public static void hold() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-        topWheelMotor.set(state.targetSpeed);
-    };
-
-    // Get rid of piece
-    public static void eject() {
-        pivotMotor.setPosition(radToRot(state.targetAngle));
-        topWheelMotor.set(state.targetSpeed);
-    }
-
-    // Disable motors
-    public static void disable() {
-        pivotMotor.setNeutralMode(NeutralModeValue.Coast);
-        topWheelMotor.setNeutralMode(NeutralModeValue.Coast);
-    };
 
     public static void setState(IntakeState newState) {
         state = newState;

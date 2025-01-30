@@ -3,7 +3,6 @@ package frc.robot.swerve;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -34,7 +33,6 @@ public class SwerveModule {
     VoltageOut requestToApplyDrive;
     VoltageOut requestToApplySteer;
 
-
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
         steer = new TalonFX(steerID, "CANivore");
         drive = new TalonFX(driveID, "CANivore");
@@ -61,7 +59,6 @@ public class SwerveModule {
         steerConfig.MotionMagic.MotionMagicAcceleration = 40000;
 
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-       
 
         //drive.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
         driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 

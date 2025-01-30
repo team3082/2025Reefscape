@@ -4,6 +4,9 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
+import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.EndEffector.IntakeState;
+import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.utils.Vector2;
@@ -23,15 +26,31 @@ public class OI {
     // zero is for Pigeon
     static final int zero          = LogitechF310.BUTTON_Y;
 
+    public static Joystick operatorStick;
+
+    // Operator Controls
+
+    // Scoring Positions
+    static final int stow        = LogitechF310.BUTTON_A;
+    static final int L2          = LogitechF310.BUTTON_B;
+    static final int L3          = LogitechF310.BUTTON_X;
+    static final int L4          = LogitechF310.BUTTON_Y;
+    
+    // End Effector Control
+    static final int intake       = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int outtake      = LogitechF310.BUTTON_RIGHT_BUMPER;
+
     /**
      * Initialize OI with preset joystick ports.
      */
     public static void init() {
         driverStick = new Joystick(0);
+        operatorStick = new Joystick(0); // Temporarily port 0 for sim testing
     }
 
     public static void userInput() {
-        driverInput();
+        // driverInput();
+        operatorInput();
     }
 
     /**
@@ -71,5 +90,17 @@ public class OI {
         
     }
 
+    public static void operatorInput() {
+        /*-Scoring Manager----------------------------------------------------------------------------------------*/
+        if (operatorStick.getRawButtonPressed(stow)) ScoringManager.setScoringLevel(ScoringPosition.STOW);
+        else if (operatorStick.getRawButtonPressed(L2)) ScoringManager.setScoringLevel(ScoringPosition.L2);
+        else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
+        else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
+
+        /*-End Effector-------------------------------------------------------------------------------------------*/
+        if (operatorStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
+        else if (operatorStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);
+        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
+    }
 
 }
