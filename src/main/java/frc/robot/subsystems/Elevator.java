@@ -13,39 +13,44 @@ import frc.robot.subsystems.sim.ElevatorSim;
 
 public class Elevator {
     
-    public TalonFX motor1, motor2;
+    public TalonFX extensionMotor1; 
+    public TalonFX extensionMotor2;
 
     public double targetHeight;
 
     public Elevator() {
-        motor1 = new TalonFX(Constants.Elevator.MOTORID1, "CANivore");
-        motor2 = new TalonFX(Constants.Elevator.MOTORID2, "CANivore");
+        init();
+    }
 
-        motor1.getConfigurator().apply(new TalonFXConfiguration());
-        motor2.getConfigurator().apply(new TalonFXConfiguration());
+    public void init() {
+        extensionMotor1 = new TalonFX(Constants.Elevator.MOTORID1, "CANivore");
+        extensionMotor2 = new TalonFX(Constants.Elevator.MOTORID2, "CANivore");
 
-        TalonFXConfiguration motor1Config = new TalonFXConfiguration();
-        motor1Config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        motor1Config.Slot0.kP = Tuning.Elevator.ELEVATOR_P;
-        motor1Config.Slot0.kI = Tuning.Elevator.ELEVATOR_I;
-        motor1Config.Slot0.kD = Tuning.Elevator.ELEVATOR_D;
+        extensionMotor1.getConfigurator().apply(new TalonFXConfiguration());
+        extensionMotor2.getConfigurator().apply(new TalonFXConfiguration());
 
-        motor1Config.MotionMagic.MotionMagicCruiseVelocity = Tuning.Elevator.MOTION_MAGIC_CRUISE_VELOCITY;
-        motor1Config.MotionMagic.MotionMagicAcceleration = Tuning.Elevator.MOTION_MAGIC_ACCELERATION;
-        motor1Config.MotionMagic.MotionMagicJerk = Tuning.Elevator.JERK;
+        TalonFXConfiguration extensionMotor1Config = new TalonFXConfiguration();
+        extensionMotor1Config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        extensionMotor1Config.Slot0.kP = Tuning.Elevator.ELEVATOR_P;
+        extensionMotor1Config.Slot0.kI = Tuning.Elevator.ELEVATOR_I;
+        extensionMotor1Config.Slot0.kD = Tuning.Elevator.ELEVATOR_D;
 
-        TalonFXConfiguration motor2Config = new TalonFXConfiguration();
+        extensionMotor1Config.MotionMagic.MotionMagicCruiseVelocity = Tuning.Elevator.MOTION_MAGIC_CRUISE_VELOCITY;
+        extensionMotor1Config.MotionMagic.MotionMagicAcceleration = Tuning.Elevator.MOTION_MAGIC_ACCELERATION;
+        extensionMotor1Config.MotionMagic.MotionMagicJerk = Tuning.Elevator.JERK;
 
-        motor1.getConfigurator().apply(motor1Config);
-        motor2.getConfigurator().apply(motor2Config);
+        TalonFXConfiguration extensionMotor2Config = new TalonFXConfiguration();
+
+        extensionMotor1.getConfigurator().apply(extensionMotor1Config);
+        extensionMotor2.getConfigurator().apply(extensionMotor2Config);
 
         Follower follower = new Follower(Constants.Elevator.MOTORID1, true);
 
-        motor2.setControl(follower);
+        extensionMotor2.setControl(follower);
     }
 
     public void update() {
-        motor1.setControl(new MotionMagicDutyCycle(inchToRot(targetHeight)));
+        extensionMotor1.setControl(new MotionMagicDutyCycle(inchToRot(targetHeight)));
 
         // UPDATE SIM
         if (Robot.isSimulation()) {
@@ -63,7 +68,7 @@ public class Elevator {
     }
 
     public double getElevatorHeight() {
-        if (Robot.isReal()) return rotToInch(motor1.getPosition().getValueAsDouble());
+        if (Robot.isReal()) return rotToInch(extensionMotor1.getPosition().getValueAsDouble());
         else return ElevatorSim.getPosition();
     }
 

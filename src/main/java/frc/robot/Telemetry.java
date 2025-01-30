@@ -32,7 +32,7 @@ public class Telemetry {
     // End Effector
     private static final GenericEntry END_EFFECTOR_TARGET_ANGLE = endEffectorTab.add("target angle", ScoringManager.endEffector.targetAngle).getEntry();
     private static final GenericEntry END_EFFECTOR_CURRENT_ANGLE = endEffectorTab.add("current angle", ScoringManager.endEffector.getPivotAngle()).getEntry();
-    private static final GenericEntry END_EFFECTOR_WHEEL_SPEED = endEffectorTab.add("wheel speed", ScoringManager.endEffector.intakeState.speed).getEntry();
+    private static final GenericEntry END_EFFECTOR_WHEEL_SPEED = endEffectorTab.add("wheel speed", ScoringManager.endEffector.intakeState.targetSpeed).getEntry();
 
     // Elevator
     private static final GenericEntry ELEVATOR_TARGET_POSITION = elevatorTab.add("target position", ScoringManager.elevator.targetHeight).getEntry();
@@ -53,7 +53,7 @@ public class Telemetry {
 
         END_EFFECTOR_TARGET_ANGLE.setDouble(ScoringManager.endEffector.targetAngle);
         END_EFFECTOR_CURRENT_ANGLE.setDouble(ScoringManager.endEffector.getPivotAngle());
-        END_EFFECTOR_WHEEL_SPEED.setDouble(ScoringManager.endEffector.intakeState.speed);
+        END_EFFECTOR_WHEEL_SPEED.setDouble(ScoringManager.endEffector.intakeState.targetSpeed);
 
         ELEVATOR_TARGET_POSITION.setDouble(ScoringManager.elevator.targetHeight);
         ELEVATOR_CURRENT_POSITION.setDouble(ScoringManager.elevator.getElevatorHeight());

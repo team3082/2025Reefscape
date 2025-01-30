@@ -12,7 +12,7 @@ import frc.robot.Tuning;
 public class AlgaeIntake {
 
     private static TalonFX pivotMotor;
-    private static TalonFX topWheelMotor;
+    private static TalonFX intakeMotor;
     public static DigitalInput sensor;
 
     public static IntakeState state = IntakeState.STOW;
@@ -36,7 +36,7 @@ public class AlgaeIntake {
     public static void init() {
 
         pivotMotor = new TalonFX(Constants.AlgaeIntake.INTAKEPIVOT_ID, "CANivore");
-        topWheelMotor = new TalonFX(Constants.AlgaeIntake.TOP_MOTOR_ID, "CANivore");
+        intakeMotor = new TalonFX(Constants.AlgaeIntake.TOP_MOTOR_ID, "CANivore");
 
         // Pivot motor config
         TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
@@ -63,7 +63,7 @@ public class AlgaeIntake {
 
         // Apply configs
         pivotMotor.getConfigurator().apply(pivotConfig);
-        topWheelMotor.getConfigurator().apply(topWheelConfig);
+        intakeMotor.getConfigurator().apply(topWheelConfig);
 
         // Beambreak
         sensor = new DigitalInput(Constants.AlgaeIntake.SENSOR_CHANNEL);
@@ -73,13 +73,13 @@ public class AlgaeIntake {
         switch (state) {
             case DISABLED:
                 pivotMotor.setNeutralMode(NeutralModeValue.Coast);
-                topWheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                intakeMotor.setNeutralMode(NeutralModeValue.Coast);
 
             break;
 
             default:
                 pivotMotor.setPosition(radToRot(state.targetAngle));
-                topWheelMotor.set(state.targetSpeed);
+                intakeMotor.set(state.targetSpeed);
 
             break;
         }
