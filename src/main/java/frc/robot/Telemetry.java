@@ -1,13 +1,18 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
+import frc.robot.swerve.SwervePosition;
 
 /*
  * handles telemetry for the robot
@@ -38,6 +43,7 @@ public class Telemetry {
     private static final GenericEntry ELEVATOR_TARGET_POSITION = elevatorTab.add("target position", ScoringManager.elevator.targetHeight).getEntry();
     private static final GenericEntry ELEVATOR_CURRENT_POSITION = elevatorTab.add("current position", ScoringManager.elevator.getElevatorHeight()).getEntry();
 
+
     public static void init() {
         robotTab.add("Field", fieldView);
         robotTab.add("Subsystem View", subsytemView);
@@ -47,6 +53,28 @@ public class Telemetry {
     }
 
     public static void update() {
+        updateField();
+        updateScoring();
+    }
+
+    /**
+     * Updates the simulated field in shuffleboard based on SwervePosition
+     */
+    private static void updateField(){
+        // Current position adjusted to be in the center of the field at (0,0)
+        Pose2d currentPose = new Pose2d(
+            SwervePosition.getPosition().y + 8.27, 
+            -SwervePosition.getPosition().x + 4.01, 
+            Rotation2d.fromRadians(Pigeon.getRotationRad())
+        );
+        fieldView.setRobotPose(currentPose);
+        SmartDashboard.putData(fieldView);
+    }
+
+    /**
+     * Updates the Mech2d values of the simulated scoring subsystems
+     */
+    private static void updateScoring(){
         // update table values
         SCORING_TRANSITORY_STATE.setString(ScoringManager.transitoryState.name());
         SCORING_POSITION.setString(ScoringManager.scoringPosition.name());

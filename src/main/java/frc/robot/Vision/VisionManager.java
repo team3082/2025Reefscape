@@ -49,7 +49,7 @@ public class VisionManager {
             
             Vector2 cameraToTag = new Vector2(xdistField, ydistField);
 
-            Vector2 aprilTagPos = new Vector2(Constants.APRIL_TAGS[id - 1].x, Constants.APRIL_TAGS[id - 1].y);
+            Vector2 aprilTagPos = Constants.APRIL_TAGS[id - 1].getPosition();
             Vector2 cameraPos = aprilTagPos.sub(cameraToTag);
 
             Vector2 robotPos = cameraPos.sub(camera.robotToCamera);
@@ -90,7 +90,7 @@ public class VisionManager {
             int id = target.getFiducialId();
 
             double robotToTagYaw = rotationTransform.getZ() + camera.cameraYaw;
-            double aprilTagYaw = Constants.APRIL_TAGS[id - 1].rotZ;
+            double aprilTagYaw = Constants.APRIL_TAGS[id - 1].getRotationY();
 
             double robotYaw = robotToTagYaw + aprilTagYaw;
 

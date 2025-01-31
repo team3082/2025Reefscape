@@ -8,15 +8,22 @@ import frc.robot.auto.Auto;
 // SUBSYSTEMS
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.swerve.SwerveManager;
 // import frc.robot.subsystems.AlgaeIntake;
 // import frc.robot.subsystems.AlgaeIntake.IntakeState;
 // import frc.robot.subsystems.Climber;
+import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.RTime;
 
 public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
-    // Controls
-    OI.init();
+    // Swerve
+    SwerveManager.init();
+    SwervePosition.init();
+    Pigeon.init();
+
 
     // Subsystems
     ScoringManager.init();
@@ -25,12 +32,20 @@ public class Robot extends TimedRobot {
 
     // Logging
     Telemetry.init();
+    
+    // Controls
+    OI.init();
+
+    RTime.init();
   }
 
   @Override
   public void robotPeriodic() {
     // Update Dashboard Every Frame
     Telemetry.update();
+
+    SwervePosition.update();
+    Pigeon.update();
   }
 
   @Override
