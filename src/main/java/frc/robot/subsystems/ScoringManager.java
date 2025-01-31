@@ -2,9 +2,14 @@ package frc.robot.subsystems;
 
 import frc.robot.Tuning;
 
+/**
+ * Manages the scoring system for the robot, including the elevator and end effector.
+ */
 public class ScoringManager {
     
-    // TODO set these positions - current numbers are fake
+    /**
+     * Enum representing different scoring positions, each with a target height and angle.
+     */
     public enum ScoringPosition {
         DISABLED(0.0, 0.0),
         STOW(0.0, 0.0),
@@ -19,17 +24,26 @@ public class ScoringManager {
         public double targetHeight;
         public double targetAngle;
 
+        /**
+         * Constructs a ScoringPosition with the specified target height and angle.
+         *
+         * @param targetHeight the desired height of the elevator
+         * @param targetAngle the desired pivot angle of the end effector
+         */
         ScoringPosition(double targetHeight, double targetAngle) {
             this.targetHeight = targetHeight;
             this.targetAngle = targetAngle;
         }
     }
 
+    /**
+     * Enum representing the transitory states when moving between scoring positions.
+     */
     public enum TransitoryState {
-        ELEVATOR_WAITING, // elevator waiting for wrist to move to safe position
-        ELEVATOR_MOVING, 
-        WRIST_MOVING, // wrist moving to correct position after elevator in correct position
-        FINISHED,
+        ELEVATOR_WAITING, // Elevator waiting for wrist to move to a safe position
+        ELEVATOR_MOVING,  // Elevator moving to the target height
+        WRIST_MOVING,     // Wrist moving to the correct position after the elevator is set
+        FINISHED,         // Movement completed
     }
 
     public static ScoringPosition scoringPosition = ScoringPosition.STOW;
@@ -37,11 +51,30 @@ public class ScoringManager {
     public static Elevator elevator;
     public static EndEffector endEffector;
 
-    public static void init() {
-        elevator = new Elevator();
-        endEffector = new EndEffector();
+    /**
+     * Gets the Elevator instance
+     *
+     * @return the Elevator
+     */
+    public static Elevator getElevator(){
+        return elevator;
     }
 
+    /**
+     * Gets the EndEffector instance
+     *
+     * @return the EndEffector
+     */
+    public static EndEffector getEndEffector(){
+        return endEffector;
+    }
+
+
+    /**
+     * Sets the target scoring position and updates the transitory state if needed.
+     *
+     * @param targetPosition the desired scoring position
+     */
     public static void setScoringLevel(ScoringPosition targetPosition) {
         if (scoringPosition != targetPosition) {
             transitoryState = TransitoryState.ELEVATOR_WAITING;
@@ -49,49 +82,80 @@ public class ScoringManager {
         scoringPosition = targetPosition;
     }
 
+    /**
+     * Gets the current scoring position.
+     *
+     * @return the current scoring position
+     */
     public static ScoringPosition getScoringLevel() {
         return scoringPosition;
     }
 
+    /**
+     * Initializes the scoring manager by creating instances of the elevator and end effector.
+     */
+    public static void init() {
+        elevator = new Elevator();
+        endEffector = new EndEffector();
+    }
+
+    /**
+     * Updates the scoring system by handling transitions between states.
+     */
     public static void update() {
-        if (scoringPosition != ScoringPosition.DISABLED) 
+        if (scoringPosition == ScoringPosition.DISABLED) {
+            return;
+        }
+
         switch (transitoryState) {
             case ELEVATOR_WAITING:
-
-            endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
-
-                if (endEffector.atPosition()) {
-                    transitoryState = TransitoryState.ELEVATOR_MOVING;
-                }
-                
+                handleElevatorWaiting();
                 break;
-        
             case ELEVATOR_MOVING:
-
-            elevator.setElevatorHeight(scoringPosition.targetHeight);
-
-                if (elevator.atPosition()) {
-                    transitoryState = TransitoryState.WRIST_MOVING;
-                }
-
+                handleElevatorMoving();
                 break;
-
             case WRIST_MOVING:
-
-            endEffector.setPivotAngle(scoringPosition.targetAngle);
-
-                if (endEffector.atPosition()) {
-                    transitoryState = TransitoryState.FINISHED;
-                }
-
+                handleWristMoving();
                 break;
-
-            case FINISHED: // doesn't need anything, maybe add manual control if needed
-
+            case FINISHED:
+                // No further action required once the transition is finished.
                 break;
         }
 
         endEffector.update();
         elevator.update();
+    }
+
+    /**
+     * Handles the elevator waiting state by setting the wrist to a safe angle.
+     * Transitions to the elevator moving state when the wrist is at the correct position.
+     */
+    private static void handleElevatorWaiting() {
+        endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
+        if (endEffector.atPosition()) {
+            transitoryState = TransitoryState.ELEVATOR_MOVING;
+        }
+    }
+
+    /**
+     * Handles the elevator moving state by setting the elevator to the target height.
+     * Transitions to the wrist moving state when the elevator reaches the correct height.
+     */
+    private static void handleElevatorMoving() {
+        elevator.setElevatorHeight(scoringPosition.targetHeight);
+        if (elevator.atPosition()) {
+            transitoryState = TransitoryState.WRIST_MOVING;
+        }
+    }
+
+    /**
+     * Handles the wrist moving state by setting the wrist to the target angle.
+     * Transitions to the finished state when the wrist reaches the correct position.
+     */
+    private static void handleWristMoving() {
+        endEffector.setPivotAngle(scoringPosition.targetAngle);
+        if (endEffector.atPosition()) {
+            transitoryState = TransitoryState.FINISHED;
+        }
     }
 }
