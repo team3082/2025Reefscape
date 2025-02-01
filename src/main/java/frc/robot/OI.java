@@ -2,13 +2,17 @@ package frc.robot;
 
 import static frc.robot.Tuning.OI.*;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.controllermaps.LogitechF310;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.SwervePID;
+import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.RMath;
 
@@ -26,6 +30,10 @@ public class OI {
     // zero is for Pigeon
     static final int zero          = LogitechF310.BUTTON_Y;
 
+    static final int funnyButton   = LogitechF310.BUTTON_A;
+    private static boolean drivingToReef = false;
+
+    // Operator Controls
     public static Joystick operatorStick;
 
     // Operator Controls
@@ -45,11 +53,11 @@ public class OI {
      */
     public static void init() {
         driverStick = new Joystick(0);
-        operatorStick = new Joystick(0); // Temporarily port 0 for sim testing
+        operatorStick = new Joystick(1); // Temporarily port 0 for sim testing
     }
 
     public static void userInput() {
-        // driverInput();
+        driverInput();
         operatorInput();
     }
 
@@ -83,11 +91,45 @@ public class OI {
         if (Math.abs(rotate) < 0.005) {
             rotate = 0;
         }
+
+
+        /*--------------------------------------------------------------------------------------------------------*/
+        // SCORING
+        if (driverStick.getRawButtonPressed(funnyButton)) {
+            drivingToReef = !drivingToReef;
+            if(drivingToReef) {
+                Vector2 currentPos = SwervePosition.getPosition();
+                int allianceStartIndex = 6;
+                // Determine reef AprilTag locations based on alliance
+                if(Robot.isReal())
+                    allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 6 : 17;
+
+                // Find the shortest scoring position from the robot
+                double min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getPosition()).mag();
+                int minIndex = allianceStartIndex;
+                for (int i = allianceStartIndex+1; i < allianceStartIndex + 6; i++){
+                    System.out.println(Constants.APRIL_TAGS[i].getPosition());
+                    Vector2 aprilPosition = Constants.APRIL_TAGS[i].getPosition();
+                    if(currentPos.sub(aprilPosition).mag() < min){
+                        minIndex = i;
+                        min = currentPos.sub(aprilPosition).mag();
+                    }
+                }
+                
+                // TODO Adjust positions for accurate scoring
+                // Set destination and rotation based on AprilTag data
+                SwervePID.setDestPt(Constants.APRIL_TAGS[minIndex].getPosition());
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI));
+            }
+        }
+
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
-
-        SwerveManager.rotateAndDrive(rotate, drive);
-        
+        if (drivingToReef){
+            SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
+        } else {
+            SwerveManager.rotateAndDrive(rotate, drive);
+        }
     }
 
     public static void operatorInput() {
