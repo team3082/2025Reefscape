@@ -56,6 +56,7 @@ public class ScoringManager {
     public static void update() {
         if (scoringPosition != ScoringPosition.DISABLED) 
         switch (transitoryState) {
+            // moves wrist to safe transitory position
             case ELEVATOR_WAITING:
 
             endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
@@ -66,6 +67,7 @@ public class ScoringManager {
                 
                 break;
         
+            // moves elevator to set position
             case ELEVATOR_MOVING:
 
             elevator.setElevatorHeight(scoringPosition.targetHeight);
@@ -76,6 +78,7 @@ public class ScoringManager {
 
                 break;
 
+            // move wrist to final set position
             case WRIST_MOVING:
 
             endEffector.setPivotAngle(scoringPosition.targetAngle);
@@ -86,11 +89,13 @@ public class ScoringManager {
 
                 break;
 
-            case FINISHED: // doesn't need anything, maybe add manual control if needed
+            // doesn't need anything currently, maybe add manual control if needed
+            case FINISHED: 
 
                 break;
         }
 
+        // update end effector and elevator (do not run these methods in Robot.java these should be the only instance)
         endEffector.update();
         elevator.update();
     }
