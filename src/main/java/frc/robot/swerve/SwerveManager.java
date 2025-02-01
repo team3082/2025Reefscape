@@ -26,12 +26,17 @@ public final class SwerveManager {
         };
     }
 
+    public static void update() {
+        for (SwerveModule mod : mods) {
+            mod.update();
+        }
+    }
+
     public static void resetSensors() {
         for (SwerveModule mod : mods) {
             mod.resetSteerSensor();
         }
     }
-
 
     /**
      * Only call this method from OI
