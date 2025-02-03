@@ -108,20 +108,27 @@ public class ScoringManager {
         }
 
         switch (transitoryState) {
+            // moves wrist to safe transitory position
             case ELEVATOR_WAITING:
                 handleElevatorWaiting();
                 break;
+        
+            // moves elevator to set position
             case ELEVATOR_MOVING:
                 handleElevatorMoving();
                 break;
+            
+            // move wrist to final set position
             case WRIST_MOVING:
                 handleWristMoving();
                 break;
-            case FINISHED:
-                // No further action required once the transition is finished.
+
+            // doesn't need anything currently, maybe add manual control if needed
+            case FINISHED: 
                 break;
         }
 
+        // update end effector and elevator (do not run these methods in Robot.java these should be the only instance)
         endEffector.update();
         elevator.update();
     }

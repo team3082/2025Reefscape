@@ -12,6 +12,7 @@ import frc.robot.subsystems.sim.EndEffectorSim;
 
 public class EndEffector {
 
+    // contains all intake wheel control states, stores value for set wheel speed
     public enum IntakeState {
         OFF(0.0),
         INTAKE_PIECE(-0.15),
@@ -25,12 +26,13 @@ public class EndEffector {
         }
     }
 
+    // hardware
     public TalonFX pivotMotor;
     public TalonFX intakeMotor;
     public DigitalInput sensor;
 
+    // state
     public IntakeState intakeState = IntakeState.HOLD_PIECE;
-
     public double targetAngle; // Radians
     public boolean holdingPiece;
 
@@ -38,6 +40,7 @@ public class EndEffector {
         init();
     }
 
+    /** Initialize End Effector Subsystem - only call in constructor */
     public void init() {
         // Initialize Motors
         pivotMotor = new TalonFX(Constants.EndEffector.PIVOTID, "CANivore");
@@ -71,6 +74,10 @@ public class EndEffector {
         sensor = new DigitalInput(Constants.EndEffector.END_EFFECTOR_SENSOR_ID);
     }
 
+    /** applies intake motor speeds based on intake state,
+     *  applies wrist motor positional control,
+     *  only call in ScoringManager.update()
+    */
     public void update() {
         holdingPiece = !sensor.get();
 
@@ -96,27 +103,33 @@ public class EndEffector {
         }
     }
 
+    /** sets the intakes state (intake wheel control applied in update()) */
     public void setIntakeState(IntakeState newState) {
         intakeState = newState;
     }
 
+    /** sets the pivots target position (positional control applied in update()) */
     public void setPivotAngle(double targetAngle) {
         this.targetAngle = targetAngle;
     }
 
+    /** returns the pivot angle in radians */
     public double getPivotAngle() {
         if (Robot.isReal()) return rotToRad(pivotMotor.getPosition().getValueAsDouble());
         else return EndEffectorSim.getPosition();
     }
 
+    /** returns true if current motor position is within a set deadband */
     public boolean atPosition() {
         return Math.abs(getPivotAngle() - targetAngle) <= Tuning.EndEffector.PIVOT_DEADBAND;
     }
 
+    /** conversion from radians to internal motor rotations */
     private double radToRot(double rad) {
         return rad / (2.0 * Math.PI) * Constants.EndEffector.GEARRATIO;
     }   
 
+    /** conversion from internal motor rotations to radians */
     private double rotToRad(double rot) {
         return (rot * 2.0 * Math.PI) / Constants.EndEffector.GEARRATIO;
     }
