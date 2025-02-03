@@ -17,6 +17,9 @@ public class AlgaeIntake {
 
     public static IntakeState state = IntakeState.STOW;
     
+    /**
+     * Enum to represent the diferrent states of the Algae Intake
+     */
     public enum IntakeState {
         STOW(Tuning.Intake.STOW_ANGLE, 0.0),
         FEED(Tuning.Intake.FEED_ANGLE, Tuning.Intake.FEED_SPEED),
@@ -33,8 +36,10 @@ public class AlgaeIntake {
         }
     }
 
+    /**
+     * Initialize the Algae Intake and its respective motor controllers
+     */
     public static void init() {
-
         pivotMotor = new TalonFX(Constants.AlgaeIntake.INTAKEPIVOT_ID, "CANivore");
         intakeMotor = new TalonFX(Constants.AlgaeIntake.TOP_MOTOR_ID, "CANivore");
 
@@ -69,18 +74,19 @@ public class AlgaeIntake {
         sensor = new DigitalInput(Constants.AlgaeIntake.SENSOR_CHANNEL);
     }
 
+    /**
+     * Update Algae Intake based on its current state
+     */
     public static void update() {
         switch (state) {
             case DISABLED:
                 pivotMotor.setNeutralMode(NeutralModeValue.Coast);
                 intakeMotor.setNeutralMode(NeutralModeValue.Coast);
-
             break;
 
             default:
-                pivotMotor.setPosition(radToRot(state.targetAngle));
+                pivotMotor.setPosition(radToRot(state.targetAngle)); 
                 intakeMotor.set(state.targetSpeed);
-
             break;
         }
     }
