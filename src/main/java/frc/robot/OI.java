@@ -24,7 +24,7 @@ public class OI {
     // Movement
     static final int moveX         = LogitechF310.AXIS_LEFT_X;
     static final int moveY         = LogitechF310.AXIS_LEFT_Y;
-    static final int rotateX       = 2;//LogitechF310.AXIS_RIGHT_X;
+    static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
     static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
 
     // zero is for Pigeon
