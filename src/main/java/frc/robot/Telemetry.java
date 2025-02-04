@@ -1,10 +1,13 @@
 package frc.robot;
 
+import java.util.Vector;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +15,9 @@ import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
+import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.Vector2;
 
 /*
  * handles telemetry for the robot
@@ -43,6 +48,8 @@ public class Telemetry {
     private static final GenericEntry ELEVATOR_TARGET_POSITION = elevatorTab.add("target position", ScoringManager.elevator.targetHeight).getEntry();
     private static final GenericEntry ELEVATOR_CURRENT_POSITION = elevatorTab.add("current position", ScoringManager.elevator.getElevatorHeight()).getEntry();
 
+    private static Vector2 lastPosition = new Vector2(0,0);
+    private static double lastRot = 0;
 
     public static void init() {
         robotTab.add("Field", fieldView);
@@ -50,17 +57,32 @@ public class Telemetry {
 
         ElevatorVisualizer.init();
         EndEffectorVisualizer.init();
+        robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
+        robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
     }
 
     public static void update() {
         updateField();
         updateScoring();
+        
     }
 
     /**
      * Updates the simulated field in shuffleboard based on SwervePosition
      */
     private static void updateField(){
+        
+
+        if(Robot.isSimulation()){
+            Vector2 simulatedPos = new Vector2(fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
+            if(simulatedPos.sub(lastPosition).mag() > .0001){
+                SwervePosition.setPosition(simulatedPos.mul(Constants.METERSTOINCHES).sub(new Vector2(325.59, 157.87)));
+            }
+            double simulatedRot = fieldView.getRobotPose().getRotation().getRadians();
+            if(Math.abs(simulatedRot - lastRot) > .1){
+                Pigeon.setSimulatedRot(simulatedRot);
+            }
+        }
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
             SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
@@ -69,6 +91,11 @@ public class Telemetry {
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);
+
+        if(Robot.isSimulation()){
+            lastPosition = new Vector2(fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
+            lastRot = fieldView.getRobotPose().getRotation().getRadians();
+        }
     }
 
     /**
