@@ -10,6 +10,7 @@ import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.SwervePID;
 // import frc.robot.subsystems.AlgaeIntake;
 // import frc.robot.subsystems.AlgaeIntake.IntakeState;
 // import frc.robot.subsystems.Climber;
@@ -22,6 +23,7 @@ public class Robot extends TimedRobot {
     // Swerve
     SwerveManager.init();
     SwervePosition.init();
+    SwervePID.init();
     Pigeon.init();
 
 
