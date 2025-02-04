@@ -44,7 +44,7 @@ public class SwerveBaseVisualizer {
 
         // Set swerve base angle and magnitude
         Vector2 swerveVel = SwerveManager.getRobotDriveVelocity();
-        swerveBase.setAngle(Math.toDegrees(swerveVel.atan2() - (Math.PI / 2.0) + heading));
+        swerveBase.setAngle(Math.toDegrees(swerveVel.atan2() + heading));
         swerveBase.setLength(swerveVel.mag() / SWERVE_VEL_SCALER);    
 
         // get swerve mods from swerve manager
@@ -53,22 +53,22 @@ public class SwerveBaseVisualizer {
         // set mechanism 2d rotations and lengths
         Vector2 module1Pos = mods[0].pos.rotate(heading);
         swerveModule1_root.setPosition(module1Pos.x + 30, module1Pos.y + 30);
-        swerveModule1.setAngle(Math.toDegrees(mods[0].getSteerAngle() - (Math.PI / 2.0) + heading));
+        swerveModule1.setAngle(Math.toDegrees(mods[0].getSteerAngle() + heading));
         swerveModule1.setLength(mods[0].getDriveVelocity() / SWERVE_VEL_SCALER);
 
         Vector2 module2Pos = mods[1].pos.rotate(heading);
         swerveModule2_root.setPosition(module2Pos.x + 30, module2Pos.y + 30);
-        swerveModule2.setAngle(Math.toDegrees(mods[1].getSteerAngle() - (Math.PI / 2.0) + heading));
+        swerveModule2.setAngle(Math.toDegrees(mods[1].getSteerAngle() + heading));
         swerveModule2.setLength(mods[1].getDriveVelocity() / SWERVE_VEL_SCALER);
 
         Vector2 module3Pos = mods[2].pos.rotate(heading);
         swerveModule3_root.setPosition(module3Pos.x + 30, module3Pos.y + 30);
-        swerveModule3.setAngle(Math.toDegrees(mods[2].getSteerAngle() - (Math.PI / 2.0) + heading));
+        swerveModule3.setAngle(Math.toDegrees(mods[2].getSteerAngle() + heading));
         swerveModule3.setLength(mods[2].getDriveVelocity() / SWERVE_VEL_SCALER);
 
         Vector2 module4Pos = mods[3].pos.rotate(heading);
         swerveModule4_root.setPosition(module4Pos.x + 30, module4Pos.y + 30);
-        swerveModule4.setAngle(Math.toDegrees(mods[3].getSteerAngle() - (Math.PI / 2.0) + heading));
+        swerveModule4.setAngle(Math.toDegrees(mods[3].getSteerAngle() + heading));
         swerveModule4.setLength(mods[3].getDriveVelocity() / SWERVE_VEL_SCALER);
     }
 }

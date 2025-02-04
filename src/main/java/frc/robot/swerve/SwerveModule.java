@@ -103,7 +103,7 @@ public class SwerveModule {
         
         // update simulation
         if (Robot.isSimulation()) {
-            simModule.setAngle(targetAngle);
+            simModule.setAngle(targetAngle + (Math.PI / 2.0));
             simModule.setSpeed(targetSpeed);
             simModule.update();
         }
@@ -170,8 +170,8 @@ public class SwerveModule {
 
     /** returns swerve wheel angle in radians */
     public double getSteerAngle() {
-        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble()) + Math.PI / 2.0;
-        else return simModule.getAngle();
+        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble()) - Math.PI / 2.0;
+        else return simModule.getAngle() - Math.PI / 2.0;
     }
 
     private double lastSteerAngle = Double.NaN;
