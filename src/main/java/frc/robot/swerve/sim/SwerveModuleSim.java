@@ -4,7 +4,7 @@ import frc.robot.utils.PIDController;
 import frc.robot.utils.RTime;
 
 public class SwerveModuleSim {
-    private PIDController anglePID = new PIDController(7.5, 0, 0, 0, 0, 7.5);
+    private PIDController anglePID = new PIDController(15.0, 0, 0.1, 0, 0, 15.0);
 
     private double targetAngle, targetSpeed; // Radians, PercentOut
     private double angle, speed; // Radians, PercentOut
