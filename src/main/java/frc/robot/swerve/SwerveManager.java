@@ -62,6 +62,7 @@ public final class SwerveManager {
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {
         movement = move;
         double heading = Pigeon.getRotationRad();
+        System.out.println("Heading: " + heading);
         
         // Array containing the unclamped movement vectors of each module
         Vector2[] vectors = new Vector2[mods.length];
@@ -141,7 +142,7 @@ public final class SwerveManager {
         Vector2 velSum = new Vector2();
 
         for (SwerveModule mod : mods) {
-            velSum = velSum.add(Vector2.fromPolar(mod.getSteerAngle(), mod.getDriveVelocity() * (mod.inverted ? -1 : 1)));
+            velSum = velSum.add(Vector2.fromPolar(mod.getSteerAngle(), mod.getDriveVelocity()));
         }
 
         return velSum.div(mods.length);

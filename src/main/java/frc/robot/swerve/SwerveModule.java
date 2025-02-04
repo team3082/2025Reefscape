@@ -202,7 +202,7 @@ public class SwerveModule {
         // }
         //the 10 is there to convert from units per 100ms to units per second
         if (Robot.isReal()) return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
-        else return (simModule.getSpeed() * 0.5) / RTime.deltaTime(); // fudge factor
+        else return (simModule.getSpeed() * driveTimeConstant * 4.0) * (inverted ? -1 : 1); // fudge factor
     }
 
     /** get position of the drive motor */
