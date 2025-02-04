@@ -69,8 +69,8 @@ public class Constants {
         public static final double MODOFFSET2 = 174.551;
         public static final double MODOFFSET3 = 134.736;
 
-        public static final double WIDTH = 26;
-        public static final double LENGTH = 26;
+        public static final double WIDTH = 29.5;
+        public static final double LENGTH = 29.5;
         public static final double MODULEOFFSET = 2.625;
 
         public static final double SWERVEMODX0 = (WIDTH / 2) - MODULEOFFSET;

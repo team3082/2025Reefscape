@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
     OI.userInput();
 
     // Update Subsystems
+    SwerveManager.update();
     ScoringManager.update();
     // AlgaeIntake.update();
     // Climber.update();

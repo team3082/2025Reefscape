@@ -49,8 +49,8 @@ public class OI {
     }
 
     public static void userInput() {
-        // driverInput();
-        operatorInput();
+        driverInput();
+        // operatorInput();
     }
 
     /**

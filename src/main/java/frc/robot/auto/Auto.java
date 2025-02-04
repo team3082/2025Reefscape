@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.auto.commands.MoveToScorePos;
-import frc.robot.auto.commands.ScoreCoral;
+// import frc.robot.auto.commands.MoveToScorePos;
+// import frc.robot.auto.commands.ScoreCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -61,10 +61,10 @@ public class Auto {
     @AutoRoutine
     public SequentialCommandGroup scoringManagerTest(){
         return new SequentialCommandGroup(
-            new ScoreCoral(ScoringPosition.L4),
-            new WaitCommand(1.0),
-            new WaitCommand(1.0),
-            new ScoreCoral(ScoringPosition.L3)
+            // new ScoreCoral(ScoringPosition.L4),
+            // new WaitCommand(1.0),
+            // new WaitCommand(1.0),
+            // new ScoreCoral(ScoringPosition.L3)
 
             
         );

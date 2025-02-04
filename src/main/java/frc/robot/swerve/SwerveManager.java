@@ -139,8 +139,9 @@ public final class SwerveManager {
      */
     public static Vector2 getRobotDriveVelocity() {
         Vector2 velSum = new Vector2();
+
         for (SwerveModule mod : mods) {
-            velSum = velSum.add(Vector2.fromPolar(mod.getSteerAngle(), mod.getDriveVelocity()));
+            velSum = velSum.add(Vector2.fromPolar(mod.getSteerAngle(), mod.getDriveVelocity() * (mod.inverted ? -1 : 1)));
         }
 
         return velSum.div(mods.length);
