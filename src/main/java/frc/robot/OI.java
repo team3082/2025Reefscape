@@ -24,7 +24,8 @@ public class OI {
     // Movement
     static final int moveX         = LogitechF310.AXIS_LEFT_X;
     static final int moveY         = LogitechF310.AXIS_LEFT_Y;
-    static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
+    // static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
+    static final int rotateX       = 2;
     static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
 
     // zero is for Pigeon
@@ -94,6 +95,13 @@ public class OI {
 
 
         /*--------------------------------------------------------------------------------------------------------*/
+        // SWERVE
+        // System.out.println("drive direction: " + drive.atan2());
+        System.out.println("drive magnitude: " + drive.mag());
+        if (Robot.isSimulation() && drive.mag() > 0.4) {
+            drive = drive.norm(); 
+            drive = drive.mul(0.4);
+        }
         // SCORING
         if (driverStick.getRawButtonPressed(funnyButton)) {
             drivingToReef = !drivingToReef;

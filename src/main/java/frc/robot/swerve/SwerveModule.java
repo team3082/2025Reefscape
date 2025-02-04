@@ -12,30 +12,26 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Robot;
 import frc.robot.swerve.sim.SwerveModuleSim;
+import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
 public class SwerveModule {
 
-    public TalonFX steer;
-    public TalonFX drive;
-    public CANcoder absEncoder;
+    public TalonFX steer; // Steer Motor
+    public TalonFX drive; // Drive Motor
+    public CANcoder absEncoder; // CAN Coder
 
-    public Vector2 pos;
+    public Vector2 pos; // x and y position of the module in relation to the drive base
 
-    private double targetAngle; // Radians
-    private double targetSpeed; // Percent Out
-    private boolean inverted;
+    public double targetAngle; // Radians
+    public double targetSpeed; // Percent Out
+    public boolean inverted; // Drive Motor Inversion
 
     private final double cancoderOffset;
 
-    // NEW SIMULATION
     private SwerveModuleSim simModule = new SwerveModuleSim();
-
-    // OLD SIMULATION
-    private double simSteerAng;
-    private double simDriveVel;
 
     private final double STEER_RATIO = 150.0 / 7.0; // TODO double check this value
     private final double DRIVE_RATIO = 1.0; // TODO double check this value
@@ -99,12 +95,12 @@ public class SwerveModule {
         resetSteerSensor();
     }
 
+    /** update swerve module, set motor positions/speeds only call in SwerveManager.update() */
     public void update() {
         // apply motor control
         steer.setControl(new PositionDutyCycle(radToRotSteer(targetAngle) + (Math.PI / 2.0)));
         drive.setControl(new DutyCycleOut(inverted ? -targetSpeed : targetSpeed));
         
-
         // update simulation
         if (Robot.isSimulation()) {
             simModule.setAngle(targetAngle);
@@ -113,59 +109,74 @@ public class SwerveModule {
         }
     }
 
+    /** reset the internal encoder position to the absolute encoder position */
     public void resetSteerSensor() {
         double pos = absEncoder.getAbsolutePosition().getValueAsDouble() - cancoderOffset;
         pos = pos / 360.0;
         steer.getConfigurator().setPosition(pos);
     }
 
+    /** set target drive speed */
     public void drive(double power) {
-        // OLD CODE
-        // drive.set(power);
-        // simDriveVel = power * (inverted ? -1.0 : 1.0);
-
-        // NEW CODE
         targetSpeed = power;
     }
 
-    // Rotates to angle given in radians
+    /** sets target steer position in radians and drive inversion - btw this shit is atrocious */
     public void rotateToRad(double angle) {
-        // OLD CODE
-        // rotate((angle - Math.PI / 2) / (2 * Math.PI));
+        double motorPos;
         
-        // NEW CODE
-        double currentAngle = getSteerAngle();
-        double deltaAngle = angle - currentAngle;
+        motorPos = getSteerAngle();
 
-        // Normalize the delta angle to be within the range of -PI to PI
-        deltaAngle = (deltaAngle + Math.PI) % (2 * Math.PI) - Math.PI;
+        // The number of full rotations the motor has made
+        int numRot = (int) Math.floor(motorPos / (2.0 * Math.PI));
 
-        // If the delta angle is greater than 90 degrees, invert the drive motor and adjust the target angle
-        if (Math.abs(deltaAngle) > Math.PI / 2.0) {
-            deltaAngle -= Math.signum(deltaAngle) * Math.PI;
-            inverted = !inverted;
+        // The target motor position dictated by the joystick, in rotations
+        double joystickTarget = (numRot * 2.0 * Math.PI) + angle;
+        double joystickTargetPlus = joystickTarget + (2.0 * Math.PI);
+        double joystickTargetMinus = joystickTarget - (2.0 * Math.PI);
+
+        // The true destination for the motor to rotate to
+        double destination;
+
+        // Determine if, based on the current motor position, it should stay in the same
+        // rotation, enter the next, or return to the previous.
+        // TODO Simplify angle using atan2
+
+        if (Math.abs(joystickTarget - motorPos) < Math.abs(joystickTargetPlus - motorPos)
+                && Math.abs(joystickTarget - motorPos) < Math.abs(joystickTargetMinus - motorPos)) {
+            destination = joystickTarget;
+        } else if (Math.abs(joystickTargetPlus - motorPos) < Math.abs(joystickTargetMinus - motorPos)) {
+            destination = joystickTargetPlus;
+        } else {
+            destination = joystickTargetMinus;
         }
 
-        // Set the target angle
-        targetAngle = currentAngle + deltaAngle;
+
+        // If the target position is farther than a quarter rotation away from the
+        // current position, invert its direction instead of rotating it the full
+        // distance
+        if (Math.abs(destination - motorPos) > (Math.PI / 2.0)) {
+            inverted = true;
+            if (destination > motorPos)
+                destination -= Math.PI;
+            else
+                destination += Math.PI;
+        } else {
+            inverted = false;
+        }
+
+        targetAngle = destination;
     }
 
-    // Returns an angle in radians
+    /** returns swerve wheel angle in radians */
     public double getSteerAngle() {
-        // OLD CODE
-        // if (RobotBase.isSimulation()) {
-        //     return simSteerAng * Math.PI * 2 + Math.PI / 2;
-        // }
-        
-        // return steer.getPosition().getValueAsDouble() * Math.PI * 2 + Math.PI / 2;
-
-        // NEW CODE
-        return rotToRadSteer(steer.getPosition().getValueAsDouble()) + Math.PI / 2.0;
+        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble()) + Math.PI / 2.0;
+        else return simModule.getAngle();
     }
 
     private double lastSteerAngle = Double.NaN;
 
-    /**
+    /** TODO : FIX THIS FUNCTION
      * only call this once per frame
      */
     public double getSteerDelta() {
@@ -176,10 +187,9 @@ public class SwerveModule {
         double ret = getSteerAngle() - lastSteerAngle;
         lastSteerAngle = getSteerAngle();
         return ret;
-
     }
 
-    /**
+    /** TODO : FIX THIS FUNCTION
      * returns the current velocity of the drive motor in inches per second
      * @return
      */
@@ -187,39 +197,31 @@ public class SwerveModule {
         // TODO Recalculate
         double driveTimeConstant = 4 * Math.PI * 10;
 
-        if (RobotBase.isSimulation()) {
-            return simDriveVel * driveTimeConstant;
-        }
+        // if (RobotBase.isSimulation()) {
+        //     return simDriveVel * driveTimeConstant;
+        // }
         //the 10 is there to convert from units per 100ms to units per second
-        return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
-        
+        if (Robot.isReal()) return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
+        else return (simModule.getSpeed() * driveTimeConstant * 4.0) * (inverted ? -1 : 1); // fudge factor
     }
 
-    private double simDrivePosition;
-
-    public double getDrivePosition(){
-        if(RobotBase.isReal()){
-            return drive.getPosition().getValueAsDouble() * (4 * Math.PI);
-        }
-        //IF in sim
-
-        //TODO this will only ever work with a 7 ms loop
-        simDrivePosition += getDriveVelocity() * 0.07 /10;//added fudge factor so it is somewhat accurate to real life
-        return simDrivePosition;
+    /** get position of the drive motor */
+    public double getDrivePosition() {
+        if (RobotBase.isReal()) return rotToRadDrive(drive.getPosition().getValueAsDouble());
+        else return 0.0; // TODO add feature to sim
     }
 
+    /** convert radians to internal motor rotations for the steer motor */
     private double radToRotSteer(double rad) {
         return (rad / (2.0 * Math.PI)) * STEER_RATIO;
     }
 
+    /** convert internal motor rotations to radians for the steer motor */
     private double rotToRadSteer(double rot) {
         return (rot * (2.0 * Math.PI)) / STEER_RATIO;
     }
 
-    private double radToRotDrive(double rad) {
-        return (rad / (2.0 * Math.PI)) * DRIVE_RATIO;
-    }
-
+    /** convert internal motor rotations to radians for the drive motor */
     private double rotToRadDrive(double rot) {
         return (rot * (2.0 * Math.PI)) / DRIVE_RATIO;
     }
