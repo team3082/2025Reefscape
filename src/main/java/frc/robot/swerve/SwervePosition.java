@@ -40,7 +40,7 @@ public class SwervePosition {
         } else {
             lastAbsVelocity = absVelocity; 
             absVelocity = SwerveManager.getRobotDriveVelocity().rotate(Pigeon.getRotationRad() - Math.PI / 2);
-            position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()).div(Constants.METERSTOINCHES));
+            position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()));
         }
     }
 
