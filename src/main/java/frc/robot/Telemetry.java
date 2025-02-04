@@ -18,6 +18,7 @@ import frc.robot.swerve.visualizer.SwerveBaseVisualizer;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
+import frc.robot.auto.Auto;
 
 /*
  * handles telemetry for the robot
@@ -88,6 +89,7 @@ public class Telemetry {
         SwerveBaseVisualizer.init();
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
+        robotTab.add(Auto.getAutoSelector());
     }
 
     public static void update() {

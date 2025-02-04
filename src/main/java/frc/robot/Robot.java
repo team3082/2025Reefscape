@@ -32,13 +32,16 @@ public class Robot extends TimedRobot {
     // AlgaeIntake.init();
     // Climber.init();
 
-    // Logging
-    Telemetry.init();
-    
+
+    Auto.init();
+
     // Controls
     OI.init();
 
     RTime.init();
+
+    // Logging
+    Telemetry.init();
   }
 
   @Override
@@ -48,11 +51,14 @@ public class Robot extends TimedRobot {
 
     SwervePosition.update();
     Pigeon.update();
+
+    RTime.update();
   }
 
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance().enable();
+    Auto.autoInit();
   }
   
   @Override
