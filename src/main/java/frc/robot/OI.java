@@ -131,8 +131,6 @@ public class OI {
             }
             SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
         } else {
-            if(driverStick.getRawButtonPressed(zero))
-                Pigeon.zero();
             SwerveManager.rotateAndDrive(rotate, drive);
         }
     }
