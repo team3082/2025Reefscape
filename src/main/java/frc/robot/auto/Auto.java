@@ -5,11 +5,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-// import frc.robot.auto.commands.MoveToScorePos;
-// import frc.robot.auto.commands.ScoreCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
-import frc.robot.subsystems.ScoringManager.ScoringPosition;
 
 /**
  * Manages autonomous routines for the robot.
