@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Auto;
-import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
@@ -18,9 +17,6 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.swerve.visualizer.SwerveBaseVisualizer;
 import frc.robot.swerve.SwervePID;
-import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.Vector2;
-
 /*
  * handles telemetry for the robot
  * reads values from subsystems and updates tables and visualizers
@@ -79,9 +75,6 @@ public class Telemetry {
     private static final GenericEntry ELEVATOR_TARGET_POSITION = elevatorTab.add("target position", ScoringManager.elevator.targetHeight).getEntry();
     private static final GenericEntry ELEVATOR_CURRENT_POSITION = elevatorTab.add("current position", ScoringManager.elevator.getElevatorHeight()).getEntry();
 
-    private static Vector2 lastPosition = new Vector2(0,0);
-    private static double lastRot = 0;
-
     public static void init() {
         robotTab.add("Field", fieldView);
         robotTab.add("Subsystem View", subsytemView);
@@ -136,35 +129,14 @@ public class Telemetry {
      */
     private static void updateField(){
         
-        // Allows for robot position and rotation to be dragged from Glass in simulation
-        if(Robot.isSimulation()){
-            Vector2 simulatedPos = new Vector2(fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
-            // Compare last position and current field position, adjust SwervePosition to accommodate for unexpected change
-            if(simulatedPos.sub(lastPosition).mag() > .0001){
-                SwervePosition.setPosition(simulatedPos.mul(Constants.METERSTOINCHES).sub(new Vector2(325.59, 157.87)));
-            }
-
-            double simulatedRot = fieldView.getRobotPose().getRotation().getRadians();
-            // Compare last rotaiton and current known rotation, adjust Pigeon rotation to accommodate for unexpected change
-            if(Math.abs(simulatedRot - lastRot) > .1){
-                Pigeon.setSimulatedRot(simulatedRot);
-            }
-        }
-
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
-            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
-            SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
+            SwervePosition.getPosition().y/Constants.METERSTOINCHES + 8.27,
+            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 4.01,
             Rotation2d.fromRadians(Pigeon.getRotationRad())
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);
-
-        // Record last field position and rotation
-        if(Robot.isSimulation()){
-            lastPosition = new Vector2(fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
-            lastRot = fieldView.getRobotPose().getRotation().getRadians();
-        }
     }
 
     /**

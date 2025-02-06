@@ -31,7 +31,7 @@ public class SwerveModule {
 
     private final double cancoderOffset;
 
-    private SwerveModuleSim simModule = new SwerveModuleSim();
+    public SwerveModuleSim simModule = new SwerveModuleSim();
 
     private final double STEER_RATIO = 150.0 / 7.0; // TODO double check this value
     private final double DRIVE_RATIO = 1.0; // TODO double check this value
@@ -202,7 +202,7 @@ public class SwerveModule {
         // }
         //the 10 is there to convert from units per 100ms to units per second
         if (Robot.isReal()) return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
-        else return (simModule.getSpeed() * driveTimeConstant * 4.0) * (inverted ? -1 : 1); // fudge factor
+        else return (simModule.getSpeed() * driveTimeConstant * 1.5) * (inverted ? -1 : 1); // fudge factor
     }
 
     /** get position of the drive motor */

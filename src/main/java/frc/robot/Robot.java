@@ -16,6 +16,7 @@ import frc.robot.swerve.SwervePID;
 // import frc.robot.subsystems.Climber;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
+import frc.robot.utils.Vector2;
 
 public class Robot extends TimedRobot {
   @Override
@@ -52,6 +53,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    Auto.autoInit();
     CommandScheduler.getInstance().enable();
   }
   
@@ -88,6 +90,13 @@ public class Robot extends TimedRobot {
     ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
     // AlgaeIntake.setState(IntakeState.DISABLED);
     // Climber.setState(ClimberState.DISABLED);
+    SwerveManager.rotateAndDrive(0, new Vector2());
+    if (Robot.isSimulation()) {
+      SwerveManager.mods[0].simModule.speed = 0;
+      SwerveManager.mods[1].simModule.speed = 0;
+      SwerveManager.mods[2].simModule.speed = 0;
+      SwerveManager.mods[3].simModule.speed = 0;
+    }
   }
 
   @Override

@@ -1,7 +1,7 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.Robot;
 import frc.robot.Tuning;
 
 import frc.robot.swerve.SwerveManager;
@@ -19,9 +19,10 @@ public class FollowRobotPath extends Command {
 
     public FollowRobotPath(RobotPath path) {
         System.out.println("new FollowRobotPath Initialized");
-        movePID = new PIDController(Tuning.MOVEP, Tuning.MOVEI, Tuning.MOVED, 0.01, Tuning.MOVEVELDEAD, 0.5);
+        movePID = new PIDController(2.0, 0.1, 0.15, 0.01, 0.00, 1.0);
         movePID.setDest(1.0);
         this.path = path;
+        System.out.println("end t" + this.path.getLastPos());
     }
 
     @Override
@@ -39,11 +40,19 @@ public class FollowRobotPath extends Command {
             SwerveManager.rotateAndDrive(0, new Vector2());
             end(false);
         }
+        SwerveManager.update();
     }
 
     @Override
     public void end(boolean interrupted) {
         SwerveManager.rotateAndDrive(0, new Vector2());
+        SwerveManager.update();
+        if (Robot.isSimulation()) {
+            SwerveManager.mods[0].simModule.speed = 0;
+            SwerveManager.mods[1].simModule.speed = 0;
+            SwerveManager.mods[2].simModule.speed = 0;
+            SwerveManager.mods[3].simModule.speed = 0;
+        }
     }
 
     @Override

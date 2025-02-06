@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.FollowRobotPath;
+import frc.robot.auto.commands.MoveToScorePos;
 // import frc.robot.auto.commands.MoveToScorePos;
 // import frc.robot.auto.commands.ScoreCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
@@ -36,6 +37,8 @@ public class Auto {
 
     @AutoRoutine
     public static SequentialCommandGroup pathFollowingTest() {
+        System.out.println("Path Following Test");
+
         ChickenParser parser = new ChickenParser("src/main/deploy/ChickenPlannerSuperTest.json");
         List<RobotPath> paths = parser.getPaths();
         Vector2 startingPos = paths.get(0).getStartPos();
@@ -43,9 +46,16 @@ public class Auto {
 
         return new SequentialCommandGroup (
             new FollowRobotPath(paths.get(0)),
+            new MoveToScorePos(ScoringPosition.L4),
+            new MoveToScorePos(ScoringPosition.STOW),
             new FollowRobotPath(paths.get(1)),
+            new MoveToScorePos(ScoringPosition.L3),
+            new MoveToScorePos(ScoringPosition.STOW),
             new FollowRobotPath(paths.get(2)),
+            new MoveToScorePos(ScoringPosition.L2),
+            new MoveToScorePos(ScoringPosition.STOW),
             new FollowRobotPath(paths.get(3))
+            
         );
     }
 
