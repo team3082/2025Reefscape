@@ -13,6 +13,7 @@ import frc.robot.subsystems.ScoringManager.TransitoryState;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class MoveToScorePos extends Command {
   private ScoringPosition pos;
+
   /** Creates a new MoveToScorePos. */
   public MoveToScorePos(ScoringPosition pos) {
     // Use addRequirements() here to declare subsystem dependencies.
