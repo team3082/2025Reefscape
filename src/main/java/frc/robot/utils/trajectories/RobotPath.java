@@ -22,7 +22,6 @@ public class RobotPath {
 
     // update the closest point on the path from the robot's current position
     public void updatePosition(Vector2 robotPos) {
-        robotPos = robotPos;
         double closestDist = -1.0;
         double closestT = 0;
         for (int i = (int) (currentPosT * (double) CURVE_RESOLUTION); i < points.size(); i++) {
@@ -38,7 +37,7 @@ public class RobotPath {
 
         currentPosT = closestT;
 
-        System.out.println("currentPosT: " + currentPosT);
+        // System.out.println("currentPosT: " + currentPosT);
     }
 
     // return already calculated closest point
@@ -80,7 +79,7 @@ public class RobotPath {
         // get a vector of magnitude 1 that points in the direction of the next closest point from the robot's current position
         Vector2 targetPoint;
         try {
-            targetPoint = points.get((int) (getClosestT() * CURVE_RESOLUTION) + 10);
+            targetPoint = points.get((int) (getClosestT() * CURVE_RESOLUTION) + 50);
         } catch (IndexOutOfBoundsException e) {
             targetPoint = points.get(points.size() - 1);
         }
