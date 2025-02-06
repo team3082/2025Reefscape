@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.auto.commands.DropCoral;
+import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
-import frc.robot.subsystems.ScoringManager.ScoringPosition;
 
 
 /**
@@ -66,8 +66,8 @@ public class Auto {
             Commands.runOnce(()->System.out.println("L4")),
             new WaitCommand(1.0),
             new WaitCommand(1.0),
-            new MoveToScorePos(ScoringPosition.STOW),
-            //new DropCoral(0.5),
+            new MoveToScorePos(ScoringPosition.INTAKE),
+            new IntakeCoral(2),
             Commands.runOnce(()->System.out.println("STOW"))
         );
     }
