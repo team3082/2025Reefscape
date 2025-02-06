@@ -75,7 +75,7 @@ public class AlgaeIntake {
         intakeMotor.getConfigurator().apply(topWheelConfig);
 
         // Beambreak
-        // sensor = new DigitalInput(Constants.AlgaeIntake.SENSOR_CHANNEL);
+        sensor = new DigitalInput(Constants.AlgaeIntake.SENSOR_CHANNEL);
     }
 
     /**
