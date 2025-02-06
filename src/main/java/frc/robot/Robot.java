@@ -4,9 +4,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.Auto;
-
+import frc.robot.subsystems.AlgaeIntake;
 // SUBSYSTEMS
 import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.AlgaeIntake.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
@@ -29,7 +30,7 @@ public class Robot extends TimedRobot {
 
     // Subsystems
     ScoringManager.init();
-    // AlgaeIntake.init();
+    AlgaeIntake.init();
     // Climber.init();
 
 
@@ -70,6 +71,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // Stow Elevator/End Effector on Teleop Start
     ScoringManager.setScoringLevel(ScoringPosition.STOW);
+    AlgaeIntake.setState(IntakeState.FEED);
   }
 
   @Override
@@ -80,7 +82,7 @@ public class Robot extends TimedRobot {
     // Update Subsystems
     SwerveManager.update();
     ScoringManager.update();
-    // AlgaeIntake.update();
+    AlgaeIntake.update();
     // Climber.update();
   }
 
@@ -92,7 +94,7 @@ public class Robot extends TimedRobot {
 
     // Disable Subsystems
     ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
-    // AlgaeIntake.setState(IntakeState.DISABLED);
+    AlgaeIntake.setState(IntakeState.FEED);
     // Climber.setState(ClimberState.DISABLED);
   }
 

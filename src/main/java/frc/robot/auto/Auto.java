@@ -10,7 +10,6 @@ import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
-import frc.robot.subsystems.ScoringManager.ScoringPosition;
 
 
 /**
