@@ -145,8 +145,6 @@ public class SwerveModule {
 
         // Determine if, based on the current motor position, it should stay in the same
         // rotation, enter the next, or return to the previous.
-        // TODO Simplify angle using atan2
-
         if (Math.abs(joystickTarget - motorPos) < Math.abs(joystickTargetPlus - motorPos)
                 && Math.abs(joystickTarget - motorPos) < Math.abs(joystickTargetMinus - motorPos)) {
             destination = joystickTarget;
