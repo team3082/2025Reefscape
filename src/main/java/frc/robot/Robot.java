@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
 
     // Disable Subsystems
     ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
-    // AlgaeIntake.setState(IntakeState.DISABLED);
+    AlgaeIntake.setState(IntakeState.FEED);
     // Climber.setState(ClimberState.DISABLED);
   }
 

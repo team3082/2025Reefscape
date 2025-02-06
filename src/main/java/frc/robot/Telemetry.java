@@ -85,7 +85,6 @@ public class Telemetry {
         robotTab.add("Field", fieldView);
         robotTab.add("Subsystem View", subsytemView);
         robotTab.add("Swerve View", swerveView);
-        robotTab.add("Algae View", AlgaeVisualizer.mech);
 
         ElevatorVisualizer.init();
         EndEffectorVisualizer.init();

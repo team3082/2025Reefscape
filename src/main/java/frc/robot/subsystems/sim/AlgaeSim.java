@@ -5,14 +5,14 @@ import frc.robot.utils.RTime;
 
 public class AlgaeSim {
 
-    private static PIDController anglePID = new PIDController(3, 0, 0, 0, 0, 50.0);
+    private static PIDController anglePID = new PIDController(6, 0, 0.5, 0, 0, 50.0);
 
     private static double angle;
     private static double targetAngle;
     private static double speed;
     private static double targetSpeed;
 
-    private static final double MAX_RAMP = 1.0;
+    private static final double MAX_RAMP = 100.0;
 
     public static void update(){
         angle += anglePID.updateOutput(angle) * RTime.deltaTime();
@@ -34,7 +34,8 @@ public class AlgaeSim {
     }
 
     public static void setSpeed(double setAngle){
-        targetAngle = setAngle;
+        targetSpeed = setAngle;
+
     }
 
     public static double getAngle(){

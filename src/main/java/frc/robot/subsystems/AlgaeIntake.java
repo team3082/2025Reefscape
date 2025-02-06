@@ -93,6 +93,8 @@ public class AlgaeIntake {
                 if(Robot.isSimulation()){
                     AlgaeSim.update();
                     AlgaeSim.setAngle(state.targetAngle);
+                    AlgaeSim.setSpeed(state.targetSpeed);
+                    System.out.println("Alage Sim Speed: " + AlgaeSim.getSpeed());
                     AlgaeVisualizer.update();
                 }
                 intakeMotor.set(state.targetSpeed);
