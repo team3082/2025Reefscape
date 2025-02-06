@@ -158,8 +158,8 @@ public class Constants {
 
         public static final double INTAKE_GEAR_RATIO = 0.0;
     }
-
-
     
     public static final double METERSTOINCHES = 39.3701;
+    public static final double FIELD_HEIGHT = 323.25; // inches
+    public static final double FIELD_WIDTH = 651.25; // inches
 }

@@ -1,15 +1,22 @@
 package frc.robot.auto;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.auto.commands.FollowRobotPath;
 // import frc.robot.auto.commands.MoveToScorePos;
 // import frc.robot.auto.commands.ScoreCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.Vector2;
+import frc.robot.utils.trajectories.ChickenParser;
+import frc.robot.utils.trajectories.RobotPath;
 
 /**
  * Manages autonomous routines for the robot.
@@ -17,7 +24,7 @@ import frc.robot.subsystems.ScoringManager.ScoringPosition;
  * annotated with {@link AutoRoutine}.
  */
 public class Auto {
-    private static RoutineManager routineManager;
+    public static RoutineManager routineManager;
 
     /**
      * Gets the auto selector from {@link RoutineManager}
@@ -25,6 +32,21 @@ public class Auto {
      */
     public static SendableChooser<String> getAutoSelector(){
         return routineManager.getAutoSelector();
+    }
+
+    @AutoRoutine
+    public static SequentialCommandGroup pathFollowingTest() {
+        ChickenParser parser = new ChickenParser("src/main/deploy/ChickenPlannerSuperTest.json");
+        List<RobotPath> paths = parser.getPaths();
+        Vector2 startingPos = paths.get(0).getStartPos();
+        SwervePosition.setPosition(startingPos);
+
+        return new SequentialCommandGroup (
+            new FollowRobotPath(paths.get(0)),
+            new FollowRobotPath(paths.get(1)),
+            new FollowRobotPath(paths.get(2)),
+            new FollowRobotPath(paths.get(3))
+        );
     }
 
     /**

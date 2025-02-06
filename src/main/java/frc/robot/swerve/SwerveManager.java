@@ -62,7 +62,6 @@ public final class SwerveManager {
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {
         movement = move;
         double heading = Pigeon.getRotationRad();
-        System.out.println("Heading: " + heading);
         
         // Array containing the unclamped movement vectors of each module
         Vector2[] vectors = new Vector2[mods.length];

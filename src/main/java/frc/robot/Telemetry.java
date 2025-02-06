@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.auto.Auto;
+import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
@@ -35,6 +37,8 @@ public class Telemetry {
     private static Field2d fieldView = new Field2d();
     public static Mechanism2d subsytemView = new Mechanism2d(65, 120);
     public static Mechanism2d swerveView = new Mechanism2d(60, 60);
+
+    
 
     // Logging
     // Swerve
@@ -88,6 +92,8 @@ public class Telemetry {
         SwerveBaseVisualizer.init();
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
+
+        robotTab.add("Auto Selector", Auto.routineManager.autoSelector);
     }
 
     public static void update() {

@@ -16,7 +16,7 @@ public class RoutineManager {
     private HashMap<String, CommandRoutine> routineMap = new HashMap<String, CommandRoutine>();
 
     /**A SendableChooser for the selection of autonomous routines via the SmartDashboard.*/ 
-    private SendableChooser<String> autoSelector = new SendableChooser<String>();
+    public SendableChooser<String> autoSelector = new SendableChooser<String>();
 
     /**
      * Constructor for RoutineManager

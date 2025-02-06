@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
     // Climber.init();
 
     // Logging
+    Auto.init();
     Telemetry.init();
     
     // Controls
@@ -45,7 +46,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     // Update Dashboard Every Frame
     Telemetry.update();
-
     SwervePosition.update();
     Pigeon.update();
   }
