@@ -9,7 +9,7 @@ import frc.robot.utils.RTime;
  */
 public class ElevatorSim {
 
-    private static PIDController posPID = new PIDController(50, 0, 0, 0, 0, 50.0);
+    private static PIDController posPID = new PIDController(100, 0, 0, 0, 0, 100.0);
 
     private static double targetPos; // Inches
     private static double pos; // Inches

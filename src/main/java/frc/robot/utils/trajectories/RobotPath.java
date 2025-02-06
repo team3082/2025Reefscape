@@ -110,7 +110,7 @@ public class RobotPath {
     public List<RotPoint> getRotPoints(double startT, double endT) {
         List<RotPoint> returnedRotPoints = new ArrayList<>();
         for (RotPoint rotPoint : rotPoints) {
-            if (rotPoint.t >= startT && rotPoint.t <= endT) {
+            if (rotPoint.t > startT && rotPoint.t <= endT) {
                 returnedRotPoints.add(rotPoint);
             }
         }
@@ -122,7 +122,7 @@ public class RobotPath {
 
         // gets all paths between each stop point
         double lastStopPoint = 0;
-        for (double stopPoint : stopPointsList){
+        for (double stopPoint : stopPointsList) {
             List<Vector2> curvePoints = getCurvePoints(lastStopPoint, stopPoint);
             List<RotPoint> rotPoints = getRotPoints(lastStopPoint, stopPoint);
             paths.add(new RobotPath(curvePoints, rotPoints));

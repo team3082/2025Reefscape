@@ -68,17 +68,22 @@
     "actionPoints": [
       {
         "t": 1.3807615230460921,
-        "rotationRadians": -1.0,
+        "rotationRadians": 2.0,
         "isStopped": true
       },
       {
         "t": 3.539078156312625,
-        "rotationRadians": -1.0,
+        "rotationRadians": 5.0,
         "isStopped": true
       },
       {
         "t": 4.3346693386773545,
-        "rotationRadians": -1.0,
+        "rotationRadians": 2.0,
+        "isStopped": true
+      },
+      {
+        "t": 5.0,
+        "rotationRadians": 4.0,
         "isStopped": true
       }
     ]

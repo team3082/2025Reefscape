@@ -3,7 +3,7 @@ package frc.robot.auto.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Tuning;
-
+import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.trajectories.RobotPath;
@@ -14,26 +14,39 @@ public class FollowRobotPath extends Command {
     RobotPath path;
 
     PIDController movePID;
+    PIDController rotPID;
+    double targetRot;
 
     boolean isFinished = false;
 
     public FollowRobotPath(RobotPath path) {
         System.out.println("new FollowRobotPath Initialized");
-        movePID = new PIDController(2.0, 0.1, 0.15, 0.01, 0.00, 1.0);
-        movePID.setDest(1.0);
         this.path = path;
-        System.out.println("end t" + this.path.getLastPos());
+        this.movePID = new PIDController(3.0, 0.025, 0.2, 0.01, 0.00, 1.0);
+        this.movePID.setDest(1.0);
+        this.rotPID = new PIDController(0.75, 0.0, 0.15, 0.01, 0.0, 0.5);
+        targetRot = path.getTargetRot() % (2.0 * Math.PI);
+
+        this.rotPID.setDest(targetRot);
     }
 
     @Override
     public void execute() {
         // update PID controller, control swerve
+        double currentRot = Pigeon.getRotationRad() % (2.0 * Math.PI);
         double output = movePID.updateOutput(((path.getPathLength() - path.getRemainingPathLength())) / path.getPathLength());
         path.updatePosition(SwervePosition.getPosition());
         Vector2 driveVector = path.getDriveVector().mul(output);
-        SwerveManager.rotateAndDrive(0, driveVector);
+        double rotOutput = rotPID.updateOutput(currentRot);
 
-        isFinished = SwervePosition.getPosition().sub(path.getLastPos()).mag() < Tuning.CURVE_DEADBAND; // check if path following is finished
+        // System.out.println("Rot: " + currentRot + " Target Rot: " + targetRot + " Rot Output: " + rotOutput);
+        System.out.println("T: " + path.getClosestT());
+
+        boolean driveFinished = (SwervePosition.getPosition().sub(path.getLastPos()).mag() < Tuning.CURVE_DEADBAND);
+        boolean rotFinished = (Math.abs(currentRot - targetRot) < 0.05);
+        SwerveManager.rotateAndDrive(rotFinished ? 0.0 : rotOutput, driveFinished ? new Vector2() : driveVector);
+
+        isFinished = driveFinished & rotFinished;
 
         if (isFinished) {
             System.out.println("Path Finished");

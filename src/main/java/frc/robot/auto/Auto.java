@@ -48,12 +48,15 @@ public class Auto {
             new FollowRobotPath(paths.get(0)),
             new MoveToScorePos(ScoringPosition.L4),
             new MoveToScorePos(ScoringPosition.STOW),
+
             new FollowRobotPath(paths.get(1)),
             new MoveToScorePos(ScoringPosition.L3),
             new MoveToScorePos(ScoringPosition.STOW),
+
             new FollowRobotPath(paths.get(2)),
             new MoveToScorePos(ScoringPosition.L2),
             new MoveToScorePos(ScoringPosition.STOW),
+            
             new FollowRobotPath(paths.get(3))
             
         );

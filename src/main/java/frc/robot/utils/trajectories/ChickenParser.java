@@ -63,6 +63,10 @@ public class ChickenParser {
             // generate total path and seperate into individual paths
             RobotPath totalPath = new RobotPath(curvePointsList, rotPointsList);
             paths = totalPath.separatePaths(stopPointsList);
+
+            for (RobotPath path : paths) {
+                System.out.println("target rot" + path.getTargetRot());
+            }
             
         } catch (IOException e) {
             e.printStackTrace();
