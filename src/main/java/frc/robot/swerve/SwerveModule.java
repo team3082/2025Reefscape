@@ -1,7 +1,10 @@
 package frc.robot.swerve;
 
+import javax.print.DocFlavor.STRING;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -33,7 +36,7 @@ public class SwerveModule {
 
     private SwerveModuleSim simModule = new SwerveModuleSim();
 
-    private final double STEER_RATIO = 150.0 / 7.0; // TODO double check this value
+    private final double STEER_RATIO = (double) 150.0 / (double) 7.0; // TODO double check this value
     private final double DRIVE_RATIO = 1.0; // TODO double check this value
 
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
@@ -46,13 +49,13 @@ public class SwerveModule {
         // Configure encoders/PID
         TalonFXConfiguration steerConfig = new TalonFXConfiguration();
 
-        steerConfig.MotorOutput.DutyCycleNeutralDeadband = 0.001;
+        steerConfig.MotorOutput.DutyCycleNeutralDeadband = 0.01;
 
         steerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 
 
-        steerConfig.Slot0.kP = 0.4;
+        steerConfig.Slot0.kP = 0.15;
         steerConfig.Slot0.kI = 0.0;
-        steerConfig.Slot0.kD = 0.2;
+        steerConfig.Slot0.kD = 0.0;
 
         steerConfig.MotionMagic.MotionMagicCruiseVelocity = 40000;
         steerConfig.MotionMagic.MotionMagicAcceleration = 40000;
@@ -98,7 +101,7 @@ public class SwerveModule {
     /** update swerve module, set motor positions/speeds only call in SwerveManager.update() */
     public void update() {
         // apply motor control
-        steer.setControl(new PositionDutyCycle(radToRotSteer(targetAngle) + (Math.PI / 2.0)));
+        steer.setControl(new PositionDutyCycle(radToRotSteer(targetAngle)));
         drive.setControl(new DutyCycleOut(inverted ? -targetSpeed : targetSpeed));
         
         // update simulation
@@ -112,8 +115,10 @@ public class SwerveModule {
     /** reset the internal encoder position to the absolute encoder position */
     public void resetSteerSensor() {
         double pos = absEncoder.getAbsolutePosition().getValueAsDouble() - cancoderOffset;
-        pos = pos / 360.0;
-        steer.getConfigurator().setPosition(pos);
+        steer.setPosition(-pos * STEER_RATIO);
+        System.out.println("encoder pos " + pos);
+        System.out.println("steer motor pos " + steer.getPosition().getValueAsDouble());
+        System.out.println("steer ratio " + STEER_RATIO);
     }
 
     /** set target drive speed */
@@ -128,7 +133,7 @@ public class SwerveModule {
         motorPos = getSteerAngle();
 
         // The number of full rotations the motor has made
-        int numRot = (int) Math.floor(motorPos / (2.0 * Math.PI));
+        double numRot = Math.floor(motorPos / (2.0 * Math.PI));
 
         // The target motor position dictated by the joystick, in rotations
         double joystickTarget = (numRot * 2.0 * Math.PI) + angle;
@@ -164,13 +169,13 @@ public class SwerveModule {
         } else {
             inverted = false;
         }
-
+        System.out.println(destination);
         targetAngle = destination;
     }
 
     /** returns swerve wheel angle in radians */
     public double getSteerAngle() {
-        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble()) - Math.PI / 2.0;
+        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble());
         else return simModule.getAngle() - Math.PI / 2.0;
     }
 
