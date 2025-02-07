@@ -39,11 +39,13 @@ public class OI {
     // Operator Controls
 
     // Scoring Positions
-    static final int stow        = LogitechF310.BUTTON_A;
-    static final int L2          = LogitechF310.BUTTON_B;
-    static final int L3          = LogitechF310.BUTTON_X;
-    static final int L4          = LogitechF310.BUTTON_Y;
-    
+    private static final int stow         = LogitechF310.BUTTON_A;
+    private static final int L2           = LogitechF310.BUTTON_B;
+    private static final int L3           = LogitechF310.BUTTON_X;
+    private static final int L4           = LogitechF310.BUTTON_Y;
+    private static final int RightTrigger = LogitechF310.AXIS_RIGHT_TRIGGER;
+    private static final int LeftTrigger  = LogitechF310.AXIS_LEFT_TRIGGER;
+
     // End Effector Control
     static final int intake       = LogitechF310.BUTTON_LEFT_BUMPER;
     static final int outtake      = LogitechF310.BUTTON_RIGHT_BUMPER;
@@ -54,6 +56,8 @@ public class OI {
     public static void init() {
         driverStick = new Joystick(0);
         operatorStick = new Joystick(1); // Temporarily port 0 for sim testing
+
+        CoralVisualizer.init();
     }
 
     public static void userInput() {
@@ -144,11 +148,26 @@ public class OI {
 
     public static void operatorInput() {
         /*-Scoring Manager----------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButtonPressed(stow)) ScoringManager.setScoringLevel(ScoringPosition.STOW);
-        else if (operatorStick.getRawButtonPressed(L2)) ScoringManager.setScoringLevel(ScoringPosition.L2);
-        else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
-        else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
+        if (operatorStick.getRawButtonPressed(stow)){
+            ScoringManager.setScoringLevel(ScoringPosition.STOW);
+            CoralVisualizer.setSelectedCoral(1);
+        } else if (operatorStick.getRawButtonPressed(L2)){
+            ScoringManager.setScoringLevel(ScoringPosition.L2);
+            CoralVisualizer.setSelectedCoral(2);
+        } else if (operatorStick.getRawButtonPressed(L3)){
+            ScoringManager.setScoringLevel(ScoringPosition.L3);
+            CoralVisualizer.setSelectedCoral(3);
+        } else if (operatorStick.getRawButtonPressed(L4)){ 
+            ScoringManager.setScoringLevel(ScoringPosition.L4);
+            CoralVisualizer.setSelectedCoral(4);
+        }
 
+        if (operatorStick.getRawAxis(RightTrigger)>0.7){
+            CoralVisualizer.setSelectedCoral(true);
+        } else if (operatorStick.getRawAxis(LeftTrigger)>0.7){
+            CoralVisualizer.setSelectedCoral(false);
+        }
+        
         /*-End Effector-------------------------------------------------------------------------------------------*/
         if (operatorStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
         else if (operatorStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);

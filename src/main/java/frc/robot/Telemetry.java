@@ -36,6 +36,7 @@ public class Telemetry {
     private static Field2d fieldView = new Field2d();
     public static Mechanism2d subsytemView = new Mechanism2d(65, 120);
     public static Mechanism2d swerveView = new Mechanism2d(60, 60);
+    public static Mechanism2d coralView;
 
     // Logging
     // Swerve
@@ -80,9 +81,12 @@ public class Telemetry {
     private static double lastRot = 0;
 
     public static void init() {
+        coralView = CoralVisualizer.getMechanism2d();
+
         robotTab.add("Field", fieldView);
         robotTab.add("Subsystem View", subsytemView);
         robotTab.add("Swerve View", swerveView);
+        robotTab.add("Coral Operator View", coralView);
 
         ElevatorVisualizer.init();
         EndEffectorVisualizer.init();
