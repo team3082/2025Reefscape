@@ -44,7 +44,6 @@ public class SwervePID {
     public static void setDestPt(Vector2 dest) {
         setDestX(dest.x);
         setDestY(dest.y);
-       
     }
 
     public static void setDestX(double dest) {
@@ -86,7 +85,7 @@ public class SwervePID {
     }
 
     public static Vector2 updateOutputVel() {
-        return new Vector2(updateOutputX(), updateOutputY());
+        return new Vector2(-updateOutputX(), updateOutputY());
     }
 
     public static Vector2 getDest() {
@@ -94,8 +93,6 @@ public class SwervePID {
     }
 
     public static boolean atDest() {
-
-        
         return (Robot.isSimulation()
         && SwervePosition.getPosition().isGreater(new Vector2(getDest().x - moveDead, getDest().y - moveDead)) 
         && !SwervePosition.getPosition().isGreater(new Vector2(getDest().x + moveDead, getDest().y + moveDead))
@@ -104,6 +101,14 @@ public class SwervePID {
     
     public static boolean atRot() {
         return (Robot.isSimulation() && Pigeon.simulatedRot == rotPID.getDest()) || rotPID.atSetpoint();
+    }
+
+    public static Vector2 getError() {
+        return new Vector2(xPID.getError(), yPID.getError());
+    }
+
+    public static double getRotationError() {
+        return rotPID.getError();
     }
 
 }

@@ -70,7 +70,8 @@ public class OI {
     public static void driverInput() {
         // INPUT
 
-        if (driverStick.getRawButton(zero)) Pigeon.zero();
+        // Reset pigeon
+        if (driverStick.getRawButton(zero)) Pigeon.reset();
 
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
@@ -81,7 +82,7 @@ public class OI {
         // SETUP
 
         Vector2 drive = new Vector2(-driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
+        double rotate = -RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         if (drive.mag() < 0.125) {
             drive = new Vector2();
@@ -109,7 +110,7 @@ public class OI {
                 int allianceStartIndex = 6;
                 // Determine reef AprilTag locations based on alliance
                 if(Robot.isReal())
-                    allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 6 : 17;
+                    allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 17 : 6;
 
                 // Find the shortest scoring position from the robot
                 double min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getPosition()).mag();
@@ -127,6 +128,8 @@ public class OI {
                 // Set destination and rotation based on AprilTag data
                 SwervePID.setDestPt(Constants.APRIL_TAGS[minIndex].getPosition());
                 SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI));
+
+
             }
         }
 
@@ -134,8 +137,11 @@ public class OI {
         // SWERVE
         if (drivingToReef){
             if(SwervePID.atDest() &&  SwervePID.atRot()){
+                System.out.println("at dest at rot");
                 drivingToReef = !drivingToReef;
             }
+            System.out.println("Error: " + SwervePID.getError());
+            System.out.println(SwervePID.updateOutputVel());
             SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
         } else {
             SwerveManager.rotateAndDrive(rotate, drive);

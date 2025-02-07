@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
+    SwervePosition.setPosition(Constants.APRIL_TAGS[17].getPosition());
 
     // Subsystems
     // ScoringManager.init();

@@ -92,6 +92,12 @@ public class Telemetry {
         SwerveBaseVisualizer.init();
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
+        robotTab.addString("Dest Error", () -> SwervePID.getError().toString());
+        robotTab.addString("xPID Error", () -> SwervePID.getError().toString());
+        robotTab.addDouble("Rot Error", () -> SwervePID.getRotationError());
+
+        robotTab.addBoolean("AtDest", () -> SwervePID.atDest());
+        robotTab.addBoolean("AtRot", () -> SwervePID.atRot());
         // robotTab.add(Auto.getAutoSelector());
     }
 
@@ -137,7 +143,7 @@ public class Telemetry {
         
         // Allows for robot position and rotation to be dragged from Glass in simulation
         if(Robot.isSimulation()){
-            Vector2 simulatedPos = new Vector2(fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
+            Vector2 simulatedPos = new Vector2(-fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
             // Compare last position and current field position, adjust SwervePosition to accommodate for unexpected change
             if(simulatedPos.sub(lastPosition).mag() > .0001){
                 SwervePosition.setPosition(simulatedPos.mul(Constants.METERSTOINCHES).sub(new Vector2(325.59, 157.87)));
@@ -152,7 +158,7 @@ public class Telemetry {
 
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
-            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
+            -SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
             SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
             Rotation2d.fromRadians(Pigeon.getRotationRad())
         );

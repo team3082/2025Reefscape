@@ -37,7 +37,7 @@ public class SwerveModule {
     private SwerveModuleSim simModule = new SwerveModuleSim();
 
     private final double STEER_RATIO = (double) 150.0 / (double) 7.0; // TODO double check this value
-    private final double DRIVE_RATIO = 1.0; // TODO double check this value
+    private final double DRIVE_RATIO = (double) 6.12; // TODO double check this value
 
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
         steer = new TalonFX(steerID, "CANivore");
@@ -53,7 +53,7 @@ public class SwerveModule {
 
         steerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 
 
-        steerConfig.Slot0.kP = 0.15;
+        steerConfig.Slot0.kP = 0.25;
         steerConfig.Slot0.kI = 0.0;
         steerConfig.Slot0.kD = 0.0;
 
@@ -198,12 +198,8 @@ public class SwerveModule {
      */
     public double getDriveVelocity() {
         // TODO Recalculate
-        double driveTimeConstant = 4 * Math.PI * 10;
+        double driveTimeConstant = 2.0 * Math.PI * 2.0;
 
-        // if (RobotBase.isSimulation()) {
-        //     return simDriveVel * driveTimeConstant;
-        // }
-        //the 10 is there to convert from units per 100ms to units per second
         if (Robot.isReal()) return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
         else return (simModule.getSpeed() * driveTimeConstant * 4.0) * (inverted ? -1 : 1); // fudge factor
     }
