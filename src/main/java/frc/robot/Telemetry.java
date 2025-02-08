@@ -98,6 +98,8 @@ public class Telemetry {
 
         robotTab.addBoolean("AtDest", () -> SwervePID.atDest());
         robotTab.addBoolean("AtRot", () -> SwervePID.atRot());
+
+        robotTab.addDouble("Rotation Rads", () -> Pigeon.getRotationRad());
         // robotTab.add(Auto.getAutoSelector());
     }
 
@@ -158,7 +160,7 @@ public class Telemetry {
 
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
-            -SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
+            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
             SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
             Rotation2d.fromRadians(Pigeon.getRotationRad())
         );
