@@ -14,6 +14,9 @@ public class AlgaeSim {
 
     private static final double MAX_RAMP = 100.0;
 
+    /**
+     * updates the angle (via pid) and the speed
+     */
     public static void update(){
         angle += anglePID.updateOutput(angle) * RTime.deltaTime();
 
@@ -26,6 +29,10 @@ public class AlgaeSim {
 
     }
 
+    /**
+     * sets a target/desired angle
+     * @param setAngle angle to set to
+     */
     public static void setAngle(double setAngle){
         if(setAngle != targetAngle){
             targetAngle = setAngle;
@@ -33,17 +40,27 @@ public class AlgaeSim {
         }
     }
 
-    public static void setSpeed(double setAngle){
-        targetSpeed = setAngle;
+    /**
+     * sets a target/desired speed
+     * @param setSpeed speed to set to
+     */
+    public static void setSpeed(double setSpeed){
+        targetSpeed = setSpeed;
 
     }
 
+    /**
+     * gets the angle
+     * @return angle
+     */
     public static double getAngle(){
         return angle;
-    }
+    }    
 
-    
-
+    /**
+     * gets the speed
+     * @return speed
+     */
     public static double getSpeed(){
         return speed;
     }

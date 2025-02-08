@@ -39,8 +39,10 @@ public class EndEffectorVisualizer {
     private static MechanismRoot2d endEffectorWheel4_root = Telemetry.subsytemView.getRoot("End Effector Wheel 4 Root", 0, 0);
     private static MechanismLigament2d endEffectorWheel4 = endEffectorWheel4_root.append(new MechanismLigament2d("End Effector Wheel 4", 1.5, 0));
 
+    /**
+     * sets color to all mechanism ligaments
+     */
     public static void init() {
-        // set color to all mechanism ligaments
         endEffectorPivot.setColor(new Color8Bit(255, 0, 0));
         endEffectorWheel1.setColor(new Color8Bit(0, 255, 0));
         endEffectorWheel2.setColor(new Color8Bit(0, 255, 0));
@@ -48,6 +50,9 @@ public class EndEffectorVisualizer {
         endEffectorWheel4.setColor(new Color8Bit(0, 255, 0));
     }
 
+    /**
+     * updates the endeffector, both wheels and pivot
+     */
     public static void update() {
         // set pivot position and angle
         pivotAngle = ScoringManager.endEffector.getPivotAngle();

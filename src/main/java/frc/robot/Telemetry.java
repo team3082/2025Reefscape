@@ -90,6 +90,7 @@ public class Telemetry {
         // ElevatorVisualizer.init();
         // EndEffectorVisualizer.init();
         SwerveBaseVisualizer.init();
+        AlgaeVisualizer.init();
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
         // robotTab.add(Auto.getAutoSelector());

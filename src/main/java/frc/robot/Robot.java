@@ -9,6 +9,7 @@ import frc.robot.auto.Auto;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 // import frc.robot.subsystems.AlgaeIntake;

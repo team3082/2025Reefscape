@@ -6,7 +6,6 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Tuning;
@@ -73,6 +72,7 @@ public class AlgaeIntake {
         // Apply configs
         pivotMotor.getConfigurator().apply(pivotConfig);
         intakeMotor.getConfigurator().apply(topWheelConfig);
+
 
         // Beambreak
         sensor = new DigitalInput(Constants.AlgaeIntake.SENSOR_CHANNEL);
