@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Tuning;
+import frc.robot.subsystems.visualizer.CoralVisualizer;
 
 /**
  * Manages the scoring system for the robot, including the elevator and end effector.
@@ -23,6 +24,7 @@ public class ScoringManager {
 
         public double targetHeight;
         public double targetAngle;
+        public boolean isRight;
 
         /**
          * Constructs a ScoringPosition with the specified target height and angle.
@@ -35,7 +37,8 @@ public class ScoringManager {
             this.targetAngle = targetAngle;
         }
     }
-
+    
+    
     /**
      * Enum representing the transitory states when moving between scoring positions.
      */
@@ -50,6 +53,28 @@ public class ScoringManager {
     public static TransitoryState transitoryState = TransitoryState.FINISHED;
     public static Elevator elevator;
     public static EndEffector endEffector;
+
+    /**
+     * Is the robot picking up the rightMostCoral, TODO implement logic to do this
+     */
+    private static boolean isRight = false;
+
+    /**
+     * Sets the side that the coral will be picked
+     * @param isRight Is the coral being picked from the right
+     */
+    public static void setPickingRightCoral(boolean isRight){
+        ScoringManager.isRight = isRight;
+    }
+
+    /**
+     * Gets the side that the coral will be picked
+     * @param true if the right side is being picked
+     */
+    public static boolean isPickingRightCoral(){
+        return isRight;
+    }
+
 
     /**
      * Gets the Elevator instance
@@ -80,6 +105,7 @@ public class ScoringManager {
             transitoryState = TransitoryState.ELEVATOR_WAITING;
         }
         scoringPosition = targetPosition;
+        CoralVisualizer.updateView();
     }
 
     /**
@@ -97,6 +123,7 @@ public class ScoringManager {
     public static void init() {
         elevator = new Elevator();
         endEffector = new EndEffector();
+        CoralVisualizer.init();
     }
 
     /**
@@ -131,6 +158,7 @@ public class ScoringManager {
         // update end effector and elevator (do not run these methods in Robot.java these should be the only instance)
         endEffector.update();
         elevator.update();
+        CoralVisualizer.updateView();
     }
 
     /**

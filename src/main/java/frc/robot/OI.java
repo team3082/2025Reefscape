@@ -10,6 +10,7 @@ import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.visualizer.CoralVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -56,8 +57,6 @@ public class OI {
     public static void init() {
         driverStick = new Joystick(0);
         operatorStick = new Joystick(1); // Temporarily port 0 for sim testing
-
-        CoralVisualizer.init();
     }
 
     public static void userInput() {
@@ -148,24 +147,15 @@ public class OI {
 
     public static void operatorInput() {
         /*-Scoring Manager----------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButtonPressed(stow)){
-            ScoringManager.setScoringLevel(ScoringPosition.STOW);
-            CoralVisualizer.setSelectedCoral(1);
-        } else if (operatorStick.getRawButtonPressed(L2)){
-            ScoringManager.setScoringLevel(ScoringPosition.L2);
-            CoralVisualizer.setSelectedCoral(2);
-        } else if (operatorStick.getRawButtonPressed(L3)){
-            ScoringManager.setScoringLevel(ScoringPosition.L3);
-            CoralVisualizer.setSelectedCoral(3);
-        } else if (operatorStick.getRawButtonPressed(L4)){ 
-            ScoringManager.setScoringLevel(ScoringPosition.L4);
-            CoralVisualizer.setSelectedCoral(4);
-        }
+        if (operatorStick.getRawButtonPressed(stow)) ScoringManager.setScoringLevel(ScoringPosition.STOW);
+        else if (operatorStick.getRawButtonPressed(L2)) ScoringManager.setScoringLevel(ScoringPosition.L2);
+        else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
+        else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
 
         if (operatorStick.getRawAxis(RightTrigger)>0.7){
-            CoralVisualizer.setSelectedCoral(true);
+            ScoringManager.setPickingRightCoral(true);
         } else if (operatorStick.getRawAxis(LeftTrigger)>0.7){
-            CoralVisualizer.setSelectedCoral(false);
+            ScoringManager.setPickingRightCoral(false);
         }
         
         /*-End Effector-------------------------------------------------------------------------------------------*/
