@@ -64,10 +64,10 @@ public class Constants {
         public static final int STEERID2 = 2;
         public static final int STEERID3 = 4;
 
-        public static final double MODOFFSET0 = 286.348;
-        public static final double MODOFFSET1 = 221.309;
-        public static final double MODOFFSET2 = 174.551;
-        public static final double MODOFFSET3 = 134.736;
+        public static final double MODOFFSET0 = 0.971191;
+        public static final double MODOFFSET1 = 0.049072;
+        public static final double MODOFFSET2 = 0.865234;
+        public static final double MODOFFSET3 = 0.375488;
 
         public static final double WIDTH = 29.5;
         public static final double LENGTH = 29.5;

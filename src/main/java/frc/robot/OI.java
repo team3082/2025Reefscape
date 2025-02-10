@@ -61,7 +61,7 @@ public class OI {
 
     public static void userInput() {
         driverInput();
-        operatorInput();
+        // operatorInput();
     }
 
     /**
@@ -83,7 +83,7 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SETUP
 
-        Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
+        Vector2 drive = new Vector2(-driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         if (drive.mag() < 0.125) {
@@ -99,7 +99,7 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
         // System.out.println("drive direction: " + drive.atan2());
-        System.out.println("drive magnitude: " + drive.mag());
+        // System.out.println("drive magnitude: " + drive.mag());
         if (Robot.isSimulation() && drive.mag() > 0.4) {
             drive = drive.norm(); 
             drive = drive.mul(0.4);

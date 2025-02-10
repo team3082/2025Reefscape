@@ -9,6 +9,7 @@ import frc.robot.auto.Auto;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 // import frc.robot.subsystems.AlgaeIntake;
@@ -20,20 +21,26 @@ import frc.robot.utils.RTime;
 public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
+    try {
+      Thread.sleep(5000);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     // Swerve
+    Pigeon.init();
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
-    Pigeon.init();
-
 
     // Subsystems
-    ScoringManager.init();
+    // ScoringManager.init();
     // AlgaeIntake.init();
     // Climber.init();
 
 
-    Auto.init();
+    // Auto.init();
 
     // Controls
     OI.init();
@@ -57,19 +64,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance().enable();
-    Auto.autoInit();
+    // CommandScheduler.getInstance().enable();
+    // Auto.autoInit();
   }
   
   @Override
   public void autonomousPeriodic() {
-    Auto.update();
+    // Auto.update();
   }
 
   @Override
   public void teleopInit() {
     // Stow Elevator/End Effector on Teleop Start
-    ScoringManager.setScoringLevel(ScoringPosition.STOW);
+    // ScoringManager.setScoringLevel(ScoringPosition.STOW);
   }
 
   @Override
@@ -79,7 +86,7 @@ public class Robot extends TimedRobot {
 
     // Update Subsystems
     SwerveManager.update();
-    ScoringManager.update();
+    // ScoringManager.update();
     // AlgaeIntake.update();
     // Climber.update();
   }
@@ -87,11 +94,11 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // Clear Auto Commands
-    CommandScheduler.getInstance().cancelAll();
-    CommandScheduler.getInstance().disable();
+    // CommandScheduler.getInstance().cancelAll();
+    // CommandScheduler.getInstance().disable();
 
     // Disable Subsystems
-    ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
+    // ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
     // AlgaeIntake.setState(IntakeState.DISABLED);
     // Climber.setState(ClimberState.DISABLED);
   }

@@ -79,11 +79,11 @@ public final class Tuning {
   
     public static final class Intake {
         public static final double STOW_ANGLE = 0.0;
-        public static final double FEED_ANGLE = 0.0;
+        public static final double FEED_ANGLE = 90.0;
         public static final double HOLD_ANGLE = 0.0;
         public static final double EJECT_ANGLE = 0.0;
 
-        public static final double FEED_SPEED = 0.0;
+        public static final double FEED_SPEED = 800.0;
         public static final double EJECT_SPEED = 0.0;
     }
 }

@@ -14,11 +14,17 @@ public class ElevatorSim {
     private static double targetPos; // Inches
     private static double pos; // Inches
 
+    /**
+     * updates the position via pid
+     */
     public static void update() {
-        // update pos
         pos += posPID.updateOutput(pos) * RTime.deltaTime();
     }
 
+    /**
+     * sets the target/desired position of the elevator
+     * @param setPos position to set to
+     */
     public static void setPosition(double setPos) {
         if (targetPos != setPos) {
             targetPos = setPos;
@@ -26,6 +32,10 @@ public class ElevatorSim {
         }
     }
 
+    /**
+     * returns position of the elevator
+     * @return position
+     */
     public static double getPosition() {
         return pos;
     }

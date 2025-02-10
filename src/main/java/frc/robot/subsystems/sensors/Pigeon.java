@@ -70,7 +70,7 @@ public class Pigeon {
             return simulatedRot;
         }
 
-        return Math.PI * pigeon.getYaw().getValueAsDouble() / 180;
+        return (-1 * Math.PI * pigeon.getYaw().getValueAsDouble() / 180) + Math.PI;
     }
 
     /**
