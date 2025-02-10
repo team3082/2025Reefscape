@@ -10,6 +10,7 @@ import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.visualizer.CoralVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -39,11 +40,13 @@ public class OI {
     // Operator Controls
 
     // Scoring Positions
-    static final int stow        = LogitechF310.BUTTON_A;
-    static final int L2          = LogitechF310.BUTTON_B;
-    static final int L3          = LogitechF310.BUTTON_X;
-    static final int L4          = LogitechF310.BUTTON_Y;
-    
+    private static final int stow         = LogitechF310.BUTTON_A;
+    private static final int L2           = LogitechF310.BUTTON_B;
+    private static final int L3           = LogitechF310.BUTTON_X;
+    private static final int L4           = LogitechF310.BUTTON_Y;
+    private static final int RightTrigger = LogitechF310.AXIS_RIGHT_TRIGGER;
+    private static final int LeftTrigger  = LogitechF310.AXIS_LEFT_TRIGGER;
+
     // End Effector Control
     static final int intake       = LogitechF310.BUTTON_LEFT_BUMPER;
     static final int outtake      = LogitechF310.BUTTON_RIGHT_BUMPER;
@@ -149,6 +152,12 @@ public class OI {
         else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
         else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
 
+        if (operatorStick.getRawAxis(RightTrigger)>0.7){
+            ScoringManager.setPickingRightCoral(true);
+        } else if (operatorStick.getRawAxis(LeftTrigger)>0.7){
+            ScoringManager.setPickingRightCoral(false);
+        }
+        
         /*-End Effector-------------------------------------------------------------------------------------------*/
         if (operatorStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
         else if (operatorStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);

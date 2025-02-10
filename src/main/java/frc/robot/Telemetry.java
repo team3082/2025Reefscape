@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.visualizer.CoralVisualizer;
 import frc.robot.subsystems.sim.AlgaeSim;
 import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
@@ -86,6 +87,7 @@ public class Telemetry {
         robotTab.add("Field", fieldView);
         // robotTab.add("Subsystem View", subsytemView);
         robotTab.add("Swerve View", swerveView);
+        robotTab.add("Coral Operator View", CoralVisualizer.getMechanism2d());
 
         // ElevatorVisualizer.init();
         // EndEffectorVisualizer.init();
