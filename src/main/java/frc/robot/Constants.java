@@ -5,6 +5,8 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import frc.robot.vision.AprilTag;
 
+
+
 public class Constants {
     
     public static final AprilTag[] APRIL_TAGS = {
@@ -172,4 +174,6 @@ public class Constants {
 
     
     public static final double METERSTOINCHES = 39.3701;
+
+    public static final boolean REPLAY = false;
 }
