@@ -2,9 +2,6 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
-        "DriverStation": {
-          "open": true
-        },
         "PowerDistribution": {
           "open": true
         },
@@ -25,8 +22,7 @@
         },
         "SystemStats": {
           "open": true
-        },
-        "open": true
+        }
       },
       "Shuffleboard": {
         "Robot Views": {

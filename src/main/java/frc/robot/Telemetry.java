@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
@@ -93,6 +95,7 @@ public class Telemetry {
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
         robotTab.addString("Dest Error", () -> SwervePID.getError().toString());
+        robotTab.addString("Update Output Vel", () -> SwervePID.updateOutputVel().toString());
         robotTab.addString("xPID Error", () -> SwervePID.getError().toString());
         robotTab.addDouble("Rot Error", () -> SwervePID.getRotationError());
 
@@ -101,6 +104,9 @@ public class Telemetry {
 
         robotTab.addDouble("Rotation Rads", () -> Pigeon.getRotationRad());
         // robotTab.add(Auto.getAutoSelector());
+
+        Logger.recordOutput("Error", SwervePID.getError().toString());
+
     }
 
     public static void update() {
@@ -160,7 +166,7 @@ public class Telemetry {
 
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
-            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
+            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.78,
             -SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
             Rotation2d.fromRadians(Pigeon.getRotationRad() + Math.PI/2.0)
         );

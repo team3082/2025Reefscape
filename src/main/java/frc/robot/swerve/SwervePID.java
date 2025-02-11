@@ -2,6 +2,8 @@ package frc.robot.swerve;
 
 import static frc.robot.Tuning.*;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -85,7 +87,7 @@ public class SwervePID {
     }
 
     public static Vector2 updateOutputVel() {
-        return new Vector2(-updateOutputX(), updateOutputY());
+        return new Vector2(-updateOutputY(), updateOutputX());
     }
 
     public static Vector2 getDest() {

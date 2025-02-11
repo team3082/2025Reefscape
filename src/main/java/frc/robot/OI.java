@@ -110,7 +110,7 @@ public class OI {
                 int allianceStartIndex = 6;
                 // Determine reef AprilTag locations based on alliance
                 if(Robot.isReal())
-                    allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 17 : 6;
+                    allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 6 : 17;
 
                 // Find the shortest scoring position from the robot
                 double min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getPosition()).mag();
@@ -142,7 +142,7 @@ public class OI {
             }
             System.out.println("Error: " + SwervePID.getError());
             System.out.println(SwervePID.updateOutputVel());
-            SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
+            SwerveManager.rotateAndDrive(0/*SwervePID.updateOutputRot()*/, SwervePID.updateOutputVel());
         } else {
             SwerveManager.rotateAndDrive(rotate, drive);
         }
