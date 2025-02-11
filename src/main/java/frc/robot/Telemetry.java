@@ -167,7 +167,7 @@ public class Telemetry {
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
             SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.78,
-            -SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
+            SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
             Rotation2d.fromRadians(Pigeon.getRotationRad() + Math.PI/2.0)
         );
         fieldView.setRobotPose(currentPose);

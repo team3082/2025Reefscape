@@ -127,7 +127,7 @@ public class OI {
                 // TODO Adjust positions for accurate scoring
                 // Set destination and rotation based on AprilTag data
                 SwervePID.setDestPt(Constants.APRIL_TAGS[minIndex].getPosition());
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI));
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI / 2.0));
 
 
             }
@@ -142,7 +142,7 @@ public class OI {
             }
             System.out.println("Error: " + SwervePID.getError());
             System.out.println(SwervePID.updateOutputVel());
-            SwerveManager.rotateAndDrive(0/*SwervePID.updateOutputRot()*/, SwervePID.updateOutputVel());
+            SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
         } else {
             SwerveManager.rotateAndDrive(rotate, drive);
         }

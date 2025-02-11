@@ -29,8 +29,42 @@ public class Robot extends LoggedRobot {
 
   @AutoLogOutput
   public static double fake = 0;
+
   public Robot(){
+    try {
+      Thread.sleep(5000);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    // Swerve
+    Pigeon.init();
+    Pigeon.setYaw(90);
+    SwerveManager.init();
+    SwervePosition.init();
+    SwervePID.init();
+    SwervePosition.setPosition(Constants.APRIL_TAGS[7].getPosition());
+
+    // Subsystems
+    // ScoringManager.init();
+    // AlgaeIntake.init();
+    // Climber.init();
+
+
+    // Auto.init();
+
+    // Controls
+    OI.init();
+
+    RTime.init();
+
+    // Logging
+    Telemetry.init();
+
+    //Pigeon.setYaw(90);
     Logger.recordMetadata("ProjectName", "2025Reefscape"); // Set a metadata value
+    Logger.recordOutput("PID Error", SwervePID.getError().toString());
 
     AutoLogOutputManager.addPackage("frc.robot.swerve");
     if (isReal()) {
@@ -51,38 +85,38 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
-    try {
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    // try {
+    //   Thread.sleep(5000);
+    // } catch (InterruptedException e) {
+    //   // TODO Auto-generated catch block
+    //   e.printStackTrace();
+    // }
 
-    // Swerve
-    Pigeon.init();
-    Pigeon.setYaw(90);
-    SwerveManager.init();
-    SwervePosition.init();
-    SwervePID.init();
-    //SwervePosition.setPosition(Constants.APRIL_TAGS[17].getPosition());
+    // // Swerve
+    // Pigeon.init();
+    // Pigeon.setYaw(90);
+    // SwerveManager.init();
+    // SwervePosition.init();
+    // SwervePID.init();
+    // //SwervePosition.setPosition(Constants.APRIL_TAGS[17].getPosition());
 
-    // Subsystems
-    // ScoringManager.init();
-    // AlgaeIntake.init();
-    // Climber.init();
+    // // Subsystems
+    // // ScoringManager.init();
+    // // AlgaeIntake.init();
+    // // Climber.init();
 
 
-    // Auto.init();
+    // // Auto.init();
 
-    // Controls
-    OI.init();
+    // // Controls
+    // OI.init();
 
-    RTime.init();
+    // RTime.init();
 
-    // Logging
-    Telemetry.init();
+    // // Logging
+    // Telemetry.init();
 
-    //Pigeon.setYaw(90);
+    // //Pigeon.setYaw(90);
   }
 
   @Override

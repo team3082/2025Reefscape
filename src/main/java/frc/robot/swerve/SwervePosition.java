@@ -64,7 +64,9 @@ public class SwervePosition {
     }
 
     public static Vector2 getPosition() {
-        return position;
+        Vector2 flipPos = new Vector2(position.x, position.y);
+        flipPos.y *= -1;
+        return flipPos;
     }
 
     public static Vector2 getAbsVelocity() {
