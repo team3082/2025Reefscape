@@ -1,13 +1,46 @@
 {
   "NetworkTables": {
     "transitory": {
+      "AdvantageKit": {
+        "DriverStation": {
+          "open": true
+        },
+        "PowerDistribution": {
+          "open": true
+        },
+        "RadioStatus": {
+          "open": true
+        },
+        "RealMetadata": {
+          "open": true
+        },
+        "RealOutputs": {
+          "LoggedRobot": {
+            "open": true
+          },
+          "Logger": {
+            "open": true
+          },
+          "open": true
+        },
+        "SystemStats": {
+          "open": true
+        },
+        "open": true
+      },
       "Shuffleboard": {
         "Robot Views": {
+          "open": true
+        },
+        "Scoring Manager": {
           "open": true
         },
         "Swerve": {
           "open": true
         },
+        "open": true
+      },
+      "SmartDashboard": {
         "open": true
       }
     },
@@ -19,12 +52,13 @@
     },
     "windows": {
       "/Shuffleboard/Robot Views/Field": {
-        "bottom": 1476,
-        "height": 8.210550308227539,
-        "left": 150,
-        "right": 2961,
-        "top": 79,
-        "width": 16.541748046875,
+        "bottom": 1638,
+        "builtin": "2025 Reefscape",
+        "height": 8.051901817321777,
+        "left": 534,
+        "right": 3466,
+        "top": 291,
+        "width": 17.54825210571289,
         "window": {
           "visible": true
         }

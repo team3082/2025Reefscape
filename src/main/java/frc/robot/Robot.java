@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -25,9 +27,12 @@ import frc.robot.utils.RTime;
 
 public class Robot extends LoggedRobot {
 
+  @AutoLogOutput
+  public static double fake = 0;
   public Robot(){
     Logger.recordMetadata("ProjectName", "2025Reefscape"); // Set a metadata value
 
+    AutoLogOutputManager.addPackage("frc.robot.swerve");
     if (isReal()) {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
@@ -55,10 +60,11 @@ public class Robot extends LoggedRobot {
 
     // Swerve
     Pigeon.init();
+    Pigeon.setYaw(90);
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
-    SwervePosition.setPosition(Constants.APRIL_TAGS[17].getPosition());
+    //SwervePosition.setPosition(Constants.APRIL_TAGS[17].getPosition());
 
     // Subsystems
     // ScoringManager.init();
@@ -75,6 +81,8 @@ public class Robot extends LoggedRobot {
 
     // Logging
     Telemetry.init();
+
+    //Pigeon.setYaw(90);
   }
 
   @Override

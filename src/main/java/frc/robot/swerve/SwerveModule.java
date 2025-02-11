@@ -74,7 +74,7 @@ public class SwerveModule {
         driveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         steerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        steerConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        steerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // CHANGED THIS MARKING HERE
 
         CANcoderConfiguration canConfig = new CANcoderConfiguration();
         canConfig.MagnetSensor.MagnetOffset = 0;
@@ -101,10 +101,11 @@ public class SwerveModule {
     /** update swerve module, set motor positions/speeds only call in SwerveManager.update() */
     public void update() {
         // apply motor control
-        steer.setControl(new PositionDutyCycle(radToRotSteer(targetAngle)));
+        steer.setControl(new PositionDutyCycle(radToRotSteer(targetAngle + (Math.PI / 2.0))));
         drive.setControl(new DutyCycleOut(inverted ? -targetSpeed : targetSpeed));
         
         // update simulation
+
         if (Robot.isSimulation()) {
             simModule.setAngle(targetAngle + (Math.PI / 2.0));
             simModule.setSpeed(targetSpeed);
@@ -115,7 +116,7 @@ public class SwerveModule {
     /** reset the internal encoder position to the absolute encoder position */
     public void resetSteerSensor() {
         double pos = absEncoder.getAbsolutePosition().getValueAsDouble() - cancoderOffset;
-        steer.setPosition(-pos * STEER_RATIO);
+        steer.setPosition(pos * STEER_RATIO);
         System.out.println("encoder pos " + pos);
         System.out.println("steer motor pos " + steer.getPosition().getValueAsDouble());
         System.out.println("steer ratio " + STEER_RATIO);
@@ -173,7 +174,7 @@ public class SwerveModule {
 
     /** returns swerve wheel angle in radians */
     public double getSteerAngle() {
-        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble());
+        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble()) - (Math.PI / 2.0);
         else return simModule.getAngle() - Math.PI / 2.0;
     }
 

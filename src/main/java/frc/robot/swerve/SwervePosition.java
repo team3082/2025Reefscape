@@ -1,4 +1,7 @@
 package frc.robot.swerve;
+import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,6 +17,7 @@ public class SwervePosition {
     // 1.0, representing the speed at which we blend from the odometry output to the output of the vision. 
     static final double VISION_CORRECTION_FACTOR = 0.1;
 
+    @AutoLogOutput
     private static Vector2 position;
     private static Vector2 absVelocity;
     private static Vector2 lastAbsVelocity;
@@ -25,6 +29,7 @@ public class SwervePosition {
         position        = new Vector2(0.0,0.0);
         lastOdomPos     = new Vector2(0.0,0.0);
         Odometry.init();
+
     }
 
     public static void update() {
