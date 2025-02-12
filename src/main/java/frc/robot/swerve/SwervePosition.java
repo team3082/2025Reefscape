@@ -38,14 +38,14 @@ public class SwervePosition {
             Vector2 odometryPos = Odometry.getPosition();
             Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
             
-            position = position.add(new Vector2(-odometryInnovation.y, -odometryInnovation.x));
+            position = position.add(new Vector2(-odometryInnovation.y, odometryInnovation.x));
             lastOdomPos = odometryPos;
 
             absVelocity = odometryInnovation.div(RTime.deltaTime());
         } else {
             lastAbsVelocity = absVelocity; 
             absVelocity = SwerveManager.getRobotDriveVelocity().rotate(Pigeon.getRotationRad() - Math.PI / 2);
-            position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime()));
+            position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime())); 
         }
     }
 
@@ -64,9 +64,7 @@ public class SwervePosition {
     }
 
     public static Vector2 getPosition() {
-        Vector2 flipPos = new Vector2(position.x, position.y);
-        flipPos.y *= -1;
-        return flipPos;
+        return position;
     }
 
     public static Vector2 getAbsVelocity() {
