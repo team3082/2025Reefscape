@@ -5,6 +5,8 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import frc.robot.vision.AprilTag;
 
+
+
 public class Constants {
     
     public static final AprilTag[] APRIL_TAGS = {
@@ -73,15 +75,25 @@ public class Constants {
         public static final double LENGTH = 29.5;
         public static final double MODULEOFFSET = 2.625;
 
-        public static final double SWERVEMODX0 = (WIDTH / 2) - MODULEOFFSET;
-        public static final double SWERVEMODX1 = -1 * (WIDTH / 2) + MODULEOFFSET;
-        public static final double SWERVEMODX2 = -1 * (WIDTH / 2) + MODULEOFFSET;
-        public static final double SWERVEMODX3 = (WIDTH / 2) - MODULEOFFSET;
+        // public static final double SWERVEMODX0 = (WIDTH / 2) - MODULEOFFSET;
+        // public static final double SWERVEMODX1 = -1 * (WIDTH / 2) + MODULEOFFSET;
+        // public static final double SWERVEMODX2 = -1 * (WIDTH / 2) + MODULEOFFSET;
+        // public static final double SWERVEMODX3 = (WIDTH / 2) - MODULEOFFSET;
 
-        public static final double SWERVEMODY0 = -1 * (LENGTH / 2) + MODULEOFFSET;
-        public static final double SWERVEMODY1 = -1 * (LENGTH / 2) + MODULEOFFSET;
-        public static final double SWERVEMODY2 = (LENGTH / 2) - MODULEOFFSET;
-        public static final double SWERVEMODY3 = (LENGTH / 2) - MODULEOFFSET;
+        public static final double SWERVEMODX0 = Math.abs((WIDTH / 2.0) - MODULEOFFSET);
+        public static final double SWERVEMODX1 = -Math.abs((WIDTH / 2.0) - MODULEOFFSET);
+        public static final double SWERVEMODX2 = -Math.abs((WIDTH / 2.0) - MODULEOFFSET);
+        public static final double SWERVEMODX3 = Math.abs((WIDTH / 2.0) - MODULEOFFSET);
+
+        // public static final double SWERVEMODY0 = -1 * (LENGTH / 2) + MODULEOFFSET;
+        // public static final double SWERVEMODY1 = -1 * (LENGTH / 2) + MODULEOFFSET;
+        // public static final double SWERVEMODY2 = (LENGTH / 2) - MODULEOFFSET;
+        // public static final double SWERVEMODY3 = (LENGTH / 2) - MODULEOFFSET;
+
+        public static final double SWERVEMODY0 = -Math.abs((LENGTH / 2.0) - MODULEOFFSET);
+        public static final double SWERVEMODY1 = -Math.abs((LENGTH / 2.0) - MODULEOFFSET);
+        public static final double SWERVEMODY2 = Math.abs((LENGTH / 2.0) - MODULEOFFSET);
+        public static final double SWERVEMODY3 = Math.abs((LENGTH / 2.0) - MODULEOFFSET);
 
         public static final double driveTrackwidth = 0.0;
         public static final double driveWheelbase = 0.0;
@@ -162,4 +174,6 @@ public class Constants {
 
     
     public static final double METERSTOINCHES = 39.3701;
+
+    public static final boolean REPLAY = false;
 }

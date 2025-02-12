@@ -31,6 +31,10 @@ public class Pigeon {
         lastRot = getRotationRad();
     }
 
+    public static void reset() {
+        pigeon.reset();
+    }
+
     public static void setSimulatedRot(double rad) {
         simulatedRot = rad;
     }
@@ -70,7 +74,7 @@ public class Pigeon {
             return simulatedRot;
         }
 
-        return (-1 * Math.PI * pigeon.getYaw().getValueAsDouble() / 180) + Math.PI;
+        return (Math.PI * pigeon.getYaw().getValueAsDouble() / 180);
     }
 
     /**

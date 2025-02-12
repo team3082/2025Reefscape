@@ -18,11 +18,11 @@ public final class SwerveManager {
             // Back Right
             new SwerveModule(STEERID0, DRIVEID0, MODOFFSET0, SWERVEMODX0, SWERVEMODY0),
             // Back Left
-            new SwerveModule(STEERID1, DRIVEID1, MODOFFSET1, SWERVEMODX3, SWERVEMODY3),
+            new SwerveModule(STEERID1, DRIVEID1, MODOFFSET1, SWERVEMODX1, SWERVEMODY1),
             // Front Left
             new SwerveModule(STEERID2, DRIVEID2, MODOFFSET2, SWERVEMODX2, SWERVEMODY2),
             // Front Right
-            new SwerveModule(STEERID3, DRIVEID3, MODOFFSET3, SWERVEMODX1, SWERVEMODY1)
+            new SwerveModule(STEERID3, DRIVEID3, MODOFFSET3, SWERVEMODX3, SWERVEMODY3)
         };
     }
 
@@ -144,7 +144,6 @@ public final class SwerveManager {
         for (SwerveModule mod : mods) {
             velSum = velSum.add(Vector2.fromPolar(mod.getSteerAngle(), mod.getDriveVelocity()));
         }
-
         return velSum.div(mods.length);
     }
 

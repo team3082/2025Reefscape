@@ -37,7 +37,7 @@ public class SwerveModule {
     private SwerveModuleSim simModule = new SwerveModuleSim();
 
     private final double STEER_RATIO = (double) 150.0 / (double) 7.0; // TODO double check this value
-    private final double DRIVE_RATIO = 1.0; // TODO double check this value
+    private final double DRIVE_RATIO = (double) 6.12; // TODO double check this value
 
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
         steer = new TalonFX(steerID, "CANivore");
@@ -53,7 +53,7 @@ public class SwerveModule {
 
         steerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 
 
-        steerConfig.Slot0.kP = 0.15;
+        steerConfig.Slot0.kP = 0.25;
         steerConfig.Slot0.kI = 0.0;
         steerConfig.Slot0.kD = 0.0;
 
@@ -74,7 +74,7 @@ public class SwerveModule {
         driveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         steerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        steerConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        steerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // CHANGED THIS MARKING HERE
 
         CANcoderConfiguration canConfig = new CANcoderConfiguration();
         canConfig.MagnetSensor.MagnetOffset = 0;
@@ -101,10 +101,11 @@ public class SwerveModule {
     /** update swerve module, set motor positions/speeds only call in SwerveManager.update() */
     public void update() {
         // apply motor control
-        steer.setControl(new PositionDutyCycle(radToRotSteer(targetAngle)));
+        steer.setControl(new PositionDutyCycle(radToRotSteer(targetAngle + (Math.PI / 2.0))));
         drive.setControl(new DutyCycleOut(inverted ? -targetSpeed : targetSpeed));
         
         // update simulation
+
         if (Robot.isSimulation()) {
             simModule.setAngle(targetAngle + (Math.PI / 2.0));
             simModule.setSpeed(targetSpeed);
@@ -115,10 +116,10 @@ public class SwerveModule {
     /** reset the internal encoder position to the absolute encoder position */
     public void resetSteerSensor() {
         double pos = absEncoder.getAbsolutePosition().getValueAsDouble() - cancoderOffset;
-        steer.setPosition(-pos * STEER_RATIO);
-        System.out.println("encoder pos " + pos);
-        System.out.println("steer motor pos " + steer.getPosition().getValueAsDouble());
-        System.out.println("steer ratio " + STEER_RATIO);
+        steer.setPosition(pos * STEER_RATIO);
+        //System.out.println("encoder pos " + pos);
+        //System.out.println("steer motor pos " + steer.getPosition().getValueAsDouble());
+        //System.out.println("steer ratio " + STEER_RATIO);
     }
 
     /** set target drive speed */
@@ -167,13 +168,13 @@ public class SwerveModule {
         } else {
             inverted = false;
         }
-        System.out.println(destination);
+        //System.out.println(destination);
         targetAngle = destination;
     }
 
     /** returns swerve wheel angle in radians */
     public double getSteerAngle() {
-        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble());
+        if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble()) - (Math.PI / 2.0);
         else return simModule.getAngle() - Math.PI / 2.0;
     }
 
@@ -198,12 +199,8 @@ public class SwerveModule {
      */
     public double getDriveVelocity() {
         // TODO Recalculate
-        double driveTimeConstant = 4 * Math.PI * 10;
+        double driveTimeConstant = 2.0 * Math.PI * 2.0;
 
-        // if (RobotBase.isSimulation()) {
-        //     return simDriveVel * driveTimeConstant;
-        // }
-        //the 10 is there to convert from units per 100ms to units per second
         if (Robot.isReal()) return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
         else return (simModule.getSpeed() * driveTimeConstant * 4.0) * (inverted ? -1 : 1); // fudge factor
     }

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
@@ -95,7 +97,19 @@ public class Telemetry {
         AlgaeVisualizer.init();
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
+        robotTab.addString("Dest Error", () -> SwervePID.getError().toString());
+        robotTab.addString("Update Output Vel", () -> SwervePID.updateOutputVel().toString());
+        robotTab.addString("xPID Error", () -> SwervePID.getError().toString());
+        robotTab.addDouble("Rot Error", () -> SwervePID.getRotationError());
+
+        robotTab.addBoolean("AtDest", () -> SwervePID.atDest());
+        robotTab.addBoolean("AtRot", () -> SwervePID.atRot());
+
+        robotTab.addDouble("Rotation Rads", () -> Pigeon.getRotationRad());
         // robotTab.add(Auto.getAutoSelector());
+
+        Logger.recordOutput("Error", SwervePID.getError().toString());
+
     }
 
     public static void update() {
@@ -140,7 +154,7 @@ public class Telemetry {
         
         // Allows for robot position and rotation to be dragged from Glass in simulation
         if(Robot.isSimulation()){
-            Vector2 simulatedPos = new Vector2(fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
+            Vector2 simulatedPos = new Vector2(-fieldView.getRobotPose().getX(), fieldView.getRobotPose().getY());
             // Compare last position and current field position, adjust SwervePosition to accommodate for unexpected change
             if(simulatedPos.sub(lastPosition).mag() > .0001){
                 SwervePosition.setPosition(simulatedPos.mul(Constants.METERSTOINCHES).sub(new Vector2(325.59, 157.87)));
@@ -155,9 +169,9 @@ public class Telemetry {
 
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
-            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.27,
+            SwervePosition.getPosition().x/Constants.METERSTOINCHES + 8.78,
             SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
-            Rotation2d.fromRadians(Pigeon.getRotationRad())
+            Rotation2d.fromRadians(Pigeon.getRotationRad() + Math.PI/2.0)
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);

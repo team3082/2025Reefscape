@@ -73,7 +73,8 @@ public class OI {
     public static void driverInput() {
         // INPUT
 
-        if (driverStick.getRawButton(zero)) Pigeon.zero();
+        // Reset pigeon
+        if (driverStick.getRawButton(zero)) Pigeon.setYaw(90);
 
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
@@ -83,8 +84,8 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SETUP
 
-        Vector2 drive = new Vector2(-driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
-        double rotate = RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
+        Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
+        double rotate =  RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         if (drive.mag() < 0.125) {
             drive = new Vector2();
@@ -129,7 +130,9 @@ public class OI {
                 // TODO Adjust positions for accurate scoring
                 // Set destination and rotation based on AprilTag data
                 SwervePID.setDestPt(Constants.APRIL_TAGS[minIndex].getPosition());
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI));
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI / 2.0));
+
+
             }
         }
 
@@ -137,8 +140,11 @@ public class OI {
         // SWERVE
         if (drivingToReef){
             if(SwervePID.atDest() &&  SwervePID.atRot()){
+                System.out.println("at dest at rot");
                 drivingToReef = !drivingToReef;
             }
+            System.out.println("Error: " + SwervePID.getError());
+            System.out.println(SwervePID.updateOutputVel());
             SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
         } else {
             SwerveManager.rotateAndDrive(rotate, drive);
