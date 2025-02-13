@@ -6,7 +6,7 @@ import frc.robot.subsystems.visualizer.CoralVisualizer;
 /**
  * Manages the scoring system for the robot, including the elevator and end effector.
  */
-public class ScoringManager {
+public class LebronJames {
     
     /**
      * Enum representing different scoring positions, each with a target height and angle.
@@ -51,8 +51,8 @@ public class ScoringManager {
 
     public static ScoringPosition scoringPosition = ScoringPosition.STOW;
     public static TransitoryState transitoryState = TransitoryState.FINISHED;
-    public static Elevator elevator;
-    public static EndEffector endEffector;
+    public static TheGreatWall elevator;
+    public static ArmedForces endEffector;
 
     /**
      * Is the robot picking up the rightMostCoral, TODO implement logic to do this
@@ -64,7 +64,7 @@ public class ScoringManager {
      * @param isRight Is the coral being picked from the right
      */
     public static void setPickingRightCoral(boolean isRight){
-        ScoringManager.isRight = isRight;
+        LebronJames.isRight = isRight;
     }
 
     /**
@@ -81,7 +81,7 @@ public class ScoringManager {
      *
      * @return the Elevator
      */
-    public static Elevator getElevator(){
+    public static TheGreatWall getElevator(){
         return elevator;
     }
 
@@ -90,7 +90,7 @@ public class ScoringManager {
      *
      * @return the EndEffector
      */
-    public static EndEffector getEndEffector(){
+    public static ArmedForces getEndEffector(){
         return endEffector;
     }
 
@@ -121,8 +121,8 @@ public class ScoringManager {
      * Initializes the scoring manager by creating instances of the elevator and end effector.
      */
     public static void init() {
-        elevator = new Elevator();
-        endEffector = new EndEffector();
+        elevator = new TheGreatWall();
+        endEffector = new ArmedForces();
         CoralVisualizer.init();
     }
 

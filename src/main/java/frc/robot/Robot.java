@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.Auto;
 
 // SUBSYSTEMS
-import frc.robot.subsystems.ScoringManager;
-import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.subsystems.LebronJames;
+import frc.robot.subsystems.LebronJames.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.AlgaeVisualizer;
-import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.OperationDesertStorm;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
@@ -43,7 +43,7 @@ public class Robot extends LoggedRobot {
     // Swerve
     Pigeon.init();
     Pigeon.setYaw(90);
-    SwerveManager.init();
+    OperationDesertStorm.init();
     SwervePosition.init();
     SwervePID.init();
     SwervePosition.setPosition(Constants.APRIL_TAGS[7].getPosition());
@@ -152,7 +152,7 @@ public class Robot extends LoggedRobot {
     OI.userInput();
 
     // Update Subsystems
-    SwerveManager.update();
+    OperationDesertStorm.update();
     // ScoringManager.update();
     // AlgaeIntake.update();
     // Climber.update();
@@ -168,12 +168,12 @@ public class Robot extends LoggedRobot {
     // ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
     // AlgaeIntake.setState(IntakeState.DISABLED);
     // Climber.setState(ClimberState.DISABLED);
-    SwerveManager.rotateAndDrive(0, new Vector2());
+    OperationDesertStorm.rotateAndDrive(0, new Vector2());
     if (Robot.isSimulation()) {
-      SwerveManager.mods[0].simModule.speed = 0;
-      SwerveManager.mods[1].simModule.speed = 0;
-      SwerveManager.mods[2].simModule.speed = 0;
-      SwerveManager.mods[3].simModule.speed = 0;
+      OperationDesertStorm.mods[0].simModule.speed = 0;
+      OperationDesertStorm.mods[1].simModule.speed = 0;
+      OperationDesertStorm.mods[2].simModule.speed = 0;
+      OperationDesertStorm.mods[3].simModule.speed = 0;
     }
   }
 

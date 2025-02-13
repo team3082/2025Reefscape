@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Telemetry;
-import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.LebronJames;
 
 /*
  * Visualizer for the elevator using mech 2d, reads values from subsystems and updates the visualizer
@@ -34,7 +34,7 @@ public class ElevatorVisualizer {
      * sets positions of elevator stages
      */
     public static void update() {
-        double elevatorHeight = ScoringManager.elevator.getElevatorHeight();
+        double elevatorHeight = LebronJames.elevator.getElevatorHeight();
         elevatorStage1_root.setPosition(24  , elevatorHeight / 3.0);
         elevatorStage2_root.setPosition(22, elevatorHeight / (3.0 / 2.0));
         elevatorStage3_root.setPosition(20, elevatorHeight);

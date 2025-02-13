@@ -1,8 +1,8 @@
 package frc.robot.utils;
 
-public class RotationalPIDController extends PIDController{
+public class ClimateChange extends PIDController{
 
-    public RotationalPIDController(double p, double i, double d, double deadband, double velDeadband, double maxOutput){
+    public ClimateChange(double p, double i, double d, double deadband, double velDeadband, double maxOutput){
         super(p,i,d,deadband,velDeadband,maxOutput);
     }
 

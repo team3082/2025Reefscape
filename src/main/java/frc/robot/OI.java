@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.controllermaps.LogitechF310;
-import frc.robot.subsystems.ScoringManager;
-import frc.robot.subsystems.EndEffector.IntakeState;
-import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.subsystems.LebronJames;
+import frc.robot.subsystems.ArmedForces.IntakeState;
+import frc.robot.subsystems.LebronJames.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.CoralVisualizer;
-import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.OperationDesertStorm;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
@@ -85,7 +85,7 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SETUP
 
-        Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), driverStick.getRawAxis(moveY));
+        Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
         double rotate =  RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
         if (drive.mag() < 0.125) {
@@ -140,29 +140,29 @@ public class OI {
             }
             System.out.println("Error: " + SwervePID.getError());
             System.out.println(SwervePID.updateOutputVel());
-            SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
+            OperationDesertStorm.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
         } else {
-            SwerveManager.rotateAndDrive(rotate, drive);
+            OperationDesertStorm.rotateAndDrive(rotate, drive);
         }
     }
 
     public static void operatorInput() {
         /*-Scoring Manager----------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButtonPressed(stow)) ScoringManager.setScoringLevel(ScoringPosition.STOW);
-        else if (operatorStick.getRawButtonPressed(L2)) ScoringManager.setScoringLevel(ScoringPosition.L2);
-        else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
-        else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
+        if (operatorStick.getRawButtonPressed(stow)) LebronJames.setScoringLevel(ScoringPosition.STOW);
+        else if (operatorStick.getRawButtonPressed(L2)) LebronJames.setScoringLevel(ScoringPosition.L2);
+        else if (operatorStick.getRawButtonPressed(L3)) LebronJames.setScoringLevel(ScoringPosition.L3);
+        else if (operatorStick.getRawButtonPressed(L4)) LebronJames.setScoringLevel(ScoringPosition.L4);
 
         if (operatorStick.getRawAxis(RightTrigger)>0.7){
-            ScoringManager.setPickingRightCoral(true);
+            LebronJames.setPickingRightCoral(true);
         } else if (operatorStick.getRawAxis(LeftTrigger)>0.7){
-            ScoringManager.setPickingRightCoral(false);
+            LebronJames.setPickingRightCoral(false);
         }
         
         /*-End Effector-------------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
-        else if (operatorStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);
-        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
+        if (operatorStick.getRawButton(intake)) LebronJames.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
+        else if (operatorStick.getRawButton(outtake)) LebronJames.endEffector.setIntakeState(IntakeState.DROP_PIECE);
+        else LebronJames.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
     }
 
 }

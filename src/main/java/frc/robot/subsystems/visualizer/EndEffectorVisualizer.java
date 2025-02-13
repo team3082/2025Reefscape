@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Telemetry;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
-import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.LebronJames;
 
 
 /*
@@ -55,13 +55,13 @@ public class EndEffectorVisualizer {
      */
     public static void update() {
         // set pivot position and angle
-        pivotAngle = ScoringManager.endEffector.getPivotAngle();
-        pivotHeight = ScoringManager.elevator.getElevatorHeight();
+        pivotAngle = LebronJames.endEffector.getPivotAngle();
+        pivotHeight = LebronJames.elevator.getElevatorHeight();
         endEffectorPivot.setAngle(Math.toDegrees(pivotAngle) + 90.0);
         endEffectorPivot_root.setPosition(15, pivotHeight + 8.0);
 
         // set wheel angles to show rotation
-        wheelAngle += RTime.deltaTime() * ScoringManager.endEffector.intakeState.targetSpeed * 2.0 * Math.PI * 10.0;
+        wheelAngle += RTime.deltaTime() * LebronJames.endEffector.intakeState.targetSpeed * 2.0 * Math.PI * 10.0;
         endEffectorWheel1.setAngle(Math.toDegrees(wheelAngle));
         endEffectorWheel2.setAngle(-Math.toDegrees(wheelAngle));
         endEffectorWheel3.setAngle(-Math.toDegrees(wheelAngle));

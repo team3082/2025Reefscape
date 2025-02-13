@@ -12,7 +12,7 @@ import frc.robot.Tuning;
 import frc.robot.subsystems.sim.AlgaeSim;
 import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 
-public class AlgaeIntake {
+public class TheGulfOfAmerica {
 
     private static TalonFX pivotMotor;
     private static TalonFX intakeMotor;

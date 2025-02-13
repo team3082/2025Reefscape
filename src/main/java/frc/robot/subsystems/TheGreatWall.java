@@ -11,7 +11,7 @@ import frc.robot.Robot;
 import frc.robot.Tuning;
 import frc.robot.subsystems.sim.ElevatorSim;
 
-public class Elevator {
+public class TheGreatWall {
     // hardware
     public TalonFX extensionMotor1; 
     public TalonFX extensionMotor2;
@@ -20,7 +20,7 @@ public class Elevator {
     public double targetHeight;
 
     /** Constructor */
-    public Elevator() {
+    public TheGreatWall() {
         init();
     }
 

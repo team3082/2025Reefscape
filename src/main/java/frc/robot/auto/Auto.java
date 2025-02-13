@@ -12,7 +12,7 @@ import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
-import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.subsystems.LebronJames.ScoringPosition;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChickenParser;
@@ -40,25 +40,25 @@ public class Auto {
     public static SequentialCommandGroup pathFollowingTest() {
         System.out.println("Path Following Test");
 
-        ChickenParser parser = new ChickenParser("src/main/deploy/ChickenPlannerSuperTest.json");
+        ChickenParser parser = new ChickenParser("/home/lvuser/deploy/ChickenPlannerSuperTest.json");
         List<RobotPath> paths = parser.getPaths();
         Vector2 startingPos = paths.get(0).getStartPos();
         SwervePosition.setPosition(startingPos);
 
         return new SequentialCommandGroup (
-            new FollowRobotPath(paths.get(0)),
+            new FollowRobotPath(paths.get(0))
             // new MoveToScorePos(ScoringPosition.L4),
             // new MoveToScorePos(ScoringPosition.STOW),
 
-            new FollowRobotPath(paths.get(1)),
-            // new MoveToScorePos(ScoringPosition.L3),
-            // new MoveToScorePos(ScoringPosition.STOW),
+            // new FollowRobotPath(paths.get(1)),
+            // // new MoveToScorePos(ScoringPosition.L3),
+            // // new MoveToScorePos(ScoringPosition.STOW),
 
-            new FollowRobotPath(paths.get(2)),
-            // new MoveToScorePos(ScoringPosition.L2),
-            // new MoveToScorePos(ScoringPosition.STOW),
+            // new FollowRobotPath(paths.get(2)),
+            // // new MoveToScorePos(ScoringPosition.L2),
+            // // new MoveToScorePos(ScoringPosition.STOW),
             
-            new FollowRobotPath(paths.get(3))
+            // new FollowRobotPath(paths.get(3))
             
         );
     }

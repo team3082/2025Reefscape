@@ -2,10 +2,12 @@ package frc.robot.swerve;
 
 import static frc.robot.Tuning.*;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RMath;
-import frc.robot.utils.RotationalPIDController;
+import frc.robot.utils.ClimateChange;
 import frc.robot.utils.Vector2;
 
 public class SwervePID {
@@ -29,7 +31,7 @@ public class SwervePID {
     public static void init() {
         xPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
         yPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
-        rotPID = new RotationalPIDController(rotP, rotI, rotD, rotDead, rotVelDead, rotSpeedMax);
+        rotPID = new ClimateChange(rotP, rotI, rotD, rotDead, rotVelDead, rotSpeedMax);
     }
 
     public static void setDestState(Vector2 dest, double destRot) {
@@ -52,15 +54,15 @@ public class SwervePID {
 
     public static void setDestRot(double dest) {
         rotPID.setDest(RMath.targetAngleAbsolute(Pigeon.getRotationRad(), dest, 2*Math.PI));
-
     }
     
     public static double updateOutputX() {
-        return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).x;
+        System.out.println("what the fuck dude");
+        return (xPID.atSetpoint() ? 0 : (DriverStation.getAlliance().get() == Alliance.Red ? -1 : 1) * xPID.updateOutput(SwervePosition.getPosition().x));
     }
 
     public static double updateOutputY() {
-        return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).y; //.0085
+        return yPID.atSetpoint() ? 0 : yPID.updateOutput(SwervePosition.getPosition().y);
     }
 
     public static double updateOutputRot() {

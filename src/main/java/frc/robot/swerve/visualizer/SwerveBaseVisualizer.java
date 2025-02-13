@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Telemetry;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.swerve.SwerveManager;
+import frc.robot.swerve.OperationDesertStorm;
 import frc.robot.swerve.SwerveModule;
 import frc.robot.utils.Vector2;
 
@@ -31,7 +31,7 @@ public class SwerveBaseVisualizer {
         swerveModule3.setColor(new Color8Bit(0, 255, 0));
         swerveModule4.setColor(new Color8Bit(0, 255, 0));
 
-        SwerveModule[] mods = SwerveManager.mods;
+        SwerveModule[] mods = OperationDesertStorm.mods;
         swerveModule1_root.setPosition(mods[0].pos.x + 30, mods[0].pos.y + 30);
         swerveModule2_root.setPosition(mods[1].pos.x + 30, mods[1].pos.y + 30);
         swerveModule3_root.setPosition(mods[2].pos.x + 30, mods[2].pos.y + 30);
@@ -43,12 +43,12 @@ public class SwerveBaseVisualizer {
         double heading = Pigeon.getRotationRad();
 
         // Set swerve base angle and magnitude
-        Vector2 swerveVel = SwerveManager.getRobotDriveVelocity();
+        Vector2 swerveVel = OperationDesertStorm.getRobotDriveVelocity();
         swerveBase.setAngle(Math.toDegrees(swerveVel.atan2() + heading));
         swerveBase.setLength(swerveVel.mag() / SWERVE_VEL_SCALER);    
 
         // get swerve mods from swerve manager
-        SwerveModule[] mods = SwerveManager.mods;
+        SwerveModule[] mods = OperationDesertStorm.mods;
 
         // set mechanism 2d rotations and lengths
         Vector2 module1Pos = mods[0].pos.rotate(heading);
