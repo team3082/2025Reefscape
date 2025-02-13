@@ -22,7 +22,7 @@ public class FollowRobotPath extends Command {
     public FollowRobotPath(RobotPath path) {
         System.out.println("new FollowRobotPath Initialized");
         this.path = path;
-        this.movePID = new PIDController(3.0, 0.025, 0.2, 0.01, 0.00, 1.0);
+        this.movePID = new PIDController(7.0, 0.075, 0.4, 0.01, 0.00, 1.0);
         this.movePID.setDest(1.0);
         this.rotPID = new PIDController(0.75, 0.0, 0.15, 0.01, 0.0, 0.5);
         targetRot = path.getTargetRot() % (2.0 * Math.PI);
