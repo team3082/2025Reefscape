@@ -7,10 +7,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.auto.commands.FollowRobotPath;
 import frc.robot.auto.commands.MoveToScorePos;
-// import frc.robot.auto.commands.MoveToScorePos;
-// import frc.robot.auto.commands.ScoreCoral;
+import frc.robot.auto.commands.DropCoral;
+import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -18,6 +17,7 @@ import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChickenParser;
 import frc.robot.utils.trajectories.RobotPath;
+
 
 /**
  * Manages autonomous routines for the robot.
@@ -95,12 +95,14 @@ public class Auto {
     @AutoRoutine
     public SequentialCommandGroup scoringManagerTest(){
         return new SequentialCommandGroup(
-            // new ScoreCoral(ScoringPosition.L4),
-            // new WaitCommand(1.0),
-            // new WaitCommand(1.0),
-            // new ScoreCoral(ScoringPosition.L3)
-
-            
+            new MoveToScorePos(ScoringPosition.L4),
+            new DropCoral(1),
+            Commands.runOnce(()->System.out.println("L4")),
+            new WaitCommand(1.0),
+            new WaitCommand(1.0),
+            new MoveToScorePos(ScoringPosition.INTAKE),
+            new IntakeCoral(2),
+            Commands.runOnce(()->System.out.println("STOW"))
         );
     }
 

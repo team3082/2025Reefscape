@@ -1,0 +1,75 @@
+{
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        "PowerDistribution": {
+          "open": true
+        },
+        "RadioStatus": {
+          "open": true
+        },
+        "RealMetadata": {
+          "open": true
+        },
+        "RealOutputs": {
+          "LoggedRobot": {
+            "open": true
+          },
+          "Logger": {
+            "open": true
+          },
+          "open": true
+        },
+        "SystemStats": {
+          "open": true
+        }
+      },
+      "Shuffleboard": {
+        "Robot Views": {
+          "open": true
+        },
+        "Scoring Manager": {
+          "open": true
+        },
+        "Swerve": {
+          "open": true
+        },
+        "open": true
+      },
+      "SmartDashboard": {
+        "open": true
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Robot Views/Field": "Field2d",
+      "/Shuffleboard/Robot Views/Swerve View": "Mechanism2d",
+      "/SmartDashboard/Field": "Field2d"
+    },
+    "windows": {
+      "/Shuffleboard/Robot Views/Field": {
+        "bottom": 1638,
+        "builtin": "2025 Reefscape",
+        "height": 8.051901817321777,
+        "left": 534,
+        "right": 3466,
+        "top": 291,
+        "width": 17.54825210571289,
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/Robot Views/Swerve View": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)"
+  }
+}

@@ -7,7 +7,10 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Tuning;
+import frc.robot.subsystems.sim.AlgaeSim;
+import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 
 public class AlgaeIntake {
 
@@ -15,7 +18,7 @@ public class AlgaeIntake {
     private static TalonFX intakeMotor;
     public static DigitalInput sensor;
 
-    public static IntakeState state = IntakeState.STOW;
+    public static IntakeState state = IntakeState.FEED;
     
     /**
      * Enum to represent the diferrent states of the Algae Intake
@@ -70,6 +73,7 @@ public class AlgaeIntake {
         pivotMotor.getConfigurator().apply(pivotConfig);
         intakeMotor.getConfigurator().apply(topWheelConfig);
 
+
         // Beambreak
         sensor = new DigitalInput(Constants.AlgaeIntake.SENSOR_CHANNEL);
     }
@@ -86,6 +90,13 @@ public class AlgaeIntake {
 
             default:
                 pivotMotor.setPosition(radToRot(state.targetAngle)); 
+                if(Robot.isSimulation()){
+                    AlgaeSim.update();
+                    AlgaeSim.setAngle(state.targetAngle);
+                    AlgaeSim.setSpeed(state.targetSpeed);
+                    System.out.println("Alage Sim Speed: " + AlgaeSim.getSpeed());
+                    AlgaeVisualizer.update();
+                }
                 intakeMotor.set(state.targetSpeed);
             break;
         }

@@ -2,21 +2,24 @@ package frc.robot;
 
 public final class Tuning {
     //Swerve
-    public static final double MOVEP = 2;
-    public static final double MOVEI = 0.3;
+    public static final double MOVEP = 0.2;
+    public static final double MOVEI = 0.0;
     public static final double MOVED = 0.2;
-    public static final double MOVEDEAD = 1.0;
+    public static final double MOVEDEAD = 0.1;
     public static final double MOVEVELDEAD = 0.0;
-    public static final double MOVEMAXSPEED = 0.0;
-    public static final double ROTP = 0.225;
-    public static final double ROTI = 0.0;
-    public static final double ROTD = 0.7;
-    public static final double ROTDEAD = 0.025;
+    public static final double MOVEMAXSPEED = 0.4;
+    // public static final double ROTP = 0.225;
+    // public static final double ROTI = 0.0;
+    // public static final double ROTD = 0.7;
+    public static final double ROTP = 0.1;
+    public static final double ROTI = 0.00;
+    public static final double ROTD = 0;
+    public static final double ROTDEAD = 0.005;
     public static final double ROTVELDEAD = 0.01;
-    public static final double ROTMAXSPEED = 0.5;
+    public static final double ROTMAXSPEED = 0.25;
  
      // TODO Tune
-     public static final double SWERVE_TRJ_PPOS = 0.005;
+     public static final double SWERVE_TRJ_PPOS = 0.05;
      public static final double SWERVE_TRJ_IPOS = 0.00;
      public static final double SWERVE_TRJ_DPOS = 0.0002;
 
@@ -79,11 +82,11 @@ public final class Tuning {
   
     public static final class Intake {
         public static final double STOW_ANGLE = 0.0;
-        public static final double FEED_ANGLE = 0.0;
+        public static final double FEED_ANGLE = 90.0;
         public static final double HOLD_ANGLE = 0.0;
         public static final double EJECT_ANGLE = 0.0;
 
-        public static final double FEED_SPEED = 0.0;
+        public static final double FEED_SPEED = 800.0;
         public static final double EJECT_SPEED = 0.0;
     }
 }

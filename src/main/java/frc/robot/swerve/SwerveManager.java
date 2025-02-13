@@ -143,7 +143,6 @@ public final class SwerveManager {
         for (SwerveModule mod : mods) {
             velSum = velSum.add(Vector2.fromPolar(mod.getSteerAngle(), mod.getDriveVelocity()));
         }
-
         return velSum.div(mods.length);
     }
 

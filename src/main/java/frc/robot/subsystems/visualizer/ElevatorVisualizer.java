@@ -20,16 +20,20 @@ public class ElevatorVisualizer {
     private static MechanismLigament2d elevatorStage2 = elevatorStage2_root.append(new MechanismLigament2d("Elevator Stage 2", 33, 90.0));
     private static MechanismLigament2d elevatorStage3 = elevatorStage3_root.append(new MechanismLigament2d("Elevator Stage 3", 8, 90.0));
 
+    /**
+     * sets ligament colors
+     */
     public static void init() {
-        // set ligament colors
         elevatorBase.setColor(new Color8Bit(0, 0, 255));
         elevatorStage1.setColor(new Color8Bit(0, 0, 255));
         elevatorStage2.setColor(new Color8Bit(0, 0, 255));
         elevatorStage3.setColor(new Color8Bit(0, 0, 255));
     }
 
+    /**
+     * sets positions of elevator stages
+     */
     public static void update() {
-        // set positions of elevator stages
         double elevatorHeight = ScoringManager.elevator.getElevatorHeight();
         elevatorStage1_root.setPosition(24  , elevatorHeight / 3.0);
         elevatorStage2_root.setPosition(22, elevatorHeight / (3.0 / 2.0));

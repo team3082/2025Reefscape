@@ -72,7 +72,7 @@ public class RTime {
      */
     public static double deltaTime() {
         //return m_deltatime;
-        return Robot.kDefaultPeriod;
+        return Robot.defaultPeriodSecs;
     }
 
 

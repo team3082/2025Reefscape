@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
@@ -8,15 +10,23 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.auto.Auto;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.visualizer.CoralVisualizer;
+import frc.robot.subsystems.sim.AlgaeSim;
+import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.swerve.visualizer.SwerveBaseVisualizer;
 import frc.robot.swerve.SwervePID;
+import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.Vector2;
+import frc.robot.auto.Auto;
+
 /*
  * handles telemetry for the robot
  * reads values from subsystems and updates tables and visualizers
@@ -62,29 +72,44 @@ public class Telemetry {
     private static final GenericEntry SWERVE_MOD_4_TARGET_SPEED = swerveTab.add("Swerve Module 4 Target Speed", SwerveManager.mods[3].targetSpeed).getEntry();
     private static final GenericEntry SWERVE_MOD_4_INVERTED = swerveTab.add("Swerve Module 4 Inverted", SwerveManager.mods[3].inverted).getEntry();
 
-    // Scoring Manager
-    private static final GenericEntry SCORING_TRANSITORY_STATE = scoringManagerTab.add("transitory state", ScoringManager.transitoryState.name()).getEntry();
-    private static final GenericEntry SCORING_POSITION = scoringManagerTab.add("scoring position", ScoringManager.scoringPosition.name()).getEntry();
+    // // Scoring Manager
+    // private static final GenericEntry SCORING_TRANSITORY_STATE = scoringManagerTab.add("transitory state", ScoringManager.transitoryState.name()).getEntry();
+    // private static final GenericEntry SCORING_POSITION = scoringManagerTab.add("scoring position", ScoringManager.scoringPosition.name()).getEntry();
 
-    // End Effector
-    private static final GenericEntry END_EFFECTOR_TARGET_ANGLE = endEffectorTab.add("target angle", ScoringManager.endEffector.targetAngle).getEntry();
-    private static final GenericEntry END_EFFECTOR_CURRENT_ANGLE = endEffectorTab.add("current angle", ScoringManager.endEffector.getPivotAngle()).getEntry();
-    private static final GenericEntry END_EFFECTOR_WHEEL_SPEED = endEffectorTab.add("wheel speed", ScoringManager.endEffector.intakeState.targetSpeed).getEntry();
+    // // End Effector
+    // private static final GenericEntry END_EFFECTOR_TARGET_ANGLE = endEffectorTab.add("target angle", ScoringManager.endEffector.targetAngle).getEntry();
+    // private static final GenericEntry END_EFFECTOR_CURRENT_ANGLE = endEffectorTab.add("current angle", ScoringManager.endEffector.getPivotAngle()).getEntry();
+    // private static final GenericEntry END_EFFECTOR_WHEEL_SPEED = endEffectorTab.add("wheel speed", ScoringManager.endEffector.intakeState.targetSpeed).getEntry();
 
-    // Elevator
-    private static final GenericEntry ELEVATOR_TARGET_POSITION = elevatorTab.add("target position", ScoringManager.elevator.targetHeight).getEntry();
-    private static final GenericEntry ELEVATOR_CURRENT_POSITION = elevatorTab.add("current position", ScoringManager.elevator.getElevatorHeight()).getEntry();
+    // // Elevator
+    // private static final GenericEntry ELEVATOR_TARGET_POSITION = elevatorTab.add("target position", ScoringManager.elevator.targetHeight).getEntry();
+    // private static final GenericEntry ELEVATOR_CURRENT_POSITION = elevatorTab.add("current position", ScoringManager.elevator.getElevatorHeight()).getEntry();
 
     public static void init() {
         robotTab.add("Field", fieldView);
-        robotTab.add("Subsystem View", subsytemView);
+        // robotTab.add("Subsystem View", subsytemView);
         robotTab.add("Swerve View", swerveView);
+        robotTab.add("Coral Operator View", CoralVisualizer.getMechanism2d());
 
-        ElevatorVisualizer.init();
-        EndEffectorVisualizer.init();
+        // ElevatorVisualizer.init();
+        // EndEffectorVisualizer.init();
         SwerveBaseVisualizer.init();
+        AlgaeVisualizer.init();
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
+        robotTab.addString("Dest Error", () -> SwervePID.getError().toString());
+        robotTab.addString("Update Output Vel", () -> SwervePID.updateOutputVel().toString());
+        robotTab.addString("xPID Error", () -> SwervePID.getError().toString());
+        robotTab.addDouble("Rot Error", () -> SwervePID.getRotationError());
+
+        robotTab.addBoolean("AtDest", () -> SwervePID.atDest());
+        robotTab.addBoolean("AtRot", () -> SwervePID.atRot());
+
+        robotTab.addDouble("Rotation Rads", () -> Pigeon.getRotationRad());
+        // robotTab.add(Auto.getAutoSelector());
+
+        Logger.recordOutput("Error", SwervePID.getError().toString());
+
 
         robotTab.add("Auto Selector", Auto.routineManager.autoSelector);
     }
@@ -92,7 +117,7 @@ public class Telemetry {
     public static void update() {
         updateField();
         updateSwerve();
-        updateScoring();
+        // updateScoring();
         
     }
 
@@ -142,19 +167,19 @@ public class Telemetry {
     /**
      * Updates the Mech2d values of the simulated scoring subsystems
      */
-    private static void updateScoring(){
-        // update table values
-        SCORING_TRANSITORY_STATE.setString(ScoringManager.transitoryState.name());
-        SCORING_POSITION.setString(ScoringManager.scoringPosition.name());
+    // private static void updateScoring(){
+    //     // update table values
+    //     SCORING_TRANSITORY_STATE.setString(ScoringManager.transitoryState.name());
+    //     SCORING_POSITION.setString(ScoringManager.scoringPosition.name());
 
-        END_EFFECTOR_TARGET_ANGLE.setDouble(ScoringManager.endEffector.targetAngle);
-        END_EFFECTOR_CURRENT_ANGLE.setDouble(ScoringManager.endEffector.getPivotAngle());
-        END_EFFECTOR_WHEEL_SPEED.setDouble(ScoringManager.endEffector.intakeState.targetSpeed);
+    //     END_EFFECTOR_TARGET_ANGLE.setDouble(ScoringManager.endEffector.targetAngle);
+    //     END_EFFECTOR_CURRENT_ANGLE.setDouble(ScoringManager.endEffector.getPivotAngle());
+    //     END_EFFECTOR_WHEEL_SPEED.setDouble(ScoringManager.endEffector.intakeState.targetSpeed);
 
-        ELEVATOR_TARGET_POSITION.setDouble(ScoringManager.elevator.targetHeight);
-        ELEVATOR_CURRENT_POSITION.setDouble(ScoringManager.elevator.getElevatorHeight());
+    //     ELEVATOR_TARGET_POSITION.setDouble(ScoringManager.elevator.targetHeight);
+    //     ELEVATOR_CURRENT_POSITION.setDouble(ScoringManager.elevator.getElevatorHeight());
 
-        ElevatorVisualizer.update();
-        EndEffectorVisualizer.update();
-    }
+    //     ElevatorVisualizer.update();
+    //     EndEffectorVisualizer.update();
+    // }
 }

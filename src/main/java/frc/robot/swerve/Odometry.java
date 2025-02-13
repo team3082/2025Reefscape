@@ -59,7 +59,7 @@ public class Odometry {
                     deltaAngle = pigeonAngle - previousPigeonAngle;
                 }
                 
-                //lil fix
+                //- Math.PI/2.0 is becuase pigeon rotation is offset
                 Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2.0, deltaAngle);
                 
                 previousPigeonAngle = pigeonAngle;

@@ -144,4 +144,12 @@ public class Vector2 {
     public String toString(){
         return String.format("(%.2f, %.2f)", x, y);
     }
+
+    /**
+     * creates a copy of the vector
+     * @return among us (sus) - good soup  POlson 2005 - 2025
+     */
+    public Vector2 copy() {
+        return new Vector2(this.x, this.y);
+    }
 }
