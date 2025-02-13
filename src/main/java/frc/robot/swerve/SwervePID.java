@@ -2,12 +2,6 @@ package frc.robot.swerve;
 
 import static frc.robot.Tuning.*;
 
-import org.littletonrobotics.junction.AutoLogOutput;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RMath;
@@ -62,28 +56,15 @@ public class SwervePID {
     }
     
     public static double updateOutputX() {
-        if(!Robot.isSimulation()){
-            return (xPID.atSetpoint() ? 0 : (DriverStation.getAlliance().get() == Alliance.Red ? -1 : 1) * xPID.updateOutput(SwervePosition.getPosition().x));
-        } else {
-            return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).x;
-        }
+        return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).x;
     }
 
     public static double updateOutputY() {
-        if(!Robot.isSimulation())
-            return yPID.atSetpoint()? 0 : yPID.updateOutput(SwervePosition.getPosition().y);
-        else{
-            return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).y; //.0085
-        }
+        return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).y; //.0085
     }
 
     public static double updateOutputRot() {
-        if(RobotBase.isReal())
-            return rotPID.updateOutput(Pigeon.getRotationRad());
-        else{
-            Pigeon.setSimulatedRot(rotPID.getDest());
-            return rotPID.updateOutput(Pigeon.getRotationRad());
-        }
+        return rotPID.updateOutput(Pigeon.getRotationRad());
     }
 
     public static Vector2 updateOutputVel() {
@@ -95,14 +76,11 @@ public class SwervePID {
     }
 
     public static boolean atDest() {
-        return (Robot.isSimulation()
-        && SwervePosition.getPosition().isGreater(new Vector2(getDest().x - moveDead, getDest().y - moveDead)) 
-        && !SwervePosition.getPosition().isGreater(new Vector2(getDest().x + moveDead, getDest().y + moveDead))
-        )||(xPID.atSetpoint() && yPID.atSetpoint());
+        return xPID.atSetpoint() && yPID.atSetpoint();
     }
     
     public static boolean atRot() {
-        return (Robot.isSimulation() && Pigeon.simulatedRot == rotPID.getDest()) || rotPID.atSetpoint();
+        return rotPID.atSetpoint();
     }
 
     public static Vector2 getError() {

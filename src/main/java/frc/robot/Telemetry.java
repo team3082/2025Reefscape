@@ -86,7 +86,7 @@ public class Telemetry {
     // private static final GenericEntry ELEVATOR_CURRENT_POSITION = elevatorTab.add("current position", ScoringManager.elevator.getElevatorHeight()).getEntry();
 
     public static void init() {
-        robotTab.add("Field", fieldView);
+        robotTab.add("Field View", fieldView);
         // robotTab.add("Subsystem View", subsytemView);
         robotTab.add("Swerve View", swerveView);
         robotTab.add("Coral Operator View", CoralVisualizer.getMechanism2d());
@@ -152,8 +152,7 @@ public class Telemetry {
     /**
      * Updates the simulated field in shuffleboard based on SwervePosition
      */
-    private static void updateField(){
-        
+    private static void updateField() {
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
             SwervePosition.getPosition().y/Constants.METERSTOINCHES + 8.27,

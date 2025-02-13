@@ -33,20 +33,13 @@ public class SwervePosition {
     }
 
     public static void update() {
+        Vector2 odometryPos = Odometry.getPosition();
+        Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
+        
+        position = position.add(new Vector2(-odometryInnovation.y, odometryInnovation.x));
+        lastOdomPos = odometryPos;
 
-        if(RobotBase.isReal()){
-            Vector2 odometryPos = Odometry.getPosition();
-            Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
-            
-            position = position.add(new Vector2(-odometryInnovation.y, odometryInnovation.x));
-            lastOdomPos = odometryPos;
-
-            absVelocity = odometryInnovation.div(RTime.deltaTime());
-        } else {
-            lastAbsVelocity = absVelocity; 
-            absVelocity = SwerveManager.getRobotDriveVelocity().rotate(Pigeon.getRotationRad() - Math.PI / 2);
-            position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime())); 
-        }
+        absVelocity = odometryInnovation.div(RTime.deltaTime());
     }
 
     public static final double correctionMultiplier = 0.1;

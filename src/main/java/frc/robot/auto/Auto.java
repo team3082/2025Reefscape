@@ -17,6 +17,7 @@ import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChickenParser;
 import frc.robot.utils.trajectories.RobotPath;
+import frc.robot.auto.commands.FollowRobotPath;
 
 
 /**
@@ -46,16 +47,16 @@ public class Auto {
 
         return new SequentialCommandGroup (
             new FollowRobotPath(paths.get(0)),
-            new MoveToScorePos(ScoringPosition.L4),
-            new MoveToScorePos(ScoringPosition.STOW),
+            // new MoveToScorePos(ScoringPosition.L4),
+            // new MoveToScorePos(ScoringPosition.STOW),
 
             new FollowRobotPath(paths.get(1)),
-            new MoveToScorePos(ScoringPosition.L3),
-            new MoveToScorePos(ScoringPosition.STOW),
+            // new MoveToScorePos(ScoringPosition.L3),
+            // new MoveToScorePos(ScoringPosition.STOW),
 
             new FollowRobotPath(paths.get(2)),
-            new MoveToScorePos(ScoringPosition.L2),
-            new MoveToScorePos(ScoringPosition.STOW),
+            // new MoveToScorePos(ScoringPosition.L2),
+            // new MoveToScorePos(ScoringPosition.STOW),
             
             new FollowRobotPath(paths.get(3))
             

@@ -107,9 +107,9 @@ public class SwerveModule {
         // update simulation
 
         if (Robot.isSimulation()) {
-            simModule.setAngle(targetAngle + (Math.PI / 2.0));
+            simModule.setAngle(targetAngle);
             simModule.setSpeed(targetSpeed);
-            simModule.update();
+            simModule.update(inverted);
         }
     }
 
@@ -175,7 +175,7 @@ public class SwerveModule {
     /** returns swerve wheel angle in radians */
     public double getSteerAngle() {
         if (Robot.isReal()) return rotToRadSteer(steer.getPosition().getValueAsDouble()) - (Math.PI / 2.0);
-        else return simModule.getAngle() - Math.PI / 2.0;
+        else return simModule.getAngle();
     }
 
     private double lastSteerAngle = Double.NaN;
@@ -202,13 +202,13 @@ public class SwerveModule {
         double driveTimeConstant = 2.0 * Math.PI * 2.0;
 
         if (Robot.isReal()) return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
-        else return (simModule.getSpeed() * driveTimeConstant * 1.5) * (inverted ? -1 : 1); // fudge factor
+        else return (simModule.getSpeed() * driveTimeConstant * 10) * (inverted ? -1 : 1); // fudge factor
     }
 
     /** get position of the drive motor */
     public double getDrivePosition() {
         if (RobotBase.isReal()) return rotToRadDrive(drive.getPosition().getValueAsDouble());
-        else return 0.0; // TODO add feature to sim
+        else return rotToRadDrive(simModule.getDrivePosition()); // TODO add feature to sim
     }
 
     /** convert radians to internal motor rotations for the steer motor */

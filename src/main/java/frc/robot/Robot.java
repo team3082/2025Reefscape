@@ -32,7 +32,7 @@ public class Robot extends LoggedRobot {
   @AutoLogOutput
   public static double fake = 0;
 
-  public Robot(){
+  public Robot() {
     try {
       Thread.sleep(5000);
     } catch (InterruptedException e) {
@@ -61,9 +61,6 @@ public class Robot extends LoggedRobot {
     OI.init();
 
     RTime.init();
-
-    // Logging
-    Telemetry.init();
 
     //Pigeon.setYaw(90);
     Logger.recordMetadata("ProjectName", "2025Reefscape"); // Set a metadata value
@@ -140,7 +137,7 @@ public class Robot extends LoggedRobot {
   
   @Override
   public void autonomousPeriodic() {
-    // Auto.update();
+    Auto.update();
   }
 
   @Override
@@ -164,8 +161,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledInit() {
     // Clear Auto Commands
-    // CommandScheduler.getInstance().cancelAll();
-    // CommandScheduler.getInstance().disable();
+    CommandScheduler.getInstance().cancelAll();
+    CommandScheduler.getInstance().disable();
 
     // Disable Subsystems
     // ScoringManager.setScoringLevel(ScoringPosition.DISABLED);

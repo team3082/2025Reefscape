@@ -8,12 +8,13 @@ public class SwerveModuleSim {
 
     private double targetAngle, targetSpeed; // Radians, PercentOut
     public double angle, speed; // Radians, PercentOut
+    private double drivePos = 0.0;
 
     private final double MAX_RAMP = 2.0; // percent out / second
 
     public SwerveModuleSim() {}
 
-    public void update() {
+    public void update(boolean inverted) {
         // update pos
         angle += anglePID.updateOutput(angle) * RTime.deltaTime();
 
@@ -24,13 +25,20 @@ public class SwerveModuleSim {
             if (speedError < 0) speed += MAX_RAMP * RTime.deltaTime();
             else speed -= MAX_RAMP * RTime.deltaTime();
         }
+
+        drivePos += speed * RTime.deltaTime() * 100 * (inverted ? -1 : 1);
     }
 
     public void setAngle(double setPos) {
+        setPos = -setPos;
         if (targetAngle != setPos) {
             targetAngle = setPos;
             anglePID.setDest(targetAngle);
         }
+    }
+
+    public double getDrivePosition() {
+        return drivePos;
     }
 
     public void setSpeed(double setSpeed) {
@@ -38,7 +46,7 @@ public class SwerveModuleSim {
     }
 
     public double getAngle() {
-        return angle;
+        return -angle;
     }
 
     public double getSpeed() {
