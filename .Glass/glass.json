@@ -1,5 +1,8 @@
 {
   "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
     "transitory": {
       "AdvantageKit": {
         "PowerDistribution": {
@@ -24,16 +27,20 @@
           "open": true
         }
       },
+      "LiveWindow": {
+        "open": true
+      },
       "Shuffleboard": {
+        ".recording": {
+          "open": true
+        },
         "Robot Views": {
           "open": true
         },
         "Scoring Manager": {
           "open": true
         },
-        "Swerve": {
-          "open": true
-        }
+        "open": true
       },
       "SmartDashboard": {
         "open": true
@@ -84,6 +91,9 @@
   },
   "NetworkTables Info": {
     "Connections": {
+      "open": true
+    },
+    "Server": {
       "open": true
     },
     "visible": true

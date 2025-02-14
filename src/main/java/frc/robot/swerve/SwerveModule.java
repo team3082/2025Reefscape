@@ -201,13 +201,13 @@ public class SwerveModule {
         // TODO Recalculate
         double driveTimeConstant = 2.0 * Math.PI * 2.0;
 
-        if (Robot.isReal()) return drive.getVelocity().getValueAsDouble() * driveTimeConstant;
+        if (Robot.isReal()) return (drive.getVelocity().getValueAsDouble() / DRIVE_RATIO) * driveTimeConstant;
         else return (simModule.getSpeed() * driveTimeConstant * 10) * (inverted ? -1 : 1); // fudge factor
     }
 
     /** get position of the drive motor */
     public double getDrivePosition() {
-        if (RobotBase.isReal()) return rotToRadDrive(drive.getPosition().getValueAsDouble());
+        if (RobotBase.isReal()) return rotToRadDrive(drive.getPosition().getValueAsDouble() * 2.0);
         else return rotToRadDrive(simModule.getDrivePosition()); // TODO add feature to sim
     }
 

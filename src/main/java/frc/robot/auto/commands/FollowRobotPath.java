@@ -24,7 +24,7 @@ public class FollowRobotPath extends Command {
         this.path = path;
         this.movePID = new PIDController(7.0, 0.075, 0.4, 0.035, 0.00, 0.2);
         this.movePID.setDest(1.0);
-        this.rotPID = new PIDController(0.75, 0.0, 0.15, 0.01, 0.0, 0.5);
+        this.rotPID = new PIDController(0.25, 0.0, 0.0, 0.05, 0.0, 0.2);
         targetRot = path.getTargetRot() % (2.0 * Math.PI);
 
         this.rotPID.setDest(targetRot);
@@ -43,15 +43,12 @@ public class FollowRobotPath extends Command {
         System.out.println("T: " + path.getClosestT());
 
         boolean driveFinished = (SwervePosition.getPosition().sub(path.getLastPos()).mag() < Tuning.CURVE_DEADBAND);
-        // boolean rotFinished = (Math.abs(currentRot - targetRot) < 0.05);
-        // SwerveManager.rotateAndDrive(rotFinished ? 0.0 : rotOutput, driveFinished ? new Vector2() : driveVector);
+        boolean rotFinished = (Math.abs(currentRot - targetRot) < 0.1);
+        System.out.println("target rot: " + targetRot + " current rot: " + currentRot);
+        System.out.println("current pos: " + SwervePosition.getPosition() + " final pos: " + path.getLastPos() + " drive vector: " + driveVector.toString() + " rot: " + rotOutput);
 
-        System.out.println("current pos: " + SwervePosition.getPosition() + " final pos: " + path.getLastPos() + " drive vector: " + driveVector.toString());
-
-
-
-        boolean rotFinished = true;
-        OperationDesertStorm.rotateAndDrive(0.0, driveFinished ? new Vector2() : new Vector2(driveVector.y, -driveVector.x));
+        // boolean rotFinished = true;
+        OperationDesertStorm.rotateAndDrive(rotFinished ? 0.0 : rotOutput, driveFinished ? new Vector2() : new Vector2(driveVector.x, -driveVector.y));
 
         isFinished = driveFinished & rotFinished;
 

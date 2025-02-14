@@ -25,8 +25,8 @@ public class OI {
     // Movement
     static final int moveX         = LogitechF310.AXIS_LEFT_X;
     static final int moveY         = LogitechF310.AXIS_LEFT_Y;
-    // static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
-    static final int rotateX       = 2;
+    static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
+    // static final int rotateX       = 2;
     static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
 
     // zero is for Pigeon
@@ -119,13 +119,14 @@ public class OI {
                     if(currentPos.sub(aprilPosition).mag() < min){
                         minIndex = i;
                         min = currentPos.sub(aprilPosition).mag();
+                        System.out.println("min index: " + minIndex);
                     }
                 }
                 
                 // TODO Adjust positions for accurate scoring
                 // Set destination and rotation based on AprilTag data
                 SwervePID.setDestPt(Constants.APRIL_TAGS[minIndex].getPosition());
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI / 2.0));
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ());
 
 
             }

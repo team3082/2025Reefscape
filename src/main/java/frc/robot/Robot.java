@@ -46,7 +46,7 @@ public class Robot extends LoggedRobot {
     OperationDesertStorm.init();
     SwervePosition.init();
     SwervePID.init();
-    SwervePosition.setPosition(Constants.APRIL_TAGS[7].getPosition());
+    SwervePosition.setPosition(new Vector2(Constants.APRIL_TAGS[7].getPosition().x, Constants.APRIL_TAGS[7].getPosition().y));
 
     // Subsystems
     // ScoringManager.init();
