@@ -40,10 +40,6 @@ public class Pigeon {
         simulatedRot = rad;
     }
 
-    public static void zero(){
-        pigeon.setYaw(90.0);
-    }
-
     public static void setYaw(double deg) {
         pigeon.setYaw(deg);
         simulatedRot = (deg * Math.PI / 180) + (Math.PI / 2.0);
