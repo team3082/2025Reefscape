@@ -36,7 +36,7 @@ public class SwervePosition {
         Vector2 odometryPos = Odometry.getPosition();
         Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
         
-        position = position.add(new Vector2(-odometryInnovation.y, odometryInnovation.x));
+        position = position.add(odometryInnovation);
         lastOdomPos = odometryPos;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());

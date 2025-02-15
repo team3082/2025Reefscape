@@ -1,10 +1,12 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 
-import static frc.robot.swerve.OperationDesertStorm.mods;
+import static frc.robot.swerve.SwerveManager.mods;
 
 public class Odometry {
 
@@ -42,9 +44,9 @@ public class Odometry {
                 
                 for(int i = 0; i < mods.length; i++){
 
-                    double position = mods[i].getDrivePosition();
-                    double disp = position - previousDrivePositions[i];
-                    previousDrivePositions[i] = position;
+                    double drivePosition = mods[i].getDrivePosition();
+                    double disp = drivePosition - previousDrivePositions[i];
+                    previousDrivePositions[i] = drivePosition;
 
                     double angle = mods[i].getSteerAngle();
 
@@ -60,8 +62,8 @@ public class Odometry {
                 }
                 
                 //- Math.PI/2.0 is becuase pigeon rotation is offset
-                Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2.0, deltaAngle);
-                
+                Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2, deltaAngle);
+                //innovation = new Vector2(innovation.y, innovation.x);
                 previousPigeonAngle = pigeonAngle;
 
                 synchronized(positionLock){
@@ -103,8 +105,9 @@ public class Odometry {
 
     }
 
+    // TODO Merge into one method
     public static Vector2 poseExponentiation(Vector2 deltaPos, double theta0, double deltaTheta){
-        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta);
+        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta).rotate((DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI/2);
     }
 
 }

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Tuning;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.swerve.OperationDesertStorm;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.trajectories.RobotPath;
 import frc.robot.utils.PIDController;
@@ -48,27 +48,27 @@ public class FollowRobotPath extends Command {
         System.out.println("current pos: " + SwervePosition.getPosition() + " final pos: " + path.getLastPos() + " drive vector: " + driveVector.toString() + " rot: " + rotOutput);
 
         // boolean rotFinished = true;
-        OperationDesertStorm.rotateAndDrive(rotFinished ? 0.0 : rotOutput, driveFinished ? new Vector2() : new Vector2(driveVector.x, -driveVector.y));
+        SwerveManager.rotateAndDrive(rotFinished ? 0.0 : rotOutput, driveFinished ? new Vector2() : new Vector2(driveVector.x, -driveVector.y));
 
         isFinished = driveFinished & rotFinished;
 
         if (isFinished) {
             System.out.println("Path Finished");
-            OperationDesertStorm.rotateAndDrive(0, new Vector2());
+            SwerveManager.rotateAndDrive(0, new Vector2());
             end(false);
         }
-        OperationDesertStorm.update();
+        SwerveManager.update();
     }
 
     @Override
     public void end(boolean interrupted) {
-        OperationDesertStorm.rotateAndDrive(0, new Vector2());
-        OperationDesertStorm.update();
+        SwerveManager.rotateAndDrive(0, new Vector2());
+        SwerveManager.update();
         if (Robot.isSimulation()) {
-            OperationDesertStorm.mods[0].simModule.speed = 0;
-            OperationDesertStorm.mods[1].simModule.speed = 0;
-            OperationDesertStorm.mods[2].simModule.speed = 0;
-            OperationDesertStorm.mods[3].simModule.speed = 0;
+            SwerveManager.mods[0].simModule.speed = 0;
+            SwerveManager.mods[1].simModule.speed = 0;
+            SwerveManager.mods[2].simModule.speed = 0;
+            SwerveManager.mods[3].simModule.speed = 0;
         }
     }
 

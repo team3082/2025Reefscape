@@ -53,7 +53,7 @@ public class SwerveModule {
 
         steerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 
 
-        steerConfig.Slot0.kP = 0.25;
+        steerConfig.Slot0.kP = 0.35;
         steerConfig.Slot0.kI = 0.0;
         steerConfig.Slot0.kD = 0.0;
 

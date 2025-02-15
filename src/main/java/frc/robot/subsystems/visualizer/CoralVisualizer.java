@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-import frc.robot.subsystems.LebronJames;
-import frc.robot.subsystems.LebronJames.ScoringPosition;
-import frc.robot.subsystems.LebronJames.TransitoryState;
+import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.subsystems.ScoringManager.TransitoryState;
 
 /**
  * The CoralVisualizer provides a visual representation of the reef for the operator to select a coral
@@ -43,8 +43,8 @@ public class CoralVisualizer {
             }
         }
 
-        ScoringPosition position = LebronJames.getScoringLevel();
-        setSelectedCoral(LebronJames.isPickingRightCoral(), getLevelId(position), true);
+        ScoringPosition position = ScoringManager.getScoringLevel();
+        setSelectedCoral(ScoringManager.isPickingRightCoral(), getLevelId(position), true);
     }
 
     /**
@@ -91,9 +91,9 @@ public class CoralVisualizer {
      */
     public static void updateView(){
         setSelectedCoral(
-            LebronJames.isPickingRightCoral(), 
-            getLevelId(LebronJames.getScoringLevel()), 
-            LebronJames.transitoryState != TransitoryState.FINISHED
+            ScoringManager.isPickingRightCoral(), 
+            getLevelId(ScoringManager.getScoringLevel()), 
+            ScoringManager.transitoryState != TransitoryState.FINISHED
         );
     }
 }

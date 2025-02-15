@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.controllermaps.LogitechF310;
-import frc.robot.subsystems.LebronJames;
-import frc.robot.subsystems.ArmedForces.IntakeState;
-import frc.robot.subsystems.LebronJames.ScoringPosition;
+import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.EndEffector.IntakeState;
+import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.CoralVisualizer;
-import frc.robot.swerve.OperationDesertStorm;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
@@ -32,7 +32,8 @@ public class OI {
     // zero is for Pigeon
     static final int zero          = LogitechF310.BUTTON_Y;
 
-    static final int funnyButton   = LogitechF310.BUTTON_A;
+    static final int funnyButtonLeft   = LogitechF310.BUTTON_RIGHT_BUMPER;
+    static final int funnyButtonRight  = LogitechF310.BUTTON_LEFT_BUMPER;
     private static boolean drivingToReef = false;
 
     // Operator Controls
@@ -75,7 +76,7 @@ public class OI {
         // INPUT
 
         // Reset pigeon
-        if (driverStick.getRawButton(zero)) Pigeon.setYaw(90);
+        if (driverStick.getRawButton(zero)) Pigeon.reset();
 
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
@@ -102,7 +103,7 @@ public class OI {
         // SWERVE
 
         // SCORING
-        if (driverStick.getRawButtonPressed(funnyButton)) {
+        if (driverStick.getRawButtonPressed(funnyButtonRight) || driverStick.getRawButtonPressed(funnyButtonLeft)) {
             drivingToReef = !drivingToReef;
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
@@ -119,15 +120,15 @@ public class OI {
                     if(currentPos.sub(aprilPosition).mag() < min){
                         minIndex = i;
                         min = currentPos.sub(aprilPosition).mag();
-                        System.out.println("min index: " + minIndex);
                     }
                 }
                 
                 // TODO Adjust positions for accurate scoring
                 // Set destination and rotation based on AprilTag data
-                SwervePID.setDestPt(Constants.APRIL_TAGS[minIndex].getPosition());
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ());
-
+                Vector2 targetPosition = driverStick.getRawButton(funnyButtonLeft) ? Constants.APRIL_TAGS[minIndex].getLeftPosition() : Constants.APRIL_TAGS[minIndex].getRightPosition();
+                SwervePID.setDestPt(targetPosition);
+                
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI/2);
 
             }
         }
@@ -141,29 +142,29 @@ public class OI {
             }
             System.out.println("Error: " + SwervePID.getError());
             System.out.println(SwervePID.updateOutputVel());
-            OperationDesertStorm.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
+            SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
         } else {
-            OperationDesertStorm.rotateAndDrive(rotate, drive);
+            SwerveManager.rotateAndDrive(rotate, drive);
         }
     }
 
     public static void operatorInput() {
         /*-Scoring Manager----------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButtonPressed(stow)) LebronJames.setScoringLevel(ScoringPosition.STOW);
-        else if (operatorStick.getRawButtonPressed(L2)) LebronJames.setScoringLevel(ScoringPosition.L2);
-        else if (operatorStick.getRawButtonPressed(L3)) LebronJames.setScoringLevel(ScoringPosition.L3);
-        else if (operatorStick.getRawButtonPressed(L4)) LebronJames.setScoringLevel(ScoringPosition.L4);
+        if (operatorStick.getRawButtonPressed(stow)) ScoringManager.setScoringLevel(ScoringPosition.STOW);
+        else if (operatorStick.getRawButtonPressed(L2)) ScoringManager.setScoringLevel(ScoringPosition.L2);
+        else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
+        else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
 
         if (operatorStick.getRawAxis(RightTrigger)>0.7){
-            LebronJames.setPickingRightCoral(true);
+            ScoringManager.setPickingRightCoral(true);
         } else if (operatorStick.getRawAxis(LeftTrigger)>0.7){
-            LebronJames.setPickingRightCoral(false);
+            ScoringManager.setPickingRightCoral(false);
         }
         
         /*-End Effector-------------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButton(intake)) LebronJames.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
-        else if (operatorStick.getRawButton(outtake)) LebronJames.endEffector.setIntakeState(IntakeState.DROP_PIECE);
-        else LebronJames.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
+        if (operatorStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
+        else if (operatorStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);
+        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
     }
 
 }

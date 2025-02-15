@@ -5,21 +5,23 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.TheGulfOfAmerica;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.auto.Auto;
-import frc.robot.subsystems.LebronJames;
+import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.CoralVisualizer;
 import frc.robot.subsystems.sim.AlgaeSim;
 import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
-import frc.robot.swerve.OperationDesertStorm;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.swerve.visualizer.SwerveBaseVisualizer;
 import frc.robot.swerve.SwervePID;
@@ -48,29 +50,29 @@ public class Telemetry {
 
     // Logging
     // Swerve
-    private static final GenericEntry SWERVE_MOD_1_ANGLE = swerveTab.add("Swerve Module 1 Angle", OperationDesertStorm.mods[0].getSteerAngle()).getEntry();
-    private static final GenericEntry SWERVE_MOD_1_SPEED = swerveTab.add("Swerve Module 1 Speed", OperationDesertStorm.mods[0].getDriveVelocity()).getEntry();
-    private static final GenericEntry SWERVE_MOD_1_TARGET_ANGLE = swerveTab.add("Swerve Module 1 Target Angle", OperationDesertStorm.mods[0].targetAngle).getEntry();
-    private static final GenericEntry SWERVE_MOD_1_TARGET_SPEED = swerveTab.add("Swerve Module 1 Target Speed", OperationDesertStorm.mods[0].targetSpeed).getEntry();
-    private static final GenericEntry SWERVE_MOD_1_INVERTED = swerveTab.add("Swerve Module 1 Inverted", OperationDesertStorm.mods[0].inverted).getEntry();
+    private static final GenericEntry SWERVE_MOD_1_ANGLE = swerveTab.add("Swerve Module 1 Angle", SwerveManager.mods[0].getSteerAngle()).getEntry();
+    private static final GenericEntry SWERVE_MOD_1_SPEED = swerveTab.add("Swerve Module 1 Speed", SwerveManager.mods[0].getDriveVelocity()).getEntry();
+    private static final GenericEntry SWERVE_MOD_1_TARGET_ANGLE = swerveTab.add("Swerve Module 1 Target Angle", SwerveManager.mods[0].targetAngle).getEntry();
+    private static final GenericEntry SWERVE_MOD_1_TARGET_SPEED = swerveTab.add("Swerve Module 1 Target Speed", SwerveManager.mods[0].targetSpeed).getEntry();
+    private static final GenericEntry SWERVE_MOD_1_INVERTED = swerveTab.add("Swerve Module 1 Inverted", SwerveManager.mods[0].inverted).getEntry();
 
-    private static final GenericEntry SWERVE_MOD_2_ANGLE = swerveTab.add("Swerve Module 2 Angle", OperationDesertStorm.mods[1].getSteerAngle()).getEntry();
-    private static final GenericEntry SWERVE_MOD_2_SPEED = swerveTab.add("Swerve Module 2 Speed", OperationDesertStorm.mods[1].getDriveVelocity()).getEntry();
-    private static final GenericEntry SWERVE_MOD_2_TARGET_ANGLE = swerveTab.add("Swerve Module 2 Target Angle", OperationDesertStorm.mods[1].targetAngle).getEntry();
-    private static final GenericEntry SWERVE_MOD_2_TARGET_SPEED = swerveTab.add("Swerve Module 2 Target Speed", OperationDesertStorm.mods[1].targetSpeed).getEntry();
-    private static final GenericEntry SWERVE_MOD_2_INVERTED = swerveTab.add("Swerve Module 2 Inverted", OperationDesertStorm.mods[1].inverted).getEntry();
+    private static final GenericEntry SWERVE_MOD_2_ANGLE = swerveTab.add("Swerve Module 2 Angle", SwerveManager.mods[1].getSteerAngle()).getEntry();
+    private static final GenericEntry SWERVE_MOD_2_SPEED = swerveTab.add("Swerve Module 2 Speed", SwerveManager.mods[1].getDriveVelocity()).getEntry();
+    private static final GenericEntry SWERVE_MOD_2_TARGET_ANGLE = swerveTab.add("Swerve Module 2 Target Angle", SwerveManager.mods[1].targetAngle).getEntry();
+    private static final GenericEntry SWERVE_MOD_2_TARGET_SPEED = swerveTab.add("Swerve Module 2 Target Speed", SwerveManager.mods[1].targetSpeed).getEntry();
+    private static final GenericEntry SWERVE_MOD_2_INVERTED = swerveTab.add("Swerve Module 2 Inverted", SwerveManager.mods[1].inverted).getEntry();
 
-    private static final GenericEntry SWERVE_MOD_3_ANGLE = swerveTab.add("Swerve Module 3 Angle", OperationDesertStorm.mods[2].getSteerAngle()).getEntry();
-    private static final GenericEntry SWERVE_MOD_3_SPEED = swerveTab.add("Swerve Module 3 Speed", OperationDesertStorm.mods[2].getDriveVelocity()).getEntry();
-    private static final GenericEntry SWERVE_MOD_3_TARGET_ANGLE = swerveTab.add("Swerve Module 3 Target Angle", OperationDesertStorm.mods[2].targetAngle).getEntry();
-    private static final GenericEntry SWERVE_MOD_3_TARGET_SPEED = swerveTab.add("Swerve Module 3 Target Speed", OperationDesertStorm.mods[2].targetSpeed).getEntry();
-    private static final GenericEntry SWERVE_MOD_3_INVERTED = swerveTab.add("Swerve Module 3 Inverted", OperationDesertStorm.mods[2].inverted).getEntry();
+    private static final GenericEntry SWERVE_MOD_3_ANGLE = swerveTab.add("Swerve Module 3 Angle", SwerveManager.mods[2].getSteerAngle()).getEntry();
+    private static final GenericEntry SWERVE_MOD_3_SPEED = swerveTab.add("Swerve Module 3 Speed", SwerveManager.mods[2].getDriveVelocity()).getEntry();
+    private static final GenericEntry SWERVE_MOD_3_TARGET_ANGLE = swerveTab.add("Swerve Module 3 Target Angle", SwerveManager.mods[2].targetAngle).getEntry();
+    private static final GenericEntry SWERVE_MOD_3_TARGET_SPEED = swerveTab.add("Swerve Module 3 Target Speed", SwerveManager.mods[2].targetSpeed).getEntry();
+    private static final GenericEntry SWERVE_MOD_3_INVERTED = swerveTab.add("Swerve Module 3 Inverted", SwerveManager.mods[2].inverted).getEntry();
 
-    private static final GenericEntry SWERVE_MOD_4_ANGLE = swerveTab.add("Swerve Module 4 Angle", OperationDesertStorm.mods[3].getSteerAngle()).getEntry();
-    private static final GenericEntry SWERVE_MOD_4_SPEED = swerveTab.add("Swerve Module 4 Speed", OperationDesertStorm.mods[3].getDriveVelocity()).getEntry();
-    private static final GenericEntry SWERVE_MOD_4_TARGET_ANGLE = swerveTab.add("Swerve Module 4 Target Angle", OperationDesertStorm.mods[3].targetAngle).getEntry();
-    private static final GenericEntry SWERVE_MOD_4_TARGET_SPEED = swerveTab.add("Swerve Module 4 Target Speed", OperationDesertStorm.mods[3].targetSpeed).getEntry();
-    private static final GenericEntry SWERVE_MOD_4_INVERTED = swerveTab.add("Swerve Module 4 Inverted", OperationDesertStorm.mods[3].inverted).getEntry();
+    private static final GenericEntry SWERVE_MOD_4_ANGLE = swerveTab.add("Swerve Module 4 Angle", SwerveManager.mods[3].getSteerAngle()).getEntry();
+    private static final GenericEntry SWERVE_MOD_4_SPEED = swerveTab.add("Swerve Module 4 Speed", SwerveManager.mods[3].getDriveVelocity()).getEntry();
+    private static final GenericEntry SWERVE_MOD_4_TARGET_ANGLE = swerveTab.add("Swerve Module 4 Target Angle", SwerveManager.mods[3].targetAngle).getEntry();
+    private static final GenericEntry SWERVE_MOD_4_TARGET_SPEED = swerveTab.add("Swerve Module 4 Target Speed", SwerveManager.mods[3].targetSpeed).getEntry();
+    private static final GenericEntry SWERVE_MOD_4_INVERTED = swerveTab.add("Swerve Module 4 Inverted", SwerveManager.mods[3].inverted).getEntry();
 
     // // Scoring Manager
     // private static final GenericEntry SCORING_TRANSITORY_STATE = scoringManagerTab.add("transitory state", ScoringManager.transitoryState.name()).getEntry();
@@ -108,8 +110,7 @@ public class Telemetry {
         // robotTab.addDouble("Rotation Rads", () -> Pigeon.getRotationRad());
         // robotTab.add(Auto.getAutoSelector());
 
-        Logger.recordOutput("Error", SwervePID.getError().toString());
-
+        
 
         robotTab.add("Auto Selector", Auto.routineManager.autoSelector);
     }
@@ -118,33 +119,50 @@ public class Telemetry {
         updateField();
         updateSwerve();
         // updateScoring();
-        
+        logValues();
+    }
+
+    private static void logValues(){
+        Logger.recordOutput("Robot/SwervePID/Error", SwervePID.getError().toString());
+        Logger.recordOutput("Robot/SwervePID/Rot Error", SwervePID.getRotationError());
+        Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.7,
+                                                                          SwervePID.getDest().y/Constants.METERSTOINCHES + 4.01,
+                                                                          Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
+        Logger.recordOutput("Robot/SwervePID/At Dest", SwervePID.atDest());
+        Logger.recordOutput("Robot/SwervePID/At Dest/x", SwervePID.xPID.atSetpoint());
+        Logger.recordOutput("Robot/SwervePID/At Dest/y", SwervePID.yPID.atSetpoint());
+        Logger.recordOutput("Robot/SwervePID/At Rot", SwervePID.atRot());
+        Logger.recordOutput("Robot/Swerve Position", SwervePosition.getPosition().toString());
+        Logger.recordOutput("Robot/Swerve Position/x", SwervePosition.getPosition().x);
+        Logger.recordOutput("Robot/Swerve Position/y", SwervePosition.getPosition().y);
+        Logger.recordOutput("Robot/Swerve Position/rot", Pigeon.getRotationRad());
+
     }
 
     private static void updateSwerve() {
-        SWERVE_MOD_1_ANGLE.setDouble(OperationDesertStorm.mods[0].getSteerAngle());
-        SWERVE_MOD_1_SPEED.setDouble(OperationDesertStorm.mods[0].getDriveVelocity());
-        SWERVE_MOD_1_TARGET_ANGLE.setDouble(OperationDesertStorm.mods[0].targetAngle);
-        SWERVE_MOD_1_TARGET_SPEED.setDouble(OperationDesertStorm.mods[0].targetSpeed);
-        SWERVE_MOD_1_INVERTED.setBoolean(OperationDesertStorm.mods[0].inverted);
+        SWERVE_MOD_1_ANGLE.setDouble(SwerveManager.mods[0].getSteerAngle());
+        SWERVE_MOD_1_SPEED.setDouble(SwerveManager.mods[0].getDriveVelocity());
+        SWERVE_MOD_1_TARGET_ANGLE.setDouble(SwerveManager.mods[0].targetAngle);
+        SWERVE_MOD_1_TARGET_SPEED.setDouble(SwerveManager.mods[0].targetSpeed);
+        SWERVE_MOD_1_INVERTED.setBoolean(SwerveManager.mods[0].inverted);
 
-        SWERVE_MOD_2_ANGLE.setDouble(OperationDesertStorm.mods[1].getSteerAngle());
-        SWERVE_MOD_2_SPEED.setDouble(OperationDesertStorm.mods[1].getDriveVelocity());
-        SWERVE_MOD_2_TARGET_ANGLE.setDouble(OperationDesertStorm.mods[1].targetAngle);
-        SWERVE_MOD_2_TARGET_SPEED.setDouble(OperationDesertStorm.mods[1].targetSpeed);
-        SWERVE_MOD_2_INVERTED.setBoolean(OperationDesertStorm.mods[1].inverted);
+        SWERVE_MOD_2_ANGLE.setDouble(SwerveManager.mods[1].getSteerAngle());
+        SWERVE_MOD_2_SPEED.setDouble(SwerveManager.mods[1].getDriveVelocity());
+        SWERVE_MOD_2_TARGET_ANGLE.setDouble(SwerveManager.mods[1].targetAngle);
+        SWERVE_MOD_2_TARGET_SPEED.setDouble(SwerveManager.mods[1].targetSpeed);
+        SWERVE_MOD_2_INVERTED.setBoolean(SwerveManager.mods[1].inverted);
 
-        SWERVE_MOD_3_ANGLE.setDouble(OperationDesertStorm.mods[2].getSteerAngle());
-        SWERVE_MOD_3_SPEED.setDouble(OperationDesertStorm.mods[2].getDriveVelocity());
-        SWERVE_MOD_3_TARGET_ANGLE.setDouble(OperationDesertStorm.mods[2].targetAngle);
-        SWERVE_MOD_3_TARGET_SPEED.setDouble(OperationDesertStorm.mods[2].targetSpeed);
-        SWERVE_MOD_3_INVERTED.setBoolean(OperationDesertStorm.mods[2].inverted);
+        SWERVE_MOD_3_ANGLE.setDouble(SwerveManager.mods[2].getSteerAngle());
+        SWERVE_MOD_3_SPEED.setDouble(SwerveManager.mods[2].getDriveVelocity());
+        SWERVE_MOD_3_TARGET_ANGLE.setDouble(SwerveManager.mods[2].targetAngle);
+        SWERVE_MOD_3_TARGET_SPEED.setDouble(SwerveManager.mods[2].targetSpeed);
+        SWERVE_MOD_3_INVERTED.setBoolean(SwerveManager.mods[2].inverted);
 
-        SWERVE_MOD_4_ANGLE.setDouble(OperationDesertStorm.mods[3].getSteerAngle());
-        SWERVE_MOD_4_SPEED.setDouble(OperationDesertStorm.mods[3].getDriveVelocity());
-        SWERVE_MOD_4_TARGET_ANGLE.setDouble(OperationDesertStorm.mods[3].targetAngle);
-        SWERVE_MOD_4_TARGET_SPEED.setDouble(OperationDesertStorm.mods[3].targetSpeed);
-        SWERVE_MOD_4_INVERTED.setBoolean(OperationDesertStorm.mods[3].inverted);
+        SWERVE_MOD_4_ANGLE.setDouble(SwerveManager.mods[3].getSteerAngle());
+        SWERVE_MOD_4_SPEED.setDouble(SwerveManager.mods[3].getDriveVelocity());
+        SWERVE_MOD_4_TARGET_ANGLE.setDouble(SwerveManager.mods[3].targetAngle);
+        SWERVE_MOD_4_TARGET_SPEED.setDouble(SwerveManager.mods[3].targetSpeed);
+        SWERVE_MOD_4_INVERTED.setBoolean(SwerveManager.mods[3].inverted);
 
         SwerveBaseVisualizer.update();
     }
@@ -155,9 +173,9 @@ public class Telemetry {
     private static void updateField() {
         // Current position adjusted to be in the center of the field at (0,0)
         Pose2d currentPose = new Pose2d(
-            SwervePosition.getPosition().x /Constants.METERSTOINCHES + 8.27,
+            SwervePosition.getPosition().x /Constants.METERSTOINCHES + 8.78,
             SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
-            Rotation2d.fromRadians(Pigeon.getRotationRad() + Math.PI / 2.0)
+            Rotation2d.fromRadians(Pigeon.getRotationRad() + (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI / 2.0)
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);

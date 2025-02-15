@@ -12,7 +12,7 @@ import frc.robot.Constants;
 
 import frc.robot.utils.Vector2;
 
-public class RFKJR {
+public class VisionManager {
 
     private static Camera[] cameras;
 

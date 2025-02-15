@@ -10,7 +10,7 @@ import frc.robot.Robot;
 import frc.robot.Tuning;
 import frc.robot.subsystems.sim.EndEffectorSim;
 
-public class ArmedForces {
+public class EndEffector {
 
     // contains all intake wheel control states, stores value for set wheel speed
     public enum IntakeState {
@@ -36,7 +36,7 @@ public class ArmedForces {
     public double targetAngle; // Radians
     public boolean holdingPiece;
 
-    public ArmedForces() {
+    public EndEffector() {
         init();
     }
 

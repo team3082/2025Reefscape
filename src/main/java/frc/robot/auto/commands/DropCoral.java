@@ -2,8 +2,8 @@ package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.RTime;
-import frc.robot.subsystems.LebronJames;
-import frc.robot.subsystems.ArmedForces.IntakeState;
+import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.EndEffector.IntakeState;
  
 public class DropCoral extends Command  {
     private double waitSeconds;
@@ -21,14 +21,14 @@ public class DropCoral extends Command  {
     public void initialize(){
         // Start timer
         startTime = RTime.now();
-        LebronJames.getEndEffector().setIntakeState(IntakeState.DROP_PIECE); // Start dropping
+        ScoringManager.getEndEffector().setIntakeState(IntakeState.DROP_PIECE); // Start dropping
 
     }
 
 
     @Override
     public void end(boolean interrupted) {
-        LebronJames.getEndEffector().setIntakeState(IntakeState.HOLD_PIECE); // Stop dropping
+        ScoringManager.getEndEffector().setIntakeState(IntakeState.HOLD_PIECE); // Stop dropping
     }
 
     @Override

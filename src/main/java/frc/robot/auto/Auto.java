@@ -12,7 +12,7 @@ import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
-import frc.robot.subsystems.LebronJames.ScoringPosition;
+import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.ChickenParser;

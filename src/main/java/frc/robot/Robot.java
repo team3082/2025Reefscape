@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.Auto;
 
 // SUBSYSTEMS
-import frc.robot.subsystems.LebronJames;
-import frc.robot.subsystems.LebronJames.ScoringPosition;
+import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.AlgaeVisualizer;
-import frc.robot.swerve.OperationDesertStorm;
+import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
@@ -43,10 +43,10 @@ public class Robot extends LoggedRobot {
     // Swerve
     Pigeon.init();
     Pigeon.setYaw(90);
-    OperationDesertStorm.init();
+    SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
-    SwervePosition.setPosition(new Vector2(Constants.APRIL_TAGS[7].getPosition().x, Constants.APRIL_TAGS[7].getPosition().y));
+    SwervePosition.setPosition(Constants.APRIL_TAGS[7].getCenterPosition());
 
     // Subsystems
     // ScoringManager.init();
@@ -152,7 +152,7 @@ public class Robot extends LoggedRobot {
     OI.userInput();
 
     // Update Subsystems
-    OperationDesertStorm.update();
+    SwerveManager.update();
     // ScoringManager.update();
     // AlgaeIntake.update();
     // Climber.update();
@@ -168,12 +168,12 @@ public class Robot extends LoggedRobot {
     // ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
     // AlgaeIntake.setState(IntakeState.DISABLED);
     // Climber.setState(ClimberState.DISABLED);
-    OperationDesertStorm.rotateAndDrive(0, new Vector2());
+    SwerveManager.rotateAndDrive(0, new Vector2());
     if (Robot.isSimulation()) {
-      OperationDesertStorm.mods[0].simModule.speed = 0;
-      OperationDesertStorm.mods[1].simModule.speed = 0;
-      OperationDesertStorm.mods[2].simModule.speed = 0;
-      OperationDesertStorm.mods[3].simModule.speed = 0;
+      SwerveManager.mods[0].simModule.speed = 0;
+      SwerveManager.mods[1].simModule.speed = 0;
+      SwerveManager.mods[2].simModule.speed = 0;
+      SwerveManager.mods[3].simModule.speed = 0;
     }
   }
 

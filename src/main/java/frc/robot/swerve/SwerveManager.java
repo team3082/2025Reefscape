@@ -11,7 +11,7 @@ import static frc.robot.Tuning.OI.KDYAW;
 
 import org.opencv.core.Mat;
 
-public final class OperationDesertStorm {
+public final class SwerveManager {
     
     public static SwerveModule[] mods;
     public static Vector2 movement = new Vector2();

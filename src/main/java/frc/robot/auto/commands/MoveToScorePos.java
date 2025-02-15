@@ -5,10 +5,10 @@
 package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.TheGreatWall;
-import frc.robot.subsystems.LebronJames;
-import frc.robot.subsystems.LebronJames.ScoringPosition;
-import frc.robot.subsystems.LebronJames.TransitoryState;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ScoringManager;
+import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.subsystems.ScoringManager.TransitoryState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class MoveToScorePos extends Command {
@@ -23,13 +23,13 @@ public class MoveToScorePos extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    LebronJames.setScoringLevel(pos);
+    ScoringManager.setScoringLevel(pos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    LebronJames.update();
+    ScoringManager.update();
   }
 
   // Called once the command ends or is interrupted.
@@ -39,7 +39,7 @@ public class MoveToScorePos extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (LebronJames.transitoryState == TransitoryState.FINISHED){
+    if (ScoringManager.transitoryState == TransitoryState.FINISHED){
       return true;
     } else {
       return false;

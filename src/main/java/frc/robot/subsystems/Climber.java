@@ -1,5 +1,5 @@
 package frc.robot.subsystems;
 
-public class Sisyphus {
+public class Climber {
     
 }
