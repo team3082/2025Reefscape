@@ -36,11 +36,19 @@ public class AprilTag {
     }
 
     /**
+     * returns the id of the apriltag
+     * @return the id of this tag
+     */
+    public int getID() {
+        return id;
+    }
+
+    /**
      * Gets the position for the front of the robot to be at the apriltag position
      * @return the position of the robot if it were right in front of the apriltag
      */
     public Vector2 getCenterPosition() {
-        return getPosition().add(new Vector2(Constants.Swerve.WIDTH/2, 0).rotate(Constants.APRIL_TAGS[this.id].getRotationZ()));
+        return getPosition().add(new Vector2(Constants.Swerve.WIDTH/2, 0).rotate(getRotationZ()));
     }
 
     /**
@@ -49,7 +57,7 @@ public class AprilTag {
      * @return the robot position in front of the left pole of the face of the reef
      */
     public Vector2 getLeftPosition() {
-        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(Constants.APRIL_TAGS[this.id].getRotationZ() + Math.PI / 2);
+        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(getRotationZ() + Math.PI / 2);
         return getCenterPosition().add(alignOffset);
     }
 
@@ -59,7 +67,7 @@ public class AprilTag {
      * @return the robot position in front of the right pole of the face of the reef
      */
     public Vector2 getRightPosition() {
-        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(Constants.APRIL_TAGS[this.id].getRotationZ() - Math.PI / 2);
+        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(getRotationZ() - Math.PI / 2);
         return getCenterPosition().add(alignOffset);
     }
 
