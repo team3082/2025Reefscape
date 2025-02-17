@@ -53,6 +53,7 @@
       "/Shuffleboard/Robot Views/Field": "Field2d",
       "/Shuffleboard/Robot Views/Field View": "Field2d",
       "/Shuffleboard/Robot Views/SendableChooser[0]": "String Chooser",
+      "/Shuffleboard/Robot Views/Subsystem View": "Mechanism2d",
       "/Shuffleboard/Robot Views/Swerve View": "Mechanism2d",
       "/SmartDashboard/Field": "Field2d"
     },
@@ -78,6 +79,11 @@
         "right": 2961,
         "top": 79,
         "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/Robot Views/Subsystem View": {
         "window": {
           "visible": true
         }

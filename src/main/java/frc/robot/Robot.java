@@ -49,7 +49,7 @@ public class Robot extends LoggedRobot {
     SwervePosition.setPosition(Constants.APRIL_TAGS[7].getCenterPosition());
 
     // Subsystems
-    // ScoringManager.init();
+    ScoringManager.init();
     // AlgaeIntake.init();
     // Climber.init();
 
@@ -126,6 +126,8 @@ public class Robot extends LoggedRobot {
     SwervePosition.update();
     Pigeon.update();
 
+    ScoringManager.update();
+
     RTime.update();
   }
 
@@ -144,6 +146,7 @@ public class Robot extends LoggedRobot {
   public void teleopInit() {
     // Stow Elevator/End Effector on Teleop Start
     // ScoringManager.setScoringLevel(ScoringPosition.STOW);
+    ScoringManager.setScoringLevel(ScoringPosition.L4);
   }
 
   @Override

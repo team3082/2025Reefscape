@@ -53,7 +53,7 @@ public final class Tuning {
     }
 
     public static final class Elevator {
-        public static final double ELEVATOR_P = 0.0;
+        public static final double ELEVATOR_P = 0.2;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
 
@@ -65,7 +65,7 @@ public final class Tuning {
     }
 
     public static final class EndEffector {
-        public static final double PIVOT_P = 0.0;
+        public static final double PIVOT_P = 0.2;
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 

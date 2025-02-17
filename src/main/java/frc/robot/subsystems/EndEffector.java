@@ -65,13 +65,15 @@ public class EndEffector {
         pivotMotor.getConfigurator().apply(pivotConfig);
 
         // Initialize Intake Motor
-        intakeMotor = new TalonFX(Constants.EndEffector.PIVOTID, "CANivore");
+        intakeMotor = new TalonFX(Constants.EndEffector.INTAKEID, "CANivore");
 
         // Reset to Factory Defaults
         intakeMotor.getConfigurator().apply(new TalonFXConfiguration());
 
         // Initialize Sensor
         sensor = new DigitalInput(Constants.EndEffector.END_EFFECTOR_SENSOR_ID);
+
+        pivotMotor.setPosition(0.0);
     }
 
     /** applies intake motor speeds based on intake state,
@@ -115,6 +117,7 @@ public class EndEffector {
 
     /** returns the pivot angle in radians */
     public double getPivotAngle() {
+        System.out.println("wrist pose: " + rotToRad(pivotMotor.getPosition().getValueAsDouble()));
         if (Robot.isReal()) return rotToRad(pivotMotor.getPosition().getValueAsDouble());
         else return EndEffectorSim.getPosition();
     }
@@ -126,11 +129,12 @@ public class EndEffector {
 
     /** conversion from radians to internal motor rotations */
     private double radToRot(double rad) {
-        return rad / (2.0 * Math.PI) * Constants.EndEffector.GEARRATIO;
+        return (rad / (2.0 * Math.PI)) * Constants.EndEffector.GEARRATIO;
     }   
 
     /** conversion from internal motor rotations to radians */
     private double rotToRad(double rot) {
+
         return (rot * 2.0 * Math.PI) / Constants.EndEffector.GEARRATIO;
     }
 
