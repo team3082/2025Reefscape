@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -17,7 +19,8 @@ public class EndEffector {
         OFF(0.0),
         INTAKE_PIECE(-0.15),
         HOLD_PIECE(0.0),
-        DROP_PIECE(-0.5);
+        DROP_PIECE(-0.5),
+        DEALGAE(0.2);
 
         public double targetSpeed;
 
@@ -83,6 +86,9 @@ public class EndEffector {
     public void update() {
         holdingPiece = !sensor.get();
 
+        // temp for testing
+        // holdingPiece = false;
+
         switch (intakeState) {
             case INTAKE_PIECE:
                 // Stop Wheels if Holding Piece
@@ -95,7 +101,7 @@ public class EndEffector {
         }
 
         // setting pivot angle
-        pivotMotor.setControl(new MotionMagicDutyCycle(radToRot(targetAngle)));
+        pivotMotor.setControl(new PositionDutyCycle(radToRot(targetAngle)));
 
         // UPDATE SIM
         if (Robot.isSimulation()) {
@@ -117,7 +123,7 @@ public class EndEffector {
 
     /** returns the pivot angle in radians */
     public double getPivotAngle() {
-        System.out.println("wrist pose: " + rotToRad(pivotMotor.getPosition().getValueAsDouble()));
+        // System.out.println("wrist pose: " + rotToRad(pivotMotor.getPosition().getValueAsDouble()));
         if (Robot.isReal()) return rotToRad(pivotMotor.getPosition().getValueAsDouble());
         else return EndEffectorSim.getPosition();
     }
@@ -136,6 +142,10 @@ public class EndEffector {
     private double rotToRad(double rot) {
 
         return (rot * 2.0 * Math.PI) / Constants.EndEffector.GEARRATIO;
+    }
+
+    public void disable() {
+        pivotMotor.setControl(new StaticBrake());
     }
 
 }

@@ -13,14 +13,14 @@ public class ScoringManager {
      */
     public enum ScoringPosition {
         DISABLED(0.0, 0.0),
-        STOW(0.0, 0.0),
+        STOW(5.0, 0.0),
         INTAKE(0.0, 0.0),
-        ALGAE1(0.0, 0.0),
-        ALGAE2(0.0, 0.0),
+        ALGAE1(40, Math.PI/2.0),
+        ALGAE2(60, Math.PI/2.0),
         L1(0.0, 0.0),
         L2(24, Math.toRadians(30.0)),
-        L3(36, Math.toRadians(30.0)),
-        L4(72, Math.toRadians(45.0));
+        L3(46, Math.toRadians(30.0)),
+        L4(83, Math.toRadians(45.0));
 
         public double targetHeight;
         public double targetAngle;
@@ -137,25 +137,25 @@ public class ScoringManager {
         switch (transitoryState) {
             // moves wrist to safe transitory position
             case ELEVATOR_WAITING:
-                System.out.println("waiting");
+                // System.out.println("waiting");
                 handleElevatorWaiting();
                 break;
         
             // moves elevator to set position
             case ELEVATOR_MOVING:
-                System.out.println("elevator moving");
+                // System.out.println("elevator moving");
                 handleElevatorMoving();
                 break;
             
             // move wrist to final set position
             case WRIST_MOVING:
-                System.out.println("wrist moving");
+                // System.out.println("wrist moving");
                 handleWristMoving();
                 break;
 
             // doesn't need anything currently, maybe add manual control if needed
             case FINISHED: 
-                System.out.println("done");
+                // System.out.println("done");
                 break;
         }
 
@@ -171,7 +171,7 @@ public class ScoringManager {
      */
     private static void handleElevatorWaiting() {
         endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
-        if (true) {
+        if (endEffector.atPosition()) {
             transitoryState = TransitoryState.ELEVATOR_MOVING;
         }
     }

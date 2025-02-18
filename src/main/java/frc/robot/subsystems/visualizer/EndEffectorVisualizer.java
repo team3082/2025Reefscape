@@ -1,5 +1,8 @@
 package frc.robot.subsystems.visualizer;
 
+import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d;
+import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
+
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -26,18 +29,18 @@ public class EndEffectorVisualizer {
     private static double wheelAngle = 0;
 
     // Pivot
-    private static MechanismRoot2d endEffectorPivot_root = Telemetry.subsytemView.getRoot("End Effector Pivot Root", 0, 0);
-    private static MechanismLigament2d endEffectorPivot = endEffectorPivot_root.append(new MechanismLigament2d("End Effector Pivot", 12, 0));
+    private static LoggedMechanismRoot2d endEffectorPivot_root = Telemetry.subsystemView.getRoot("End Effector Pivot Root", 0, 0);
+    private static LoggedMechanismLigament2d endEffectorPivot = endEffectorPivot_root.append(new LoggedMechanismLigament2d("End Effector Pivot", 12, 0));
     
     // Wheels
-    private static MechanismRoot2d endEffectorWheel1_root = Telemetry.subsytemView.getRoot("End Effector Wheel 1 Root", 0, 0);
-    private static MechanismLigament2d endEffectorWheel1 = endEffectorWheel1_root.append(new MechanismLigament2d("End Effector Wheel 1", 1.5, 0));
-    private static MechanismRoot2d endEffectorWheel2_root = Telemetry.subsytemView.getRoot("End Effector Wheel 2 Root", 0, 0);
-    private static MechanismLigament2d endEffectorWheel2 = endEffectorWheel2_root.append(new MechanismLigament2d("End Effector Wheel 2", 1.5, 0));
-    private static MechanismRoot2d endEffectorWheel3_root = Telemetry.subsytemView.getRoot("End Effector Wheel 3 Root", 0, 0);
-    private static MechanismLigament2d endEffectorWheel3 = endEffectorWheel3_root.append(new MechanismLigament2d("End Effector Wheel 3", 1.5, 0));
-    private static MechanismRoot2d endEffectorWheel4_root = Telemetry.subsytemView.getRoot("End Effector Wheel 4 Root", 0, 0);
-    private static MechanismLigament2d endEffectorWheel4 = endEffectorWheel4_root.append(new MechanismLigament2d("End Effector Wheel 4", 1.5, 0));
+    private static LoggedMechanismRoot2d endEffectorWheel1_root = Telemetry.subsystemView.getRoot("End Effector Wheel 1 Root", 0, 0);
+    private static LoggedMechanismLigament2d endEffectorWheel1 = endEffectorWheel1_root.append(new LoggedMechanismLigament2d("End Effector Wheel 1", 1.5, 0));
+    private static LoggedMechanismRoot2d endEffectorWheel2_root = Telemetry.subsystemView.getRoot("End Effector Wheel 2 Root", 0, 0);
+    private static LoggedMechanismLigament2d endEffectorWheel2 = endEffectorWheel2_root.append(new LoggedMechanismLigament2d("End Effector Wheel 2", 1.5, 0));
+    private static LoggedMechanismRoot2d endEffectorWheel3_root = Telemetry.subsystemView.getRoot("End Effector Wheel 3 Root", 0, 0);
+    private static LoggedMechanismLigament2d endEffectorWheel3 = endEffectorWheel3_root.append(new LoggedMechanismLigament2d("End Effector Wheel 3", 1.5, 0));
+    private static LoggedMechanismRoot2d endEffectorWheel4_root = Telemetry.subsystemView.getRoot("End Effector Wheel 4 Root", 0, 0);
+    private static LoggedMechanismLigament2d endEffectorWheel4 = endEffectorWheel4_root.append(new LoggedMechanismLigament2d("End Effector Wheel 4", 1.5, 0));
 
     /**
      * sets color to all mechanism ligaments

@@ -9,6 +9,9 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.StaticBrake;
+
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 // AUTO
@@ -146,7 +149,7 @@ public class Robot extends LoggedRobot {
   public void teleopInit() {
     // Stow Elevator/End Effector on Teleop Start
     // ScoringManager.setScoringLevel(ScoringPosition.STOW);
-    ScoringManager.setScoringLevel(ScoringPosition.L4);
+    // ScoringManager.setScoringLevel(ScoringPosition.L4);
   }
 
   @Override
@@ -178,13 +181,19 @@ public class Robot extends LoggedRobot {
       SwerveManager.mods[2].simModule.speed = 0;
       SwerveManager.mods[3].simModule.speed = 0;
     }
+
+    ScoringManager.setScoringLevel(ScoringPosition.STOW);
+
+    ScoringManager.endEffector.disable();
   }
 
   @Override
   public void disabledPeriodic() {}
 
   @Override
-  public void testInit() {}
+  public void testInit() {
+    ScoringManager.endEffector.pivotMotor.setControl(new NeutralOut());
+  }
 
   @Override
   public void testPeriodic() {}

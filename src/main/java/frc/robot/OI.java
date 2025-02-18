@@ -20,7 +20,7 @@ import frc.robot.utils.RMath;
 public class OI {
     public static Joystick driverStick;
 
-    // Driver Controls
+    // ------------------ Driver Controls ------------------ //
 
     // Movement
     static final int moveX         = LogitechF310.AXIS_LEFT_X;
@@ -36,16 +36,18 @@ public class OI {
     static final int funnyButtonRight  = LogitechF310.BUTTON_LEFT_BUMPER;
     private static boolean drivingToReef = false;
 
-    // Operator Controls
+    // ------------------ Operator Controls ------------------ //
     public static Joystick operatorStick;
-
-    // Operator Controls
 
     // Scoring Positions
     private static final int stow         = LogitechF310.BUTTON_A;
     private static final int L2           = LogitechF310.BUTTON_B;
     private static final int L3           = LogitechF310.BUTTON_X;
     private static final int L4           = LogitechF310.BUTTON_Y;
+    private static final int ALGAE1      = LogitechF310.DPAD_DOWN;
+    private static final int ALGAE2      = LogitechF310.DPAD_UP;
+    private static final int DEALGAEFY      = LogitechF310.DPAD_RIGHT;
+
     private static final int RightTrigger = LogitechF310.AXIS_RIGHT_TRIGGER;
     private static final int LeftTrigger  = LogitechF310.AXIS_LEFT_TRIGGER;
 
@@ -63,7 +65,7 @@ public class OI {
 
     public static void userInput() {
         driverInput();
-        // operatorInput();
+        operatorInput();
     }
 
     /**
@@ -154,6 +156,9 @@ public class OI {
         else if (operatorStick.getRawButtonPressed(L2)) ScoringManager.setScoringLevel(ScoringPosition.L2);
         else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
         else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
+        else if (operatorStick.getPOV() == ALGAE1) ScoringManager.setScoringLevel(ScoringPosition.ALGAE1);
+        else if (operatorStick.getPOV() == ALGAE2) ScoringManager.setScoringLevel(ScoringPosition.ALGAE2);
+
 
         if (operatorStick.getRawAxis(RightTrigger)>0.7){
             ScoringManager.setPickingRightCoral(true);
@@ -164,7 +169,9 @@ public class OI {
         /*-End Effector-------------------------------------------------------------------------------------------*/
         if (operatorStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
         else if (operatorStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);
+        else if (operatorStick.getPOV() == DEALGAEFY)  ScoringManager.endEffector.setIntakeState(IntakeState.DEALGAE);
         else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
+        
     }
 
 }

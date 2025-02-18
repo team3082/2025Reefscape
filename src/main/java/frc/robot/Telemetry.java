@@ -1,6 +1,7 @@
 package frc.robot;
 
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -43,7 +44,8 @@ public class Telemetry {
 
     // Views
     private static Field2d fieldView = new Field2d();
-    public static Mechanism2d subsytemView = new Mechanism2d(65, 120);
+    public static LoggedMechanism2d subsystemView = new LoggedMechanism2d(65, 120);
+    //public static Mechanism2d subsytemView = new Mechanism2d(65, 120);
     public static Mechanism2d swerveView = new Mechanism2d(60, 60);
 
     
@@ -89,7 +91,7 @@ public class Telemetry {
 
     public static void init() {
         robotTab.add("Field View", fieldView);
-        robotTab.add("Subsystem View", subsytemView);
+        robotTab.add("Subsystem View", subsystemView);
         robotTab.add("Swerve View", swerveView);
         robotTab.add("Coral Operator View", CoralVisualizer.getMechanism2d());
 
@@ -179,6 +181,8 @@ public class Telemetry {
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);
+
+        Logger.recordOutput("Robot/Swerve/Field Pose", currentPose);
     }
 
     /**
@@ -198,5 +202,7 @@ public class Telemetry {
 
         ElevatorVisualizer.update();
         EndEffectorVisualizer.update();
+
+        Logger.recordOutput("Robot/Subsystem View", subsystemView);
     }
 }
