@@ -63,9 +63,6 @@ public final class SwerveManager {
     }
 
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {
-        if (Robot.isSimulation()) {
-            move = move.rotate(-Math.PI / 2.0);
-        }
         movement = move;
         double heading = Pigeon.getRotationRad();
         

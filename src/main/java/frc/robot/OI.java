@@ -118,43 +118,47 @@ public class OI {
         if ((driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight) && !previouslyPressedPOV) {
             previouslyPressedPOV = true;
             drivingToReef = !drivingToReef;
+            boolean isRight = (driverStick.getPOV() == funnyButtonRight);
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
+                
                 int allianceStartIndex = 6;
                 // Determine reef AprilTag locations based on alliance
-                allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 6 : 17;
-
+                if(Robot.isReal())
+                    allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 6 : 17;
+  
                 // Find the shortest scoring position from the robot
                 double min;
-                if (driverStick.getPOV() == funnyButtonLeft)
-                    min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getLeftPosition()).mag();
-                else 
+                if (isRight)
                     min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getRightPosition()).mag();
+                else 
+                    min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getLeftPosition()).mag();
                 
                 int minIndex = allianceStartIndex;
+
                 for (int i = allianceStartIndex+1; i < allianceStartIndex + 6; i++){
                     System.out.println(Constants.APRIL_TAGS[i].getPosition());
                     Vector2 aprilPosition;
-                    if (driverStick.getPOV() == funnyButtonLeft)
-                        aprilPosition = Constants.APRIL_TAGS[i].getLeftPosition();
-                    else 
+                    if (isRight)
                         aprilPosition = Constants.APRIL_TAGS[i].getRightPosition();
+                    else 
+                        aprilPosition = Constants.APRIL_TAGS[i].getLeftPosition();
 
                     if(currentPos.sub(aprilPosition).mag() < min){
                         minIndex = i;
                         min = currentPos.sub(aprilPosition).mag();
                     }
                 }
-                
-                // TODO Adjust positions for accurate scoring
+
                 // Set destination and rotation based on AprilTag data
-                Vector2 targetPosition = driverStick.getPOV() == funnyButtonRight ? Constants.APRIL_TAGS[minIndex].getLeftPosition() : Constants.APRIL_TAGS[minIndex].getRightPosition();
+                Vector2 targetPosition =  isRight ?  Constants.APRIL_TAGS[minIndex].getRightPosition() : Constants.APRIL_TAGS[minIndex].getLeftPosition();
+
                 SwervePID.setDestPt(targetPosition);
                 
                 SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI/2);
 
             }
-        } else {
+        } else if (!(driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight)) {
             previouslyPressedPOV = false;
         }
 
