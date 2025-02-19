@@ -57,7 +57,7 @@ public class OI {
     private static final int L4                  = LogitechF310.BUTTON_Y;
     private static final int ALGAE1              = LogitechF310.DPAD_DOWN;
     private static final int ALGAE2              = LogitechF310.DPAD_UP;
-    private static final int LET_HIM_COOK        = LogitechF310.DPAD_LEFT;
+    private static final int ALGAE_INTAKE        = LogitechF310.DPAD_LEFT;
  
     private static final int RightTrigger        = LogitechF310.AXIS_RIGHT_TRIGGER;
     private static final int LeftTrigger         = LogitechF310.AXIS_LEFT_TRIGGER;
@@ -163,10 +163,10 @@ public class OI {
         }
 
         /*-End Effector-------------------------------------------------------------------------------------------*/
-        if (driverStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
-        else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);
-        else if (driverStick.getRawAxis(dealgaefy) > 0.7)  ScoringManager.endEffector.setIntakeState(IntakeState.DEALGAE);
-        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
+
+        if (driverStick.getRawButton(intake)) ScoringManager.endEffector.intake();
+        else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.outtake();
+        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
 
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
@@ -195,7 +195,7 @@ public class OI {
         else if (operatorStick.getRawButtonPressed(L4)) savedLevel = ScoringPosition.L4;
         else if (operatorStick.getPOV() == ALGAE1) savedLevel = ScoringPosition.ALGAE1;
         else if (operatorStick.getPOV() == ALGAE2) savedLevel = ScoringPosition.ALGAE2;
-        else if (operatorStick.getPOV() == LET_HIM_COOK) savedLevel = ScoringPosition.LET_HIM_COOK;
+        else if (operatorStick.getPOV() == ALGAE_INTAKE) savedLevel = ScoringPosition.ALGAE_INTAKE;
 
 
         if (operatorStick.getRawAxis(RightTrigger)>0.7){
