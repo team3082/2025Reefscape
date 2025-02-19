@@ -1,12 +1,9 @@
 package frc.robot.swerve;
-import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
@@ -20,8 +17,6 @@ public class SwervePosition {
     @AutoLogOutput
     private static Vector2 position;
     private static Vector2 absVelocity;
-    private static Vector2 lastAbsVelocity;
-
     private static Vector2 lastOdomPos;
 
     public static void init() {

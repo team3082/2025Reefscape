@@ -57,7 +57,7 @@ public class AprilTag {
      * @return the robot position in front of the left pole of the face of the reef
      */
     public Vector2 getLeftPosition() {
-        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(getRotationZ() + Math.PI / 2);
+        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(getRotationZ() - Math.PI / 2);
         return getCenterPosition().add(alignOffset);
     }
 
@@ -67,7 +67,7 @@ public class AprilTag {
      * @return the robot position in front of the right pole of the face of the reef
      */
     public Vector2 getRightPosition() {
-        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(getRotationZ() - Math.PI / 2);
+        Vector2 alignOffset = new Vector2(6.5, 0.0).rotate(getRotationZ() + Math.PI / 2);
         return getCenterPosition().add(alignOffset);
     }
 

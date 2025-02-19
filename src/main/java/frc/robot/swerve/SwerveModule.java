@@ -1,10 +1,7 @@
 package frc.robot.swerve;
 
-import javax.print.DocFlavor.STRING;
-
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -15,7 +12,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Robot;
 import frc.robot.swerve.sim.SwerveModuleSim;
-import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
 import edu.wpi.first.wpilibj.RobotBase;
