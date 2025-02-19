@@ -21,7 +21,7 @@ public class ScoringManager {
         L2(24, Math.toRadians(30.0)),
         L3(46, Math.toRadians(30.0)),
         L4(83, Math.toRadians(45.0)),
-        LET_HIM_COOK(11, Math.PI / 2.0 + Math.toRadians(5));
+        LET_HIM_COOK(10.5, Math.PI / 2.0 + Math.toRadians(5));
 
         public double targetHeight;
         public double targetAngle;

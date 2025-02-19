@@ -72,10 +72,10 @@ public class EndEffectorVisualizer {
         endEffectorWheel4.setAngle(Math.toDegrees(wheelAngle));
 
         // find and set wheel position with wrist rotation
-        Vector2 wheelPos1 = WHEEL_1_POS.rotate(pivotAngle);
-        Vector2 wheelPos2 = WHEEL_2_POS.rotate(pivotAngle);
-        Vector2 wheelPos3 = WHEEL_3_POS.rotate(pivotAngle);
-        Vector2 wheelPos4 = WHEEL_4_POS.rotate(pivotAngle);
+        Vector2 wheelPos1 = WHEEL_1_POS.rotate(-pivotAngle);
+        Vector2 wheelPos2 = WHEEL_2_POS.rotate(-pivotAngle);
+        Vector2 wheelPos3 = WHEEL_3_POS.rotate(-pivotAngle);
+        Vector2 wheelPos4 = WHEEL_4_POS.rotate(-pivotAngle);
         endEffectorWheel1_root.setPosition(-(wheelPos1.x - 15/Constants.METERSTOINCHES) + .7, wheelPos1.y + (pivotHeight + 8.0)/Constants.METERSTOINCHES);
         endEffectorWheel2_root.setPosition(-(wheelPos2.x - 15/Constants.METERSTOINCHES) + .7, wheelPos2.y + (pivotHeight + 8.0)/Constants.METERSTOINCHES);
         endEffectorWheel3_root.setPosition(-(wheelPos3.x - 15/Constants.METERSTOINCHES) + .7, wheelPos3.y + (pivotHeight + 8.0)/Constants.METERSTOINCHES);

@@ -5,6 +5,7 @@ import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
@@ -77,6 +78,7 @@ public class EndEffector {
         sensor = new DigitalInput(Constants.EndEffector.END_EFFECTOR_SENSOR_ID);
 
         pivotMotor.setPosition(0.0);
+        pivotMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 
     /** applies intake motor speeds based on intake state,
