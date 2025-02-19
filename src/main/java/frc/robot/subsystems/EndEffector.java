@@ -20,7 +20,7 @@ public class EndEffector {
         INTAKE_PIECE(-0.15),
         HOLD_PIECE(0.0),
         DROP_PIECE(-0.5),
-        DEALGAE(0.2);
+        DEALGAE(0.5);
 
         public double targetSpeed;
 

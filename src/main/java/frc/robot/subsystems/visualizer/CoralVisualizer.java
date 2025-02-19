@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
+import frc.robot.Constants;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.ScoringManager.TransitoryState;
@@ -13,7 +14,7 @@ import frc.robot.subsystems.ScoringManager.TransitoryState;
  * The CoralVisualizer provides a visual representation of the reef for the operator to select a coral
  */
 public class CoralVisualizer {
-    private static Mechanism2d mechanism2d = new Mechanism2d(5, 13);
+    private static Mechanism2d mechanism2d = new Mechanism2d(5/Constants.METERSTOINCHES, 13/Constants.METERSTOINCHES);
     private static MechanismLigament2d[][] ligamentMatrix;
 
     /**

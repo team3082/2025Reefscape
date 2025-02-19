@@ -35,6 +35,7 @@ public class Robot extends LoggedRobot {
   @AutoLogOutput
   public static double fake = 0;
 
+
   public Robot() {
     try {
       Thread.sleep(5000);

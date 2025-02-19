@@ -44,7 +44,7 @@ public class Telemetry {
 
     // Views
     private static Field2d fieldView = new Field2d();
-    public static LoggedMechanism2d subsystemView = new LoggedMechanism2d(65, 120);
+    public static LoggedMechanism2d subsystemView = new LoggedMechanism2d(65/Constants.METERSTOINCHES, 120/Constants.METERSTOINCHES);
     //public static Mechanism2d subsytemView = new Mechanism2d(65, 120);
     public static Mechanism2d swerveView = new Mechanism2d(60, 60);
 
@@ -174,10 +174,14 @@ public class Telemetry {
      */
     private static void updateField() {
         // Current position adjusted to be in the center of the field at (0,0)
+        int allianceMultiplier;
+        if (Robot.isSimulation()) allianceMultiplier = 1;
+        else allianceMultiplier = (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1);
+        
         Pose2d currentPose = new Pose2d(
             SwervePosition.getPosition().x /Constants.METERSTOINCHES + 8.78,
             SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
-            Rotation2d.fromRadians(Pigeon.getRotationRad() + (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI / 2.0)
+            Rotation2d.fromRadians(Pigeon.getRotationRad() + allianceMultiplier * Math.PI / 2.0)
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);

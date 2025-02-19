@@ -53,7 +53,7 @@ public final class Tuning {
     }
 
     public static final class Elevator {
-        public static final double ELEVATOR_P = 0.2;
+        public static final double ELEVATOR_P = 0.1;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
 
@@ -73,7 +73,7 @@ public final class Tuning {
         public static final double MOTION_MAGIC_ACCELERATION = 0.0;
         public static final double JERK = 0.0;
 
-        public static final double SAFE_ANGLE = Math.toRadians(20.0); // for moving the elevator so the end effector doesn't hit anything
+        public static final double SAFE_ANGLE = Math.toRadians(28.0); // for moving the elevator so the end effector doesn't hit anything
 
         public static final double PIVOT_DEADBAND = Math.toRadians(1.0);
 
