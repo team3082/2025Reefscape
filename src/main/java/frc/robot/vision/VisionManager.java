@@ -19,7 +19,7 @@ public class VisionManager {
     public static void init(){
 
         cameras = new Camera[] {
-            new Camera(new PhotonCamera("ApriltagCamera1"), new Vector2(0.0, 0.0), 0.0, 0.0)
+            new Camera(new PhotonCamera("ApriltagCamera1"), new Vector2(-10.0, 10.0), 0.0, Math.toRadians(-19.0))
         };
 
     }
@@ -44,12 +44,12 @@ public class VisionManager {
             double xdistRobot = transform.getX() * Math.cos(camera.cameraPitch) - transform.getZ() * Math.sin(camera.cameraPitch);
             double ydistRobot = transform.getY();
 
-            double xdistField = xdistRobot * Math.cos(pigeonAngle) - ydistRobot * Math.sin(pigeonAngle);
-            double ydistField = ydistRobot * Math.cos(pigeonAngle) + xdistRobot * Math.sin(pigeonAngle);
-            
-            Vector2 cameraToTag = new Vector2(xdistField, ydistField);
+            double xdistField = (Math.cos(pigeonAngle) * xdistRobot - Math.sin(pigeonAngle) * ydistRobot) * Constants.METERSTOINCHES;
+            double ydistField = (Math.cos(pigeonAngle) * ydistRobot + Math.sin(pigeonAngle) * xdistRobot) * Constants.METERSTOINCHES;
 
-            Vector2 aprilTagPos = Constants.APRIL_TAGS[id - 1].getPosition();
+            Vector2 cameraToTag = new Vector2(xdistField, ydistField).rotate(camera.cameraYaw);
+
+            Vector2 aprilTagPos = Constants.APRIL_TAGS[id].getPosition();
             Vector2 cameraPos = aprilTagPos.sub(cameraToTag);
 
             Vector2 robotPos = cameraPos.sub(camera.robotToCamera);
