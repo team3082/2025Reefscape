@@ -17,10 +17,11 @@ public class EndEffector {
     // contains all intake wheel control states, stores value for set wheel speed
     public enum IntakeState {
         OFF(0.0),
-        INTAKE_PIECE(-0.15),
-        HOLD_PIECE(0.0),
-        DROP_PIECE(-0.5),
-        DEALGAE(0.5);
+        INTAKE_CORAL(-0.15),
+        HOLD_CORAL(0.0),
+        DROP_CORAL(-0.5),
+        INTAKE_ALGAE(0.5),
+        DROP_ALGAE(-0.5);
 
         public double targetSpeed;
 
@@ -35,7 +36,7 @@ public class EndEffector {
     public DigitalInput sensor;
 
     // state
-    public IntakeState intakeState = IntakeState.HOLD_PIECE;
+    public IntakeState intakeState = IntakeState.HOLD_CORAL;
     public double targetAngle; // Radians
     public boolean holdingPiece;
 
@@ -91,7 +92,7 @@ public class EndEffector {
         // holdingPiece = false;
 
         switch (intakeState) {
-            case INTAKE_PIECE:
+            case INTAKE_CORAL:
                 // Stop Wheels if Holding Piece
                 if (holdingPiece) intakeMotor.set(0);
                 else intakeMotor.set(intakeState.targetSpeed);
@@ -143,6 +144,30 @@ public class EndEffector {
     private double rotToRad(double rot) {
 
         return (rot * 2.0 * Math.PI) / Constants.EndEffector.GEARRATIO;
+    }
+
+    public void intake() {
+        switch (ScoringManager.scoringPosition) {
+            case ALGAE_INTAKE:
+                setIntakeState(IntakeState.INTAKE_ALGAE);
+                break;
+        
+            default:
+                setIntakeState(IntakeState.INTAKE_CORAL);
+                break;
+        }
+    }
+
+    public void outtake() {
+        switch (ScoringManager.scoringPosition) {
+            case ALGAE_INTAKE:
+                setIntakeState(IntakeState.DROP_ALGAE);
+                break;
+        
+            default:
+                setIntakeState(IntakeState.DROP_CORAL);
+                break;
+        }
     }
 
     public void disable() {

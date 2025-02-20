@@ -10,7 +10,6 @@ import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.subsystems.visualizer.CoralVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -41,7 +40,6 @@ public class OI {
     // End Effector Control 
     static final int intake                      = LogitechF310.BUTTON_LEFT_BUMPER;
     static final int outtake                     = LogitechF310.BUTTON_RIGHT_BUMPER;
-    static final int dealgaefy                   = LogitechF310.AXIS_LEFT_TRIGGER;
  
     private static boolean drivingToReef         = false;
     private static boolean previouslyPressedPOV  = false; // Checks if we previously pressed the dpad because getPOV() doesn't do that
@@ -57,7 +55,7 @@ public class OI {
     private static final int L4                  = LogitechF310.BUTTON_Y;
     private static final int ALGAE1              = LogitechF310.DPAD_DOWN;
     private static final int ALGAE2              = LogitechF310.DPAD_UP;
-    private static final int LET_HIM_COOK        = LogitechF310.DPAD_LEFT;
+    private static final int ALGAE_INTAKE        = LogitechF310.DPAD_LEFT;
  
     private static final int RightTrigger        = LogitechF310.AXIS_RIGHT_TRIGGER;
     private static final int LeftTrigger         = LogitechF310.AXIS_LEFT_TRIGGER;
@@ -163,10 +161,10 @@ public class OI {
         }
 
         /*-End Effector-------------------------------------------------------------------------------------------*/
-        if (driverStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
-        else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);
-        else if (driverStick.getRawAxis(dealgaefy) > 0.7)  ScoringManager.endEffector.setIntakeState(IntakeState.DEALGAE);
-        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
+
+        if (driverStick.getRawButton(intake)) ScoringManager.endEffector.intake();
+        else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.outtake();
+        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
 
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
@@ -195,7 +193,7 @@ public class OI {
         else if (operatorStick.getRawButtonPressed(L4)) savedLevel = ScoringPosition.L4;
         else if (operatorStick.getPOV() == ALGAE1) savedLevel = ScoringPosition.ALGAE1;
         else if (operatorStick.getPOV() == ALGAE2) savedLevel = ScoringPosition.ALGAE2;
-        else if (operatorStick.getPOV() == LET_HIM_COOK) savedLevel = ScoringPosition.LET_HIM_COOK;
+        else if (operatorStick.getPOV() == ALGAE_INTAKE) savedLevel = ScoringPosition.ALGAE_INTAKE;
 
 
         if (operatorStick.getRawAxis(RightTrigger)>0.7){

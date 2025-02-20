@@ -21,14 +21,14 @@ public class IntakeCoral extends Command{
     public void initialize(){
         // Start timer
         startTime = RTime.now();
-        ScoringManager.getEndEffector().setIntakeState(IntakeState.INTAKE_PIECE); // Intakes the piece
+        ScoringManager.getEndEffector().setIntakeState(IntakeState.INTAKE_CORAL); // Intakes the piece
 
     }
 
 
     @Override
     public void end(boolean interrupted) {
-        ScoringManager.getEndEffector().setIntakeState(IntakeState.HOLD_PIECE); // Starts holding once command ends
+        ScoringManager.getEndEffector().setIntakeState(IntakeState.HOLD_CORAL); // Starts holding once command ends
     }
 
     @Override
