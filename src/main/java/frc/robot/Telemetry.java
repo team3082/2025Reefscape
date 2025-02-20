@@ -13,12 +13,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.auto.Auto;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.CoralVisualizer;
-import frc.robot.subsystems.sim.AlgaeSim;
 import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
@@ -26,9 +24,6 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.swerve.visualizer.SwerveBaseVisualizer;
 import frc.robot.swerve.SwervePID;
-import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.Vector2;
-import frc.robot.auto.Auto;
 
 /*
  * handles telemetry for the robot
@@ -127,7 +122,7 @@ public class Telemetry {
     private static void logValues(){
         Logger.recordOutput("Robot/SwervePID/Error", SwervePID.getError().toString());
         Logger.recordOutput("Robot/SwervePID/Rot Error", SwervePID.getRotationError());
-        Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.7,
+        Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.78,
                                                                           SwervePID.getDest().y/Constants.METERSTOINCHES + 4.01,
                                                                           Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
         Logger.recordOutput("Robot/SwervePID/At Dest", SwervePID.atDest());

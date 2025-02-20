@@ -2,14 +2,12 @@ package frc.robot.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 
 import static frc.robot.Constants.Swerve.*;
 import static frc.robot.Tuning.OI.KDYAW;
 
-import org.opencv.core.Mat;
 
 public final class SwerveManager {
     

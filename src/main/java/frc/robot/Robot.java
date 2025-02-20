@@ -1,6 +1,5 @@
 package frc.robot;
 
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -10,12 +9,11 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.StaticBrake;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+
 // AUTO
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.Auto;
 
@@ -23,7 +21,6 @@ import frc.robot.auto.Auto;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.subsystems.visualizer.AlgaeVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -31,11 +28,7 @@ import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
 
 public class Robot extends LoggedRobot {
-
-  @AutoLogOutput
-  public static double fake = 0;
-
-
+  @SuppressWarnings("resource")
   public Robot() {
     try {
       Thread.sleep(5000);
@@ -85,42 +78,6 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start(); // Start logging
-  }
-
-  @Override
-  public void robotInit() {
-    // try {
-    //   Thread.sleep(5000);
-    // } catch (InterruptedException e) {
-    //   // TODO Auto-generated catch block
-    //   e.printStackTrace();
-    // }
-
-    // // Swerve
-    // Pigeon.init();
-    // Pigeon.setYaw(90);
-    // SwerveManager.init();
-    // SwervePosition.init();
-    // SwervePID.init();
-    // //SwervePosition.setPosition(Constants.APRIL_TAGS[17].getPosition());
-
-    // // Subsystems
-    // // ScoringManager.init();
-    // // AlgaeIntake.init();
-    // // Climber.init();
-
-
-    // // Auto.init();
-
-    // // Controls
-    // OI.init();
-
-    // RTime.init();
-
-    // // Logging
-    // Telemetry.init();
-
-    // //Pigeon.setYaw(90);
   }
 
   @Override
