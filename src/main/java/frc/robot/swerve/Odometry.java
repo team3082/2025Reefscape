@@ -106,7 +106,8 @@ public class Odometry {
 
     // TODO Merge into one method
     public static Vector2 poseExponentiation(Vector2 deltaPos, double theta0, double deltaTheta){
-        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta).rotate((DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI/2);
+        
+        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta).rotate(/*(DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) */ Math.PI/2);
     }
 
 }

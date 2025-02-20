@@ -26,6 +26,7 @@ import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
+import frc.robot.vision.VisionManager;
 
 public class Robot extends LoggedRobot {
   @SuppressWarnings("resource")
@@ -58,6 +59,7 @@ public class Robot extends LoggedRobot {
     OI.init();
 
     RTime.init();
+    VisionManager.init();
 
     //Pigeon.setYaw(90);
     Logger.recordMetadata("ProjectName", "2025Reefscape"); // Set a metadata value
@@ -69,7 +71,7 @@ public class Robot extends LoggedRobot {
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
       new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else if (Constants.REPLAY) {
-      setUseTiming(false); // Run as fast as possible
+      setUseTiming(true); // Run as fast as possible
       String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
       Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
       Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log

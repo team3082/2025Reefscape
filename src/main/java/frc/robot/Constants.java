@@ -176,5 +176,5 @@ public class Constants {
     public static final double FIELD_HEIGHT = 323.25; // inches
     public static final double FIELD_WIDTH = 651.25; // inches
 
-    public static final boolean REPLAY = false;
+    public static final boolean REPLAY = true;
 }
