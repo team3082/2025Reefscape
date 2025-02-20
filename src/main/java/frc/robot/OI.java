@@ -10,7 +10,6 @@ import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.subsystems.visualizer.CoralVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -41,7 +40,6 @@ public class OI {
     // End Effector Control 
     static final int intake                      = LogitechF310.BUTTON_LEFT_BUMPER;
     static final int outtake                     = LogitechF310.BUTTON_RIGHT_BUMPER;
-    static final int dealgaefy                   = LogitechF310.AXIS_LEFT_TRIGGER;
  
     private static boolean drivingToReef         = false;
     private static boolean previouslyPressedPOV  = false; // Checks if we previously pressed the dpad because getPOV() doesn't do that
