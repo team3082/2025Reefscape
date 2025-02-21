@@ -110,4 +110,10 @@ public class Odometry {
         return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta).rotate(/*(DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) */ Math.PI/2);
     }
 
+    public static void setPosition(Vector2 pos){
+        synchronized(positionLock){
+            position = pos;
+        }
+    }
+
 }

@@ -1,4 +1,6 @@
 package frc.robot.swerve;
+import java.util.Optional;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -29,7 +31,8 @@ public class SwervePosition {
     }
 
     public static void update() {
-        if (!VisionManager.getPosition(Pigeon.getRotationRad()).isPresent()){
+        Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
+        if (!visionPos.isPresent()){
         Vector2 odometryPos = Odometry.getPosition();
         Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
         
@@ -37,9 +40,12 @@ public class SwervePosition {
         lastOdomPos = odometryPos;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());
+        System.out.println("Using odom");
         } else {
-            System.out.println("Vision going");
-            position = VisionManager.getPosition(Pigeon.getRotationRad()).get().rotate(Math.PI/2);
+            //System.out.println("Vision going");
+            
+            Odometry.setPosition(visionPos.get().rotate(Math.PI/2));
+            position = visionPos.get().rotate(Math.PI/2);
         }
         
     }

@@ -19,7 +19,7 @@ public class VisionManager {
     public static void init(){
 
         cameras = new Camera[] {
-            new Camera(new PhotonCamera("ApriltagCamera1"), new Vector2(-10.0, 10.0), 0.0, Math.toRadians(-19.0))
+            new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-10, -10), 0.0, Math.toRadians(-19)) // test these later
         };
 
     }
@@ -27,6 +27,8 @@ public class VisionManager {
     public static Optional<Vector2> getPosition(double pigeonAngle) {
 
         List<Vector2> positions = new ArrayList<>();
+
+        //System.out.println("update early");
 
         for (Camera camera : cameras) {
             
@@ -39,17 +41,29 @@ public class VisionManager {
             if (id < 0 || id > Constants.APRIL_TAGS.length) {
                 continue; // Skip invalid id
             }
+            
+            Vector2 vectorTransform = new Vector2(transform.getX(), transform.getY());
+            vectorTransform = vectorTransform.rotate(camera.cameraYaw);
 
             // Rotate robot position to align with field coordinate frame
-            double xdistRobot = transform.getX() * Math.cos(camera.cameraPitch) - transform.getZ() * Math.sin(camera.cameraPitch);
-            double ydistRobot = transform.getY();
+            double xdistRobot = vectorTransform.x * Math.cos(camera.cameraPitch) - transform.getZ() * Math.sin(camera.cameraPitch);
+            double ydistRobot = vectorTransform.y;
 
-            double xdistField = (Math.cos(pigeonAngle) * xdistRobot - Math.sin(pigeonAngle) * ydistRobot) * Constants.METERSTOINCHES;
-            double ydistField = (Math.cos(pigeonAngle) * ydistRobot + Math.sin(pigeonAngle) * xdistRobot) * Constants.METERSTOINCHES;
+            Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
+            System.out.println(distRobot.mag());
+            if(distRobot.mag() > 2.5 || distRobot.mag() < .75){
+                System.out.println("skipped tag");
+                continue;
+            } else {
+                System.out.println("got tag");
+            }
 
-            Vector2 cameraToTag = new Vector2(xdistField, ydistField).rotate(camera.cameraYaw);
+            double xdistField = (Math.cos(pigeonAngle) * distRobot.x - Math.sin(pigeonAngle) * distRobot.y) * Constants.METERSTOINCHES;
+            double ydistField = (Math.cos(pigeonAngle) * distRobot.y + Math.sin(pigeonAngle) * distRobot.x) * Constants.METERSTOINCHES;
 
-            Vector2 aprilTagPos = Constants.APRIL_TAGS[id].getPosition();
+            Vector2 cameraToTag = new Vector2(xdistField, ydistField);
+
+            Vector2 aprilTagPos = new Vector2(Constants.APRIL_TAGS[id].getPosition().y, -Constants.APRIL_TAGS[id].getPosition().x);
             Vector2 cameraPos = aprilTagPos.sub(cameraToTag);
 
             Vector2 robotPos = cameraPos.sub(camera.robotToCamera);
@@ -69,6 +83,7 @@ public class VisionManager {
         }
 
         Vector2 averagePosition = new Vector2(sumX / positions.size(), sumY / positions.size());
+        //System.out.println("update later");
         return Optional.of(averagePosition);
     };
 
