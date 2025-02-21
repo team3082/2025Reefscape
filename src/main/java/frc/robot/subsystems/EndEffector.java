@@ -11,6 +11,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Tuning;
 import frc.robot.subsystems.sim.EndEffectorSim;
+import frc.robot.utils.RTime;
 
 public class EndEffector {
 
@@ -86,7 +87,7 @@ public class EndEffector {
      *  only call in ScoringManager.update()
     */
     public void update() {
-        holdingPiece = !sensor.get();
+        holdingPiece = isHoldingCoral();
 
         // temp for testing
         // holdingPiece = false;
@@ -167,6 +168,31 @@ public class EndEffector {
             default:
                 setIntakeState(IntakeState.DROP_CORAL);
                 break;
+        }
+    }
+
+    public boolean beambreakBroken = false;
+    public double suckTime = 0.0;
+    public double neededSuckTime = 0.1; // the delay to stop moving the coral at the right spot
+
+    /**
+     * Gets if the end effector has held the piece for the necessary amount of time
+     * @return if the end effector is holding coral in the right spot
+     */
+    public boolean isHoldingCoral() {
+        if (!sensor.get()) {
+            if (!beambreakBroken) {
+                suckTime = RTime.now();
+            }
+            beambreakBroken = true;
+            if (RTime.now() >= suckTime + neededSuckTime) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            beambreakBroken = false;
+            return false;
         }
     }
 
