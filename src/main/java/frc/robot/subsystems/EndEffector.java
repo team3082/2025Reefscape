@@ -173,7 +173,7 @@ public class EndEffector {
 
     public boolean beambreakBroken = false;
     public double suckTime = 0.0;
-    public double neededSuckTime = 0.1; // the delay to stop moving the coral at the right spot
+    public double neededSuckTime = 0.08; // the delay to stop moving the coral at the right spot
 
     /**
      * Gets if the end effector has held the piece for the necessary amount of time

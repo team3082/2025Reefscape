@@ -19,7 +19,7 @@ public class VisionManager {
     public static void init(){
 
         cameras = new Camera[] {
-            new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-10, -10), 0.0, Math.toRadians(-19)) // test these later
+            new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-10, 10), 0.0, Math.toRadians(-19)) // test these later
         };
 
     }
@@ -51,11 +51,9 @@ public class VisionManager {
 
             Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
             System.out.println(distRobot.mag());
-            if(distRobot.mag() > 2.5 || distRobot.mag() < .75){
-                System.out.println("skipped tag");
+            if(distRobot.mag() > 2.5 || distRobot.mag() < 1.0){
                 continue;
             } else {
-                System.out.println("got tag");
             }
 
             double xdistField = (Math.cos(pigeonAngle) * distRobot.x - Math.sin(pigeonAngle) * distRobot.y) * Constants.METERSTOINCHES;

@@ -72,8 +72,8 @@ public class Constants {
         public static final double MODOFFSET2 = 0.865234;
         public static final double MODOFFSET3 = 0.375488;
 
-        public static final double WIDTH = 29.5;
-        public static final double LENGTH = 29.5;
+        public static final double WIDTH = 35.0;
+        public static final double LENGTH = 35.0;
         public static final double MODULEOFFSET = 2.625;
 
         // public static final double SWERVEMODX0 = (WIDTH / 2) - MODULEOFFSET;
@@ -176,5 +176,5 @@ public class Constants {
     public static final double FIELD_HEIGHT = 323.25; // inches
     public static final double FIELD_WIDTH = 651.25; // inches
 
-    public static final boolean REPLAY = true;
+    public static final boolean REPLAY = false;
 }

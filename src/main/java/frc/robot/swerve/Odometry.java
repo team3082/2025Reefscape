@@ -1,12 +1,21 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
+import frc.robot.vision.VisionManager;
 
 import static frc.robot.swerve.SwerveManager.mods;
+
+import java.util.Optional;
+
+import org.littletonrobotics.junction.Logger;
 
 public class Odometry {
 
@@ -64,9 +73,37 @@ public class Odometry {
                 //- Math.PI/2.0 is becuase pigeon rotation is offset
                 Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2, deltaAngle);
                 previousPigeonAngle = pigeonAngle;
+                System.out.println("running");
 
-                synchronized(positionLock){
-                    position = position.add(innovation);
+                System.out.println("inovation: " + innovation);
+
+                position = position.add(innovation);
+
+                Optional<Vector2> visionPos = VisionManager.getPosition(pigeonAngle);
+                
+
+
+                if (visionPos.isEmpty()){
+                    //position = position.add(innovation);
+                    System.out.println("vision empty");
+                } else {
+                    System.out.println("tag used");
+                    System.out.println(visionPos);
+
+                    // Best line of code ever written
+                    // - John Malvin
+                    int allianceMultiplier = Robot.isSimulation() ? 1 : (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1);
+
+
+                    Pose2d visionPose = new Pose2d(visionPos.get().rotate(Math.PI/2.0).x/Constants.METERSTOINCHES + 8.78, 
+                                                   visionPos.get().rotate(Math.PI/2.0).y/Constants.METERSTOINCHES + 4.01, 
+                                                   Rotation2d.fromRadians(Pigeon.getRotationRad()+ allianceMultiplier * Math.PI / 2.0));
+                    Logger.recordOutput("Robot/Vision/Vision Pose", visionPose);
+                    Logger.recordOutput("Robot/Vision/Position", visionPos.get().rotate(Math.PI/2).toString());
+                    Logger.recordOutput("Robot/Vision/Position/x", visionPos.get().rotate(Math.PI/2).x);
+                    Logger.recordOutput("Robot/Vision/Position/y", visionPos.get().rotate(Math.PI/2).y);
+
+
                 }
                 
                 try {

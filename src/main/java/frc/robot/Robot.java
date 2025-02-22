@@ -38,13 +38,15 @@ public class Robot extends LoggedRobot {
       e.printStackTrace();
     }
 
+    VisionManager.init();
+
     // Swerve
     Pigeon.init();
     Pigeon.setYaw(90);
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
-    SwervePosition.setPosition(Constants.APRIL_TAGS[7].getCenterPosition());
+    SwervePosition.setPosition(new Vector2());
 
     // Subsystems
     ScoringManager.init();
@@ -59,7 +61,7 @@ public class Robot extends LoggedRobot {
     OI.init();
 
     RTime.init();
-    VisionManager.init();
+    
 
     //Pigeon.setYaw(90);
     Logger.recordMetadata("ProjectName", "2025Reefscape"); // Set a metadata value
@@ -92,12 +94,13 @@ public class Robot extends LoggedRobot {
     ScoringManager.update();
 
     RTime.update();
+    
+    SwerveManager.update();
   }
 
   @Override
   public void autonomousInit() {
     Auto.autoInit();
-    CommandScheduler.getInstance().enable();
   }
   
   @Override
@@ -118,7 +121,6 @@ public class Robot extends LoggedRobot {
     OI.userInput();
 
     // Update Subsystems
-    SwerveManager.update();
     // ScoringManager.update();
     // AlgaeIntake.update();
     // Climber.update();

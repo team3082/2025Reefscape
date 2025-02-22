@@ -31,22 +31,18 @@ public class SwervePosition {
     }
 
     public static void update() {
-        Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
-        if (!visionPos.isPresent()){
+        // Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
+        // if (!visionPos.isPresent()){
         Vector2 odometryPos = Odometry.getPosition();
         Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
         
-        position = position.add(odometryInnovation);
+        // position = position.add(odometryInnovation);
+        position = odometryPos;
+        System.out.println("position: " + position);
         lastOdomPos = odometryPos;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());
-        System.out.println("Using odom");
-        } else {
-            //System.out.println("Vision going");
-            
-            Odometry.setPosition(visionPos.get().rotate(Math.PI/2));
-            position = visionPos.get().rotate(Math.PI/2);
-        }
+
         
     }
 
@@ -78,6 +74,7 @@ public class SwervePosition {
      * @param newPosition the new position to set the robot position to
      */
     public static void setPosition(Vector2 newPosition) {
+        Odometry.setPosition(newPosition);
         position = newPosition;
     }
     

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
+import frc.robot.auto.commands.MoveForward;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -104,6 +105,13 @@ public class Auto {
             new MoveToScorePos(ScoringPosition.INTAKE),
             new IntakeCoral(2),
             Commands.runOnce(()->System.out.println("STOW"))
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup goBackwardABit(){
+        return new SequentialCommandGroup(
+            new MoveForward(-30)
         );
     }
 
