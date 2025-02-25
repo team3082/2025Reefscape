@@ -6,7 +6,6 @@ import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 
 import static frc.robot.Constants.Swerve.*;
-import static frc.robot.Tuning.OI.KDYAW;
 
 
 public final class SwerveManager {
@@ -37,27 +36,6 @@ public final class SwerveManager {
         for (SwerveModule mod : mods) {
             mod.resetSteerSensor();
         }
-    }
-
-    /**
-     * Only call this method from OI
-     * @param rotSpeed
-     * @param move
-     */
-    public static void rotateAndDriveWithYawRateControl(double rotSpeed, Vector2 move) {
-        double yawRate = Pigeon.getDeltaRotRad();
-        double correctedRotSpeed = rotSpeed + yawRate * KDYAW;
-        rotateAndDrive(correctedRotSpeed, move);
-    }
-
-    
-    /** 
-     * Locks the robot's angle to a specific angle, but allows free translation.
-     */
-    public static void moveAndRotateTo(Vector2 move, double toAngle) {
-        SwervePID.rotPID.setDest(toAngle);
-        double rotation = SwervePID.rotPID.updateOutput(Pigeon.getRotationRad());
-        rotateAndDrive(rotation, move.mul(shootWhileMoveSpeed));
     }
 
     public static void rotateAndDrive(double rotSpeed, Vector2 move) {
@@ -147,23 +125,6 @@ public final class SwerveManager {
         return velSum.div(mods.length);
     }
 
-    /**
-     * finds the robots velocity by performing pose exponentiation on each of the swerve mods,
-     * and returning the average change
-     * @return
-     */
-    public static Vector2 getRobotDriveVelocityModExponentiation(){
-        Vector2 velSum = new Vector2();
-        for (SwerveModule mod : mods){
-            double dtheta = mod.getSteerDelta();
-            double thetaf = mod.getSteerAngle();
-            //divided by 50 to get the change per frame instead of seconds
-            double dpos = mod.getDriveVelocity() / 50;
-            velSum.add(Odometry.poseExponentiation(dpos, thetaf - dtheta, dtheta));
-        }
-        // multiplied by 50 to return to inches per second
-        return velSum.div(mods.length).mul(50);
-    }
 
     /**
      * Returns the overall rotational velocity of the robot, based on the rotations and velocities of each of the

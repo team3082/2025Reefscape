@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import frc.robot.Robot;
 import frc.robot.swerve.sim.SwerveModuleSim;
 import frc.robot.utils.Vector2;
+import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
@@ -32,8 +33,6 @@ public class SwerveModule {
 
     public SwerveModuleSim simModule = new SwerveModuleSim();
 
-    private final double STEER_RATIO = (double) 150.0 / (double) 7.0; // TODO double check this value
-    private final double DRIVE_RATIO = (double) 6.12; // TODO double check this value
 
     public SwerveModule(int steerID, int driveID, double cancoderOffset, double x, double y) {
         steer = new TalonFX(steerID, "CANivore");
@@ -112,10 +111,10 @@ public class SwerveModule {
     /** reset the internal encoder position to the absolute encoder position */
     public void resetSteerSensor() {
         double pos = absEncoder.getAbsolutePosition().getValueAsDouble() - cancoderOffset;
-        steer.setPosition(pos * STEER_RATIO);
+        steer.setPosition(pos * Constants.Swerve.STEER_RATIO);
         //System.out.println("encoder pos " + pos);
         //System.out.println("steer motor pos " + steer.getPosition().getValueAsDouble());
-        //System.out.println("steer ratio " + STEER_RATIO);
+        //System.out.println("steer ratio " + Constants.Swerve.Constants.Swerve.STEER_RATIO);
     }
 
     /** set target drive speed */
@@ -174,51 +173,36 @@ public class SwerveModule {
         else return simModule.getAngle();
     }
 
-    private double lastSteerAngle = Double.NaN;
 
-    /** TODO : FIX THIS FUNCTION
-     * only call this once per frame
-     */
-    public double getSteerDelta() {
-        if(lastSteerAngle == Double.NaN){
-            lastSteerAngle = getSteerAngle();
-            return 0.0;
-        }
-        double ret = getSteerAngle() - lastSteerAngle;
-        lastSteerAngle = getSteerAngle();
-        return ret;
-    }
-
-    /** TODO : FIX THIS FUNCTION
+    /**
      * returns the current velocity of the drive motor in inches per second
      * @return
      */
     public double getDriveVelocity() {
-        // TODO Recalculate
         double driveTimeConstant = 2.0 * Math.PI * 2.0;
 
-        if (Robot.isReal()) return (drive.getVelocity().getValueAsDouble() / DRIVE_RATIO) * driveTimeConstant;
+        if (Robot.isReal()) return (drive.getVelocity().getValueAsDouble() / Constants.Swerve.STEER_RATIO) * driveTimeConstant;
         else return (simModule.getSpeed() * driveTimeConstant * 10) * (inverted ? -1 : 1); // fudge factor
     }
 
     /** get position of the drive motor */
     public double getDrivePosition() {
         if (RobotBase.isReal()) return rotToRadDrive(drive.getPosition().getValueAsDouble() * 2.0);
-        else return rotToRadDrive(simModule.getDrivePosition()); // TODO add feature to sim
+        else return rotToRadDrive(simModule.getDrivePosition());
     }
 
     /** convert radians to internal motor rotations for the steer motor */
     private double radToRotSteer(double rad) {
-        return (rad / (2.0 * Math.PI)) * STEER_RATIO;
+        return (rad / (2.0 * Math.PI)) * Constants.Swerve.STEER_RATIO;
     }
 
     /** convert internal motor rotations to radians for the steer motor */
     private double rotToRadSteer(double rot) {
-        return (rot * (2.0 * Math.PI)) / STEER_RATIO;
+        return (rot * (2.0 * Math.PI)) / Constants.Swerve.STEER_RATIO;
     }
 
     /** convert internal motor rotations to radians for the drive motor */
     private double rotToRadDrive(double rot) {
-        return (rot * (2.0 * Math.PI)) / DRIVE_RATIO;
+        return (rot * (2.0 * Math.PI)) / Constants.Swerve.STEER_RATIO;
     }
 }

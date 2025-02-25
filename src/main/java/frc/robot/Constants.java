@@ -72,6 +72,10 @@ public class Constants {
         public static final double MODOFFSET2 = 0.865234;
         public static final double MODOFFSET3 = 0.375488;
 
+        public static final double DRIVE_RATIO = 6.12;
+        public static final double STEER_RATIO = 150.0 /  7.0;
+
+
         public static final double WIDTH = 35.0;
         public static final double LENGTH = 35.0;
         public static final double MODULEOFFSET = 2.625;

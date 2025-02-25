@@ -1,5 +1,4 @@
 package frc.robot.swerve;
-import java.util.Optional;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 
@@ -9,7 +8,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
-import frc.robot.vision.VisionManager;
 
 public class SwervePosition {
 
@@ -31,19 +29,13 @@ public class SwervePosition {
     }
 
     public static void update() {
-        // Optional<Vector2> visionPos = VisionManager.getPosition(Pigeon.getRotationRad());
-        // if (!visionPos.isPresent()){
         Vector2 odometryPos = Odometry.getPosition();
         Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
         
-        // position = position.add(odometryInnovation);
         position = odometryPos;
-        System.out.println("position: " + position);
         lastOdomPos = odometryPos;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());
-
-        
     }
 
     public static final double correctionMultiplier = 0.1;

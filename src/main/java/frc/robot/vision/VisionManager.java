@@ -28,8 +28,6 @@ public class VisionManager {
 
         List<Vector2> positions = new ArrayList<>();
 
-        //System.out.println("update early");
-
         for (Camera camera : cameras) {
             
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
@@ -81,7 +79,6 @@ public class VisionManager {
         }
 
         Vector2 averagePosition = new Vector2(sumX / positions.size(), sumY / positions.size());
-        //System.out.println("update later");
         return Optional.of(averagePosition);
     };
 

@@ -8,8 +8,9 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import com.ctre.phoenix6.controls.NeutralOut;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
@@ -34,15 +35,14 @@ public class Robot extends LoggedRobot {
     try {
       Thread.sleep(5000);
     } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
+    RTime.init();
     VisionManager.init();
+    Auto.init();
 
     // Swerve
     Pigeon.init();
-    Pigeon.setYaw(90);
     SwerveManager.init();
     SwervePosition.init();
     SwervePID.init();
@@ -50,20 +50,16 @@ public class Robot extends LoggedRobot {
 
     // Subsystems
     ScoringManager.init();
-    // AlgaeIntake.init();
     // Climber.init();
 
     // Logging
-    Auto.init();
     Telemetry.init();
     
     // Controls
     OI.init();
 
-    RTime.init();
     
 
-    //Pigeon.setYaw(90);
     Logger.recordMetadata("ProjectName", "2025Reefscape"); // Set a metadata value
     Logger.recordOutput("PID Error", SwervePID.getError().toString());
 
@@ -71,6 +67,7 @@ public class Robot extends LoggedRobot {
     if (isReal()) {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+      // TODO Plug PDH into CAN
       new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else if (Constants.REPLAY) {
       setUseTiming(true); // Run as fast as possible
@@ -86,21 +83,17 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotPeriodic() {
-    // Update Dashboard Every Frame
+    RTime.update();
     Telemetry.update();
     SwervePosition.update();
-    Pigeon.update();
-
-    ScoringManager.update();
-
-    RTime.update();
-    
     SwerveManager.update();
+    Pigeon.update();
+    ScoringManager.update();
   }
 
   @Override
   public void autonomousInit() {
-    Auto.autoInit();
+    Auto.startRoutine();
   }
   
   @Override
@@ -109,21 +102,11 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void teleopInit() {
-    // Stow Elevator/End Effector on Teleop Start
-    // ScoringManager.setScoringLevel(ScoringPosition.STOW);
-    // ScoringManager.setScoringLevel(ScoringPosition.L4);
-  }
+  public void teleopInit() {}
 
   @Override
   public void teleopPeriodic() {
-    // Handle Input
     OI.userInput();
-
-    // Update Subsystems
-    // ScoringManager.update();
-    // AlgaeIntake.update();
-    // Climber.update();
   }
 
   @Override
@@ -133,9 +116,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().disable();
 
     // Disable Subsystems
-    // ScoringManager.setScoringLevel(ScoringPosition.DISABLED);
-    // AlgaeIntake.setState(IntakeState.DISABLED);
-    // Climber.setState(ClimberState.DISABLED);
+    ScoringManager.setScoringPosition(ScoringPosition.DISABLED);
     SwerveManager.rotateAndDrive(0, new Vector2());
     if (Robot.isSimulation()) {
       SwerveManager.mods[0].simModule.speed = 0;
@@ -144,17 +125,15 @@ public class Robot extends LoggedRobot {
       SwerveManager.mods[3].simModule.speed = 0;
     }
 
-    ScoringManager.setScoringLevel(ScoringPosition.STOW);
-
-    ScoringManager.endEffector.disable();
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
   public void testInit() {
-    ScoringManager.endEffector.pivotMotor.setControl(new NeutralOut());
+    ScoringManager.setScoringPosition(ScoringPosition.TEST);
   }
 
   @Override
@@ -165,4 +144,10 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void simulationPeriodic() {}
+
+  public static int getAllianceMultiplier() {
+    // Best line of code ever written
+    // - John Malvin
+    return Robot.isSimulation() ? 1 : (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1);
+  }
 }

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -89,9 +90,6 @@ public class EndEffector {
     public void update() {
         holdingPiece = isHoldingCoral();
 
-        // temp for testing
-        // holdingPiece = false;
-
         switch (intakeState) {
             case INTAKE_CORAL:
                 // Stop Wheels if Holding Piece
@@ -114,24 +112,21 @@ public class EndEffector {
         }
     }
 
-    /** sets the intakes state (intake wheel control applied in update()) */
     public void setIntakeState(IntakeState newState) {
         intakeState = newState;
     }
 
-    /** sets the pivots target position (positional control applied in update()) */
     public void setPivotAngle(double targetAngle) {
         this.targetAngle = targetAngle;
     }
 
-    /** returns the pivot angle in radians */
+    /** @return the pivot angle in radians */
     public double getPivotAngle() {
-        // System.out.println("wrist pose: " + rotToRad(pivotMotor.getPosition().getValueAsDouble()));
         if (Robot.isReal()) return rotToRad(pivotMotor.getPosition().getValueAsDouble());
         else return EndEffectorSim.getPosition();
     }
 
-    /** returns true if current motor position is within a set deadband */
+    /** @return if current motor position is within a set deadband */
     public boolean atPosition() {
         return Math.abs(getPivotAngle() - targetAngle) <= Tuning.EndEffector.PIVOT_DEADBAND;
     }
@@ -143,7 +138,6 @@ public class EndEffector {
 
     /** conversion from internal motor rotations to radians */
     private double rotToRad(double rot) {
-
         return (rot * 2.0 * Math.PI) / Constants.EndEffector.GEARRATIO;
     }
 
@@ -152,7 +146,6 @@ public class EndEffector {
             case ALGAE_INTAKE:
                 setIntakeState(IntakeState.INTAKE_ALGAE);
                 break;
-        
             default:
                 setIntakeState(IntakeState.INTAKE_CORAL);
                 break;
@@ -164,7 +157,6 @@ public class EndEffector {
             case ALGAE_INTAKE:
                 setIntakeState(IntakeState.DROP_ALGAE);
                 break;
-        
             default:
                 setIntakeState(IntakeState.DROP_CORAL);
                 break;
@@ -198,6 +190,10 @@ public class EndEffector {
 
     public void disable() {
         pivotMotor.setControl(new StaticBrake());
+    }
+
+    public void test() {
+        pivotMotor.setControl(new NeutralOut());
     }
 
 }

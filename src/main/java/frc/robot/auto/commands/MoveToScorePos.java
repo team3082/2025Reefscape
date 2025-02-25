@@ -22,7 +22,7 @@ public class MoveToScorePos extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ScoringManager.setScoringLevel(pos);
+    ScoringManager.setScoringPosition(pos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

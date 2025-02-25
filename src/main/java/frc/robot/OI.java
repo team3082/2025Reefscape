@@ -57,8 +57,6 @@ public class OI {
     private static final int ALGAE2              = LogitechF310.DPAD_UP;
     private static final int ALGAE_INTAKE        = LogitechF310.DPAD_LEFT;
  
-    private static final int RightTrigger        = LogitechF310.AXIS_RIGHT_TRIGGER;
-    private static final int LeftTrigger         = LogitechF310.AXIS_LEFT_TRIGGER;
 
 
     private static ScoringPosition savedLevel = ScoringPosition.STOW;
@@ -181,8 +179,8 @@ public class OI {
         }
 
 
-        if (driverStick.getRawButtonPressed(lockIn)) ScoringManager.setScoringLevel(savedLevel);
-        if (driverStick.getRawButtonPressed(lockOut)) ScoringManager.setScoringLevel(ScoringPosition.STOW);
+        if (driverStick.getRawButtonPressed(lockIn)) ScoringManager.setScoringPosition(savedLevel);
+        if (driverStick.getRawButtonPressed(lockOut)) ScoringManager.setScoringPosition(ScoringPosition.STOW);
     }
 
     public static void operatorInput() {
@@ -194,14 +192,6 @@ public class OI {
         else if (operatorStick.getPOV() == ALGAE1) savedLevel = ScoringPosition.ALGAE1;
         else if (operatorStick.getPOV() == ALGAE2) savedLevel = ScoringPosition.ALGAE2;
         else if (operatorStick.getPOV() == ALGAE_INTAKE) savedLevel = ScoringPosition.ALGAE_INTAKE;
-
-
-        if (operatorStick.getRawAxis(RightTrigger)>0.7){
-            ScoringManager.setPickingRightCoral(true);
-        } else if (operatorStick.getRawAxis(LeftTrigger)>0.7){
-            ScoringManager.setPickingRightCoral(false);
-        }
-        
     }
 
 }

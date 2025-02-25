@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.Tuning;
-import frc.robot.subsystems.visualizer.CoralVisualizer;
 
 /**
  * Manages the scoring system for the robot, including the elevator and end effector.
@@ -13,11 +12,10 @@ public class ScoringManager {
      */
     public enum ScoringPosition {
         DISABLED(0.0, 0.0),
+        TEST(0.0, 0.0),
         STOW(0.0, 0.0),
-        INTAKE(0.0, 0.0),
         ALGAE1(12, Math.PI/3.0),
         ALGAE2(38, Math.PI/3.0),
-        L1(0.0, 0.0),
         L2(24, Math.toRadians(30.0)),
         L3(46, Math.toRadians(30.0)),
         L4(83, Math.toRadians(45.0)),
@@ -55,119 +53,80 @@ public class ScoringManager {
     public static Elevator elevator;
     public static EndEffector endEffector;
 
-    /**
-     * Is the robot picking up the rightMostCoral, TODO implement logic to do this
-     */
-    private static boolean isRight = false;
-
-    /**
-     * Sets the side that the coral will be picked
-     * @param isRight Is the coral being picked from the right
-     */
-    public static void setPickingRightCoral(boolean isRight){
-        ScoringManager.isRight = isRight;
-    }
-
-    /**
-     * Gets the side that the coral will be picked
-     * @param true if the right side is being picked
-     */
-    public static boolean isPickingRightCoral(){
-        return isRight;
-    }
-
-
-    /**
-     * Gets the Elevator instance
-     *
-     * @return the Elevator
-     */
     public static Elevator getElevator(){
         return elevator;
     }
 
-    /**
-     * Gets the EndEffector instance
-     *
-     * @return the EndEffector
-     */
     public static EndEffector getEndEffector(){
         return endEffector;
     }
-
 
     /**
      * Sets the target scoring position and updates the transitory state if needed.
      *
      * @param targetPosition the desired scoring position
      */
-    public static void setScoringLevel(ScoringPosition targetPosition) {
+    public static void setScoringPosition(ScoringPosition targetPosition) {
         if (scoringPosition != targetPosition) {
             transitoryState = TransitoryState.ELEVATOR_WAITING;
         }
         scoringPosition = targetPosition;
-        CoralVisualizer.updateView();
     }
 
-    /**
-     * Gets the current scoring position.
-     *
-     * @return the current scoring position
-     */
-    public static ScoringPosition getScoringLevel() {
+    public static ScoringPosition getScoringPosition() {
         return scoringPosition;
     }
 
     /**
-     * Initializes the scoring manager by creating instances of the elevator and end effector.
+     * Creates instances of the elevator and end effector.
      */
     public static void init() {
         elevator = new Elevator();
         endEffector = new EndEffector();
-        CoralVisualizer.init();
     }
 
     /**
-     * Updates the scoring system by handling transitions between states.
+     * Handles transitions between states.
      */
     public static void update() {
         if (scoringPosition == ScoringPosition.DISABLED) {
+            elevator.disable();
+            endEffector.disable();
+            return;
+        } else if (scoringPosition == ScoringPosition.TEST) {
+            elevator.test();
+            endEffector.test();
             return;
         }
 
         switch (transitoryState) {
             // moves wrist to safe transitory position
             case ELEVATOR_WAITING:
-                // System.out.println("waiting");
                 handleElevatorWaiting();
                 break;
         
             // moves elevator to set position
             case ELEVATOR_MOVING:
-                // System.out.println("elevator moving");
                 handleElevatorMoving();
                 break;
             
             // move wrist to final set position
             case WRIST_MOVING:
-                // System.out.println("wrist moving");
                 handleWristMoving();
                 break;
 
             // doesn't need anything currently, maybe add manual control if needed
             case FINISHED: 
-                // System.out.println("done");
                 break;
         }
 
         // update end effector and elevator (do not run these methods in Robot.java these should be the only instance)
         endEffector.update();
         elevator.update();
-        CoralVisualizer.updateView();
     }
 
     /**
-     * Handles the elevator waiting state by setting the wrist to a safe angle.
+     * Sets the wrist to a safe angle.
      * Transitions to the elevator moving state when the wrist is at the correct position.
      */
     private static void handleElevatorWaiting() {
@@ -178,8 +137,8 @@ public class ScoringManager {
     }
 
     /**
-     * Handles the elevator moving state by setting the elevator to the target height.
-     * Transitions to the wrist moving state when the elevator reaches the correct height.
+     * Sets the elevator to the target height.
+     * Transitions to the wrist moving state when the elevator reaches the correct position.
      */
     private static void handleElevatorMoving() {
         elevator.setElevatorHeight(scoringPosition.targetHeight);
@@ -189,7 +148,7 @@ public class ScoringManager {
     }
 
     /**
-     * Handles the wrist moving state by setting the wrist to the target angle.
+     * Sets the wrist to the target angle.
      * Transitions to the finished state when the wrist reaches the correct position.
      */
     private static void handleWristMoving() {

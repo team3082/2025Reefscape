@@ -12,7 +12,6 @@ public class SwerveModuleSim {
 
     private final double MAX_RAMP = 2.0; // percent out / second
 
-    public SwerveModuleSim() {}
 
     public void update(boolean inverted) {
         // update pos

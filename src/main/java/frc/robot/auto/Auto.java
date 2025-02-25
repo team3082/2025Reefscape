@@ -1,7 +1,5 @@
 package frc.robot.auto;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -10,15 +8,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
-import frc.robot.auto.commands.MoveForward;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
-import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.Vector2;
-import frc.robot.utils.trajectories.ChickenParser;
-import frc.robot.utils.trajectories.RobotPath;
-import frc.robot.auto.commands.FollowRobotPath;
 
 
 /**
@@ -37,32 +29,6 @@ public class Auto {
         return routineManager.getAutoSelector();
     }
 
-    @AutoRoutine
-    public static SequentialCommandGroup pathFollowingTest() {
-        System.out.println("Path Following Test");
-
-        ChickenParser parser = new ChickenParser("/home/lvuser/deploy/ChickenPlannerSuperTest.json");
-        List<RobotPath> paths = parser.getPaths();
-        Vector2 startingPos = paths.get(0).getStartPos();
-        SwervePosition.setPosition(startingPos);
-
-        return new SequentialCommandGroup (
-            new FollowRobotPath(paths.get(0))
-            // new MoveToScorePos(ScoringPosition.L4),
-            // new MoveToScorePos(ScoringPosition.STOW),
-
-            // new FollowRobotPath(paths.get(1)),
-            // // new MoveToScorePos(ScoringPosition.L3),
-            // // new MoveToScorePos(ScoringPosition.STOW),
-
-            // new FollowRobotPath(paths.get(2)),
-            // // new MoveToScorePos(ScoringPosition.L2),
-            // // new MoveToScorePos(ScoringPosition.STOW),
-            
-            // new FollowRobotPath(paths.get(3))
-            
-        );
-    }
 
     /**
      * Example autonomous routine #1.
@@ -102,18 +68,12 @@ public class Auto {
             Commands.runOnce(()->System.out.println("L4")),
             new WaitCommand(1.0),
             new WaitCommand(1.0),
-            new MoveToScorePos(ScoringPosition.INTAKE),
+            new MoveToScorePos(ScoringPosition.STOW),
             new IntakeCoral(2),
             Commands.runOnce(()->System.out.println("STOW"))
         );
     }
 
-    @AutoRoutine
-    public SequentialCommandGroup goBackwardABit(){
-        return new SequentialCommandGroup(
-            new MoveForward(-30)
-        );
-    }
 
     /**
      * Initializes the autonomous system by creating a {@link RoutineManager}
@@ -128,7 +88,7 @@ public class Auto {
      * Schedules the currently selected autonomous command.
      * Should be called at the start of autonomous mode.
      */
-    public static void autoInit() {
+    public static void startRoutine() {
         CommandScheduler.getInstance().enable();
         routineManager.getCurrentCommand().schedule();
     }

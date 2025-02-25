@@ -2,7 +2,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 
@@ -12,21 +14,17 @@ import frc.robot.Tuning;
 import frc.robot.subsystems.sim.ElevatorSim;
 
 public class Elevator {
-    // hardware
     public TalonFX extensionMotor1; 
     public TalonFX extensionMotor2;
 
-    // state
     public double targetHeight;
 
-    /** Constructor */
     public Elevator() {
         init();
     }
 
-    /** Initialize Elevator Subsystem - only call in constructor */
+    /** only call in constructor */
     public void init() {
-        // Initialize Motors
         extensionMotor1 = new TalonFX(Constants.Elevator.MOTORID1, "CANivore");
         extensionMotor2 = new TalonFX(Constants.Elevator.MOTORID2, "CANivore");
 
@@ -57,6 +55,7 @@ public class Elevator {
         extensionMotor1.setPosition(0);
         extensionMotor2.setPosition(0);
     }
+
     /** applies elevator positional control,
      *  only call in ScoringManager.update()
     */
@@ -71,34 +70,39 @@ public class Elevator {
     }
 
     /**
-     * sets the height of the elevator
      * @param targetHeight target height in inches
      */
     public void setElevatorHeight(double targetHeight) {
         this.targetHeight = targetHeight;
     }
 
-    /** get the elevator height in inches */
+    /** @return height in inches */
     public double getElevatorHeight() {
-        // System.out.println("elevator position: " + extensionMotor1.getPosition().getValueAsDouble());
-        // System.out.println("elevator position 2: " + extensionMotor2.getPosition().getValueAsDouble());
         if (Robot.isReal()) return rotToInch(extensionMotor1.getPosition().getValueAsDouble());
         else return ElevatorSim.getPosition();
     }
 
-    /** returns true if elevator position is within set deadband */
+    /** @return true if elevator position is within set deadband */
     public boolean atPosition() {
         return Math.abs(getElevatorHeight() - targetHeight) < Tuning.Elevator.HEIGHT_DEADBAND;
     }
 
     /** converts inches to internal motor rotations */
     private double inchToRot(double inch) {
-        return inch;
+        return inch; // not needed currenly
     }
 
     /** converts internal motor rotations to inches */
     private double rotToInch(double rot) {
-        return rot;
+        return rot; // not needed currently
+    }
+
+    public void disable(){
+        extensionMotor1.setControl(new StaticBrake());
+    }
+
+    public void test() {
+        extensionMotor1.setControl(new NeutralOut());
     }
 
 }
