@@ -1,12 +1,10 @@
 package frc.robot.swerve;
-import org.littletonrobotics.junction.AutoLog;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
@@ -20,8 +18,6 @@ public class SwervePosition {
     @AutoLogOutput
     private static Vector2 position;
     private static Vector2 absVelocity;
-    private static Vector2 lastAbsVelocity;
-
     private static Vector2 lastOdomPos;
 
     public static void init() {
@@ -33,20 +29,13 @@ public class SwervePosition {
     }
 
     public static void update() {
+        Vector2 odometryPos = Odometry.getPosition();
+        Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
+        
+        position = odometryPos;
+        lastOdomPos = odometryPos;
 
-        if(RobotBase.isReal()){
-            Vector2 odometryPos = Odometry.getPosition();
-            Vector2 odometryInnovation = odometryPos.sub(lastOdomPos);
-            
-            position = position.add(new Vector2(-odometryInnovation.y, odometryInnovation.x));
-            lastOdomPos = odometryPos;
-
-            absVelocity = odometryInnovation.div(RTime.deltaTime());
-        } else {
-            lastAbsVelocity = absVelocity; 
-            absVelocity = SwerveManager.getRobotDriveVelocity().rotate(Pigeon.getRotationRad() - Math.PI / 2);
-            position = position.add(absVelocity.add(lastAbsVelocity).mul(0.5 * RTime.deltaTime())); 
-        }
+        absVelocity = odometryInnovation.div(RTime.deltaTime());
     }
 
     public static final double correctionMultiplier = 0.1;
@@ -77,6 +66,7 @@ public class SwervePosition {
      * @param newPosition the new position to set the robot position to
      */
     public static void setPosition(Vector2 newPosition) {
+        Odometry.setPosition(newPosition);
         position = newPosition;
     }
     

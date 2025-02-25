@@ -21,14 +21,14 @@ public class DropCoral extends Command  {
     public void initialize(){
         // Start timer
         startTime = RTime.now();
-        ScoringManager.getEndEffector().setIntakeState(IntakeState.DROP_PIECE); // Start dropping
+        ScoringManager.getEndEffector().setIntakeState(IntakeState.DROP_CORAL); // Start dropping
 
     }
 
 
     @Override
     public void end(boolean interrupted) {
-        ScoringManager.getEndEffector().setIntakeState(IntakeState.HOLD_PIECE); // Stop dropping
+        ScoringManager.getEndEffector().setIntakeState(IntakeState.HOLD_CORAL); // Stop dropping
     }
 
     @Override

@@ -1,5 +1,8 @@
 {
   "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
     "transitory": {
       "AdvantageKit": {
         "PowerDistribution": {
@@ -24,14 +27,17 @@
           "open": true
         }
       },
+      "LiveWindow": {
+        "open": true
+      },
       "Shuffleboard": {
+        ".recording": {
+          "open": true
+        },
         "Robot Views": {
           "open": true
         },
         "Scoring Manager": {
-          "open": true
-        },
-        "Swerve": {
           "open": true
         },
         "open": true
@@ -41,12 +47,23 @@
       }
     },
     "types": {
+      "/AdvantageKit/RealOutputs/Robot/Subsystem View": "Mechanism2d",
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Robot Views/Auto Selector": "String Chooser",
+      "/Shuffleboard/Robot Views/Coral Operator View": "Mechanism2d",
       "/Shuffleboard/Robot Views/Field": "Field2d",
+      "/Shuffleboard/Robot Views/Field View": "Field2d",
+      "/Shuffleboard/Robot Views/SendableChooser[0]": "String Chooser",
+      "/Shuffleboard/Robot Views/Subsystem View": "Mechanism2d",
       "/Shuffleboard/Robot Views/Swerve View": "Mechanism2d",
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
+      "/Shuffleboard/Robot Views/Auto Selector": {
+        "window": {
+          "visible": true
+        }
+      },
       "/Shuffleboard/Robot Views/Field": {
         "bottom": 1638,
         "builtin": "2025 Reefscape",
@@ -59,6 +76,22 @@
           "visible": true
         }
       },
+      "/Shuffleboard/Robot Views/Field View": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/Robot Views/Subsystem View": {
+        "window": {
+          "visible": true
+        }
+      },
       "/Shuffleboard/Robot Views/Swerve View": {
         "window": {
           "visible": true
@@ -67,9 +100,16 @@
     }
   },
   "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
     "visible": true
   },
   "NetworkTables Settings": {
-    "mode": "Client (NT4)"
+    "mode": "Client (NT4)",
+    "port4": 10000
   }
 }

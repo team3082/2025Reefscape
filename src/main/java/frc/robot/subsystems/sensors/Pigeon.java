@@ -18,9 +18,9 @@ public class Pigeon {
     public static void init() {
         pigeon = new Pigeon2(0, "CANivore");
 
-        // pigeon.configFactoryDefault();
-        // Pigeon2Configuration pigeonConfig = new Pigeon2Configuration();
         pigeon.getConfigurator().apply(new Pigeon2Configuration());
+
+        pigeon.setYaw(90);
     }
 
     public static void update() {
@@ -33,19 +33,16 @@ public class Pigeon {
 
     public static void reset() {
         pigeon.reset();
+        pigeon.setYaw(90);
     }
 
     public static void setSimulatedRot(double rad) {
         simulatedRot = rad;
     }
 
-    public static void zero(){
-        pigeon.setYaw(90);
-    }
-
     public static void setYaw(double deg) {
         pigeon.setYaw(deg);
-        simulatedRot = deg * Math.PI / 180;
+        simulatedRot = (deg * Math.PI / 180);
     }
 
     public static void setYawRad(double rad) {

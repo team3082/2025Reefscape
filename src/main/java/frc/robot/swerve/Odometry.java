@@ -1,10 +1,19 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
+import frc.robot.vision.VisionManager;
 
 import static frc.robot.swerve.SwerveManager.mods;
+
+import java.util.Optional;
+
+import org.littletonrobotics.junction.Logger;
 
 public class Odometry {
 
@@ -42,9 +51,9 @@ public class Odometry {
                 
                 for(int i = 0; i < mods.length; i++){
 
-                    double position = mods[i].getDrivePosition();
-                    double disp = position - previousDrivePositions[i];
-                    previousDrivePositions[i] = position;
+                    double drivePosition = mods[i].getDrivePosition();
+                    double disp = drivePosition - previousDrivePositions[i];
+                    previousDrivePositions[i] = drivePosition;
 
                     double angle = mods[i].getSteerAngle();
 
@@ -60,18 +69,28 @@ public class Odometry {
                 }
                 
                 //- Math.PI/2.0 is becuase pigeon rotation is offset
-                Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2.0, deltaAngle);
-                
+                Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2, deltaAngle);
                 previousPigeonAngle = pigeonAngle;
 
-                synchronized(positionLock){
-                    position = position.add(innovation);
+                position = position.add(innovation);
+
+                Optional<Vector2> visionPos = VisionManager.getPosition(pigeonAngle);
+                
+
+                // TODO Migrate to Telemetry
+                if (!visionPos.isEmpty()) {
+                    Pose2d visionPose = new Pose2d(visionPos.get().rotate(Math.PI/2.0).x/Constants.METERSTOINCHES + 8.78, 
+                                                   visionPos.get().rotate(Math.PI/2.0).y/Constants.METERSTOINCHES + 4.01, 
+                                                   Rotation2d.fromRadians(Pigeon.getRotationRad()+ Robot.getAllianceMultiplier() * Math.PI / 2.0));
+                    Logger.recordOutput("Robot/Vision/Vision Pose", visionPose);
+                    Logger.recordOutput("Robot/Vision/Position", visionPos.get().rotate(Math.PI/2).toString());
+                    Logger.recordOutput("Robot/Vision/Position/x", visionPos.get().rotate(Math.PI/2).x);
+                    Logger.recordOutput("Robot/Vision/Position/y", visionPos.get().rotate(Math.PI/2).y);
                 }
                 
                 try {
                     sleep(7);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -104,7 +123,13 @@ public class Odometry {
     }
 
     public static Vector2 poseExponentiation(Vector2 deltaPos, double theta0, double deltaTheta){
-        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta);
+        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta).rotate(/*(DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) */ Math.PI/2);
+    }
+
+    public static void setPosition(Vector2 pos){
+        synchronized(positionLock){
+            position = pos;
+        }
     }
 
 }

@@ -2,19 +2,19 @@ package frc.robot;
 
 public final class Tuning {
     //Swerve
-    public static final double MOVEP = 0.2;
+    public static final double MOVEP = 0.09;
     public static final double MOVEI = 0.0;
-    public static final double MOVED = 0.2;
-    public static final double MOVEDEAD = 0.1;
-    public static final double MOVEVELDEAD = 0.0;
-    public static final double MOVEMAXSPEED = 0.4;
+    public static final double MOVED = 0.25;
+    public static final double MOVEDEAD = 0.05;
+    public static final double MOVEVELDEAD = 0.01;
+    public static final double MOVEMAXSPEED = 0.2;
     // public static final double ROTP = 0.225;
     // public static final double ROTI = 0.0;
     // public static final double ROTD = 0.7;
-    public static final double ROTP = 0.1;
-    public static final double ROTI = 0.00;
-    public static final double ROTD = 0;
-    public static final double ROTDEAD = 0.005;
+    public static final double ROTP = 0.3;
+    public static final double ROTI = 0.01;
+    public static final double ROTD = 0.0;
+    public static final double ROTDEAD = 0.05;
     public static final double ROTVELDEAD = 0.01;
     public static final double ROTMAXSPEED = 0.25;
  
@@ -36,7 +36,7 @@ public final class Tuning {
      public static final double SWERVE_KAROT = 0.0;
  
      public static final int CURVE_RESOLUTION = 3000;
-     public static final double CURVE_DEADBAND = 0.001;
+     public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
     
 
     //Vision
@@ -53,7 +53,7 @@ public final class Tuning {
     }
 
     public static final class Elevator {
-        public static final double ELEVATOR_P = 0.0;
+        public static final double ELEVATOR_P = 0.1;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
 
@@ -65,7 +65,7 @@ public final class Tuning {
     }
 
     public static final class EndEffector {
-        public static final double PIVOT_P = 0.0;
+        public static final double PIVOT_P = 0.2;
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 
@@ -73,7 +73,7 @@ public final class Tuning {
         public static final double MOTION_MAGIC_ACCELERATION = 0.0;
         public static final double JERK = 0.0;
 
-        public static final double SAFE_ANGLE = Math.toRadians(20.0); // for moving the elevator so the end effector doesn't hit anything
+        public static final double SAFE_ANGLE = Math.toRadians(28.0); // for moving the elevator so the end effector doesn't hit anything
 
         public static final double PIVOT_DEADBAND = Math.toRadians(1.0);
 

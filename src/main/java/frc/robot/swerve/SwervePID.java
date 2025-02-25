@@ -2,12 +2,8 @@ package frc.robot.swerve;
 
 import static frc.robot.Tuning.*;
 
-import org.littletonrobotics.junction.AutoLogOutput;
-
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RMath;
@@ -58,51 +54,38 @@ public class SwervePID {
 
     public static void setDestRot(double dest) {
         rotPID.setDest(RMath.targetAngleAbsolute(Pigeon.getRotationRad(), dest, 2*Math.PI));
-
     }
     
     public static double updateOutputX() {
-        if(!Robot.isSimulation()){
-            return (xPID.atSetpoint() ? 0 : (DriverStation.getAlliance().get() == Alliance.Red ? -1 : 1) * xPID.updateOutput(SwervePosition.getPosition().x));
-        } else {
-            return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).x;
-        }
+        return (xPID.atSetpoint() ? 0 : (DriverStation.getAlliance().get() == Alliance.Red ? 1 : 1) * xPID.updateOutput(SwervePosition.getPosition().x));
     }
 
     public static double updateOutputY() {
-        if(!Robot.isSimulation())
-            return yPID.atSetpoint()? 0 : yPID.updateOutput(SwervePosition.getPosition().y);
-        else{
-            return getDest().sub(SwervePosition.getPosition()).norm().mul(.5).y; //.0085
-        }
+        return yPID.atSetpoint() ? 0 : yPID.updateOutput(SwervePosition.getPosition().y);
     }
 
     public static double updateOutputRot() {
-        if(RobotBase.isReal())
-            return rotPID.updateOutput(Pigeon.getRotationRad());
-        else{
-            Pigeon.setSimulatedRot(rotPID.getDest());
-            return rotPID.updateOutput(Pigeon.getRotationRad());
-        }
+        return rotPID.updateOutput(Pigeon.getRotationRad());
     }
 
     public static Vector2 updateOutputVel() {
-        return new Vector2(updateOutputY(), updateOutputX());
+        return new Vector2(updateOutputX(), updateOutputY()).rotate((DriverStation.getAlliance().get() == Alliance.Red ? -1 : 1) * Math.PI/2);
     }
 
     public static Vector2 getDest() {
         return new Vector2(xPID.getDest(), yPID.getDest());
     }
 
+    public static double getTargetRot(){
+        return rotPID.getDest();
+    }
+
     public static boolean atDest() {
-        return (Robot.isSimulation()
-        && SwervePosition.getPosition().isGreater(new Vector2(getDest().x - moveDead, getDest().y - moveDead)) 
-        && !SwervePosition.getPosition().isGreater(new Vector2(getDest().x + moveDead, getDest().y + moveDead))
-        )||(xPID.atSetpoint() && yPID.atSetpoint());
+        return xPID.atSetpoint() && yPID.atSetpoint();
     }
     
     public static boolean atRot() {
-        return (Robot.isSimulation() && Pigeon.simulatedRot == rotPID.getDest()) || rotPID.atSetpoint();
+        return rotPID.atSetpoint();
     }
 
     public static Vector2 getError() {

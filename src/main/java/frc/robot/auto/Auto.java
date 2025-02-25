@@ -19,7 +19,7 @@ import frc.robot.subsystems.ScoringManager.ScoringPosition;
  * annotated with {@link AutoRoutine}.
  */
 public class Auto {
-    private static RoutineManager routineManager;
+    public static RoutineManager routineManager;
 
     /**
      * Gets the auto selector from {@link RoutineManager}
@@ -28,6 +28,7 @@ public class Auto {
     public static SendableChooser<String> getAutoSelector(){
         return routineManager.getAutoSelector();
     }
+
 
     /**
      * Example autonomous routine #1.
@@ -67,11 +68,12 @@ public class Auto {
             Commands.runOnce(()->System.out.println("L4")),
             new WaitCommand(1.0),
             new WaitCommand(1.0),
-            new MoveToScorePos(ScoringPosition.INTAKE),
+            new MoveToScorePos(ScoringPosition.STOW),
             new IntakeCoral(2),
             Commands.runOnce(()->System.out.println("STOW"))
         );
     }
+
 
     /**
      * Initializes the autonomous system by creating a {@link RoutineManager}
@@ -86,7 +88,7 @@ public class Auto {
      * Schedules the currently selected autonomous command.
      * Should be called at the start of autonomous mode.
      */
-    public static void autoInit() {
+    public static void startRoutine() {
         CommandScheduler.getInstance().enable();
         routineManager.getCurrentCommand().schedule();
     }

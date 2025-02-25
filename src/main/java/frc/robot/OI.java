@@ -10,7 +10,6 @@ import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
-import frc.robot.subsystems.visualizer.CoralVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
@@ -20,36 +19,47 @@ import frc.robot.utils.RMath;
 public class OI {
     public static Joystick driverStick;
 
-    // Driver Controls
+    // ------------------ Driver Controls ------------------ //
 
     // Movement
-    static final int moveX         = LogitechF310.AXIS_LEFT_X;
-    static final int moveY         = LogitechF310.AXIS_LEFT_Y;
-    static final int rotateX       = LogitechF310.AXIS_RIGHT_X;
-    static final int boost         = LogitechF310.AXIS_RIGHT_TRIGGER;
+    static final int moveX                       = LogitechF310.AXIS_LEFT_X;
+    static final int moveY                       = LogitechF310.AXIS_LEFT_Y;
+    static final int rotateX                     = LogitechF310.AXIS_RIGHT_X;
+    
+    static final int boost                       = LogitechF310.AXIS_RIGHT_TRIGGER;
+ 
+    // zero is for Pigeon 
+    static final int zero                        = LogitechF310.BUTTON_Y;
+ 
+    static final int funnyButtonLeft             = LogitechF310.DPAD_LEFT;
+    static final int funnyButtonRight            = LogitechF310.DPAD_RIGHT;
+ 
+    private static final int lockIn              = LogitechF310.BUTTON_X;
+    private static final int lockOut             = LogitechF310.BUTTON_B;
+ 
+    // End Effector Control 
+    static final int intake                      = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int outtake                     = LogitechF310.BUTTON_RIGHT_BUMPER;
+ 
+    private static boolean drivingToReef         = false;
+    private static boolean previouslyPressedPOV  = false; // Checks if we previously pressed the dpad because getPOV() doesn't do that
+ 
+ 
+    // ------------------ Operator Controls ------------------ //
+    public static Joystick operatorStick; 
+ 
+    // Scoring Positions 
+    private static final int stow                = LogitechF310.BUTTON_A;
+    private static final int L2                  = LogitechF310.BUTTON_B;
+    private static final int L3                  = LogitechF310.BUTTON_X;
+    private static final int L4                  = LogitechF310.BUTTON_Y;
+    private static final int ALGAE1              = LogitechF310.DPAD_DOWN;
+    private static final int ALGAE2              = LogitechF310.DPAD_UP;
+    private static final int ALGAE_INTAKE        = LogitechF310.DPAD_LEFT;
+ 
 
-    // zero is for Pigeon
-    static final int zero          = LogitechF310.BUTTON_Y;
 
-    static final int funnyButton   = LogitechF310.BUTTON_A;
-    private static boolean drivingToReef = false;
-
-    // Operator Controls
-    public static Joystick operatorStick;
-
-    // Operator Controls
-
-    // Scoring Positions
-    private static final int stow         = LogitechF310.BUTTON_A;
-    private static final int L2           = LogitechF310.BUTTON_B;
-    private static final int L3           = LogitechF310.BUTTON_X;
-    private static final int L4           = LogitechF310.BUTTON_Y;
-    private static final int RightTrigger = LogitechF310.AXIS_RIGHT_TRIGGER;
-    private static final int LeftTrigger  = LogitechF310.AXIS_LEFT_TRIGGER;
-
-    // End Effector Control
-    static final int intake       = LogitechF310.BUTTON_LEFT_BUMPER;
-    static final int outtake      = LogitechF310.BUTTON_RIGHT_BUMPER;
+    private static ScoringPosition savedLevel = ScoringPosition.STOW;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -61,7 +71,7 @@ public class OI {
 
     public static void userInput() {
         driverInput();
-        // operatorInput();
+        operatorInput();
     }
 
     /**
@@ -74,7 +84,7 @@ public class OI {
         // INPUT
 
         // Reset pigeon
-        if (driverStick.getRawButton(zero)) Pigeon.setYaw(90);
+        if (driverStick.getRawButton(zero)) Pigeon.reset();
 
         double boostStrength = driverStick.getRawAxis(boost);
         if(boostStrength < 0.1) boostStrength = 0;
@@ -99,42 +109,60 @@ public class OI {
 
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
-        // System.out.println("drive direction: " + drive.atan2());
-        // System.out.println("drive magnitude: " + drive.mag());
-        if (Robot.isSimulation() && drive.mag() > 0.4) {
-            drive = drive.norm(); 
-            drive = drive.mul(0.4);
-        }
+
         // SCORING
-        if (driverStick.getRawButtonPressed(funnyButton)) {
+        if ((driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight) && !previouslyPressedPOV) {
+            previouslyPressedPOV = true;
             drivingToReef = !drivingToReef;
+            boolean isRight = (driverStick.getPOV() == funnyButtonRight);
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
+                
                 int allianceStartIndex = 6;
                 // Determine reef AprilTag locations based on alliance
                 if(Robot.isReal())
                     allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 6 : 17;
-
+  
                 // Find the shortest scoring position from the robot
-                double min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getPosition()).mag();
+                double min;
+                if (isRight)
+                    min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getRightPosition()).mag();
+                else 
+                    min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getLeftPosition()).mag();
+                
                 int minIndex = allianceStartIndex;
+
                 for (int i = allianceStartIndex+1; i < allianceStartIndex + 6; i++){
                     System.out.println(Constants.APRIL_TAGS[i].getPosition());
-                    Vector2 aprilPosition = Constants.APRIL_TAGS[i].getPosition();
+                    Vector2 aprilPosition;
+                    if (isRight)
+                        aprilPosition = Constants.APRIL_TAGS[i].getRightPosition();
+                    else 
+                        aprilPosition = Constants.APRIL_TAGS[i].getLeftPosition();
+
                     if(currentPos.sub(aprilPosition).mag() < min){
                         minIndex = i;
                         min = currentPos.sub(aprilPosition).mag();
                     }
                 }
-                
-                // TODO Adjust positions for accurate scoring
-                // Set destination and rotation based on AprilTag data
-                SwervePID.setDestPt(Constants.APRIL_TAGS[minIndex].getPosition());
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (Math.PI / 2.0));
 
+                // Set destination and rotation based on AprilTag data
+                Vector2 targetPosition =  isRight ?  Constants.APRIL_TAGS[minIndex].getRightPosition() : Constants.APRIL_TAGS[minIndex].getLeftPosition();
+
+                SwervePID.setDestPt(targetPosition);
+                
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI/2);
 
             }
+        } else if (!(driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight)) {
+            previouslyPressedPOV = false;
         }
+
+        /*-End Effector-------------------------------------------------------------------------------------------*/
+
+        if (driverStick.getRawButton(intake)) ScoringManager.endEffector.intake();
+        else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.outtake();
+        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
 
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
@@ -149,25 +177,21 @@ public class OI {
         } else {
             SwerveManager.rotateAndDrive(rotate, drive);
         }
+
+
+        if (driverStick.getRawButtonPressed(lockIn)) ScoringManager.setScoringPosition(savedLevel);
+        if (driverStick.getRawButtonPressed(lockOut)) ScoringManager.setScoringPosition(ScoringPosition.STOW);
     }
 
     public static void operatorInput() {
         /*-Scoring Manager----------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButtonPressed(stow)) ScoringManager.setScoringLevel(ScoringPosition.STOW);
-        else if (operatorStick.getRawButtonPressed(L2)) ScoringManager.setScoringLevel(ScoringPosition.L2);
-        else if (operatorStick.getRawButtonPressed(L3)) ScoringManager.setScoringLevel(ScoringPosition.L3);
-        else if (operatorStick.getRawButtonPressed(L4)) ScoringManager.setScoringLevel(ScoringPosition.L4);
-
-        if (operatorStick.getRawAxis(RightTrigger)>0.7){
-            ScoringManager.setPickingRightCoral(true);
-        } else if (operatorStick.getRawAxis(LeftTrigger)>0.7){
-            ScoringManager.setPickingRightCoral(false);
-        }
-        
-        /*-End Effector-------------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButton(intake)) ScoringManager.endEffector.setIntakeState(IntakeState.INTAKE_PIECE);
-        else if (operatorStick.getRawButton(outtake)) ScoringManager.endEffector.setIntakeState(IntakeState.DROP_PIECE);
-        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_PIECE);
+        if (operatorStick.getRawButtonPressed(stow)) savedLevel = ScoringPosition.STOW;
+        else if (operatorStick.getRawButtonPressed(L2)) savedLevel = ScoringPosition.L2;
+        else if (operatorStick.getRawButtonPressed(L3)) savedLevel = ScoringPosition.L3;
+        else if (operatorStick.getRawButtonPressed(L4)) savedLevel = ScoringPosition.L4;
+        else if (operatorStick.getPOV() == ALGAE1) savedLevel = ScoringPosition.ALGAE1;
+        else if (operatorStick.getPOV() == ALGAE2) savedLevel = ScoringPosition.ALGAE2;
+        else if (operatorStick.getPOV() == ALGAE_INTAKE) savedLevel = ScoringPosition.ALGAE_INTAKE;
     }
 
 }

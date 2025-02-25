@@ -119,7 +119,8 @@ public class PIDController implements Sendable {
     }
 
     public boolean atSetpoint(){
-        // System.out.printf("%.2f, %.2f\n", Math.abs(errorDerivative), velDeadband);
+        //System.out.printf("%.2f, %.2f\n", Math.abs(errorDerivative), velDeadband);
+        // System.out.println("prevError: " + prevError);
         return Math.abs(prevError) < deadband && Math.abs(errorDerivative) < velDeadband;
     }
     
