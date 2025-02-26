@@ -6,11 +6,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
+import frc.robot.Constants;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.auto.commands.RotateAndDriveTo;
 
 
 /**
@@ -63,14 +65,17 @@ public class Auto {
     @AutoRoutine
     public SequentialCommandGroup scoringManagerTest(){
         return new SequentialCommandGroup(
+            new RotateAndDriveTo(Constants.APRIL_TAGS[10].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[10].getLeftPosition()),
             new MoveToScorePos(ScoringPosition.L4),
             new DropCoral(1),
-            Commands.runOnce(()->System.out.println("L4")),
-            new WaitCommand(1.0),
             new WaitCommand(1.0),
             new MoveToScorePos(ScoringPosition.STOW),
-            new IntakeCoral(2),
-            Commands.runOnce(()->System.out.println("STOW"))
+            new RotateAndDriveTo(Constants.APRIL_TAGS[2].getRotationZ() - Math.PI/2,Constants.APRIL_TAGS[2].getLeftPosition()),
+            new IntakeCoral(),
+            new RotateAndDriveTo(Constants.APRIL_TAGS[8].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[8].getLeftPosition()),
+            new MoveToScorePos(ScoringPosition.L4),
+            new DropCoral(1),
+            new MoveToScorePos(ScoringPosition.STOW)
         );
     }
 

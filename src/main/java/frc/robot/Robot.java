@@ -1,6 +1,5 @@
 package frc.robot;
 
-import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -32,10 +31,12 @@ import frc.robot.vision.VisionManager;
 public class Robot extends LoggedRobot {
   @SuppressWarnings("resource")
   public Robot() {
-    try {
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    if (Robot.isReal()){
+      try {
+        Thread.sleep(5000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
     RTime.init();
     VisionManager.init();
@@ -58,19 +59,15 @@ public class Robot extends LoggedRobot {
     // Controls
     OI.init();
 
-    
 
     Logger.recordMetadata("ProjectName", "2025Reefscape"); // Set a metadata value
-    Logger.recordOutput("PID Error", SwervePID.getError().toString());
-
-    AutoLogOutputManager.addPackage("frc.robot.swerve");
     if (isReal()) {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
       // TODO Plug PDH into CAN
       new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else if (Constants.REPLAY) {
-      setUseTiming(true); // Run as fast as possible
+      setUseTiming(true);
       String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
       Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
       Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log

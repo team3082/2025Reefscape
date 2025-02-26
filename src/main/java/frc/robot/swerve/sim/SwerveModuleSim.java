@@ -25,7 +25,7 @@ public class SwerveModuleSim {
             else speed -= MAX_RAMP * RTime.deltaTime();
         }
 
-        drivePos += speed * RTime.deltaTime() * 100 * (inverted ? -1 : 1);
+        drivePos += speed * RTime.deltaTime() * 500 * (inverted ? -1 : 1);
     }
 
     public void setAngle(double setPos) {

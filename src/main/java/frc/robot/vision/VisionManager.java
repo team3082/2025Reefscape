@@ -48,10 +48,8 @@ public class VisionManager {
             double ydistRobot = vectorTransform.y;
 
             Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
-            System.out.println(distRobot.mag());
-            if(distRobot.mag() > 2.5 || distRobot.mag() < 1.0){
+            if(distRobot.mag() < 1.0 || distRobot.mag() > 2.5){
                 continue;
-            } else {
             }
 
             double xdistField = (Math.cos(pigeonAngle) * distRobot.x - Math.sin(pigeonAngle) * distRobot.y) * Constants.METERSTOINCHES;

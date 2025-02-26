@@ -133,7 +133,6 @@ public class OI {
                 int minIndex = allianceStartIndex;
 
                 for (int i = allianceStartIndex+1; i < allianceStartIndex + 6; i++){
-                    System.out.println(Constants.APRIL_TAGS[i].getPosition());
                     Vector2 aprilPosition;
                     if (isRight)
                         aprilPosition = Constants.APRIL_TAGS[i].getRightPosition();
@@ -171,8 +170,6 @@ public class OI {
                 System.out.println("at dest at rot");
                 drivingToReef = !drivingToReef;
             }
-            System.out.println("Error: " + SwervePID.getError());
-            System.out.println(SwervePID.updateOutputVel());
             SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
         } else {
             SwerveManager.rotateAndDrive(rotate, drive);

@@ -2,12 +2,12 @@ package frc.robot;
 
 public final class Tuning {
     //Swerve
-    public static final double MOVEP = 0.09;
+    public static final double MOVEP = Robot.isReal() ? 0.09 : 0.05;
     public static final double MOVEI = 0.0;
     public static final double MOVED = 0.25;
-    public static final double MOVEDEAD = 0.05;
+    public static final double MOVEDEAD = Robot.isReal() ? 0.05 : 0.001;
     public static final double MOVEVELDEAD = 0.01;
-    public static final double MOVEMAXSPEED = 0.2;
+    public static final double MOVEMAXSPEED = Robot.isReal() ? 0.2 : 0.5;
     // public static final double ROTP = 0.225;
     // public static final double ROTI = 0.0;
     // public static final double ROTD = 0.7;
@@ -16,7 +16,7 @@ public final class Tuning {
     public static final double ROTD = 0.0;
     public static final double ROTDEAD = 0.05;
     public static final double ROTVELDEAD = 0.01;
-    public static final double ROTMAXSPEED = 0.25;
+    public static final double ROTMAXSPEED = Robot.isReal() ? 0.25 : 0.5;
  
      // TODO Tune
      public static final double SWERVE_TRJ_PPOS = 0.05;

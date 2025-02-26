@@ -112,9 +112,6 @@ public class SwerveModule {
     public void resetSteerSensor() {
         double pos = absEncoder.getAbsolutePosition().getValueAsDouble() - cancoderOffset;
         steer.setPosition(pos * Constants.Swerve.STEER_RATIO);
-        //System.out.println("encoder pos " + pos);
-        //System.out.println("steer motor pos " + steer.getPosition().getValueAsDouble());
-        //System.out.println("steer ratio " + Constants.Swerve.Constants.Swerve.STEER_RATIO);
     }
 
     /** set target drive speed */
@@ -163,7 +160,7 @@ public class SwerveModule {
         } else {
             inverted = false;
         }
-        //System.out.println(destination);
+        
         targetAngle = destination;
     }
 

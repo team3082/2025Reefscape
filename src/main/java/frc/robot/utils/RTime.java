@@ -10,7 +10,7 @@ public class RTime {
     private static double m_startTime;
     private static double m_time;
     private static long m_absoluteFrame;
-    // private static double m_deltatime;
+    private static double m_deltatime;
     
     // Hardware clock in seconds
     private static double FPGATime() {
@@ -32,9 +32,9 @@ public class RTime {
      */
     public static void update() {
         double curtime = FPGATime() - m_startTime;
-        // m_deltatime = curtime - m_time; 
+        m_deltatime = curtime - m_time; 
         m_time = curtime;
-        
+        updateAbsolute();
     }
 
     /**
@@ -71,7 +71,9 @@ public class RTime {
      * Returns the time since the last time update was called, in seconds.
      */
     public static double deltaTime() {
-        //return m_deltatime;
+        if(Robot.isSimulation()){
+            return m_deltatime;
+        }
         return Robot.defaultPeriodSecs;
     }
 
