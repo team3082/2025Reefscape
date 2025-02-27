@@ -15,6 +15,10 @@ public class Vector2 {
         y = 0;
     }
 
+    public Vector2(Vector2 vector2){
+        this(vector2.x, vector2.y);
+    }
+
     /**
      * Constructor for a Vector2 where you set the coordinate
      * @param x A double of the x of the Vector2

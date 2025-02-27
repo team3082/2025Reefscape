@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
+import frc.robot.auto.commands.MoveToStation;
 import frc.robot.Constants;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
@@ -76,6 +77,16 @@ public class Auto {
             new MoveToScorePos(ScoringPosition.L4),
             new DropCoral(1),
             new MoveToScorePos(ScoringPosition.STOW)
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup playerStationTest(){
+        return new SequentialCommandGroup(
+            new MoveToStation(true, true),
+            new MoveToStation(true, false),
+            new MoveToStation(false, true),
+            new MoveToStation(false, false)
         );
     }
 
