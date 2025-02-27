@@ -95,10 +95,10 @@ public class PIDController implements Sendable {
 
 
         // Calculate derivative component based on mSec of the error
-        if(!Robot.isSimulation()){
+        if(Robot.isReal()){
             errorDerivative = (error - prevError) / RTime.deltaTime();
             output += kD * errorDerivative;
-        }
+        }  
         prevError = error;
         
         // Clamp the output
