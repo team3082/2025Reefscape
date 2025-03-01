@@ -15,6 +15,7 @@ import frc.robot.utils.Vector2;
 public class VisionManager {
 
     private static Camera[] cameras;
+    private static boolean enabled;
 
     public static void init(){
 
@@ -31,6 +32,14 @@ public class VisionManager {
         for (Camera camera : cameras) {
             
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
+            
+            if (target != null) if (camera.isLatestTarget(target)) {
+                System.out.println("skipped read");
+                continue;
+            }
+            System.out.println("no skip");
+
+            camera.setLatestTarget(target);
             if (target == null) continue; // Skip if no april tags are found
 
             Transform3d transform = target.getBestCameraToTarget();
@@ -118,4 +127,17 @@ public class VisionManager {
 
         return Optional.of(averageRotation);
     }
+
+    public static void enableVision(){
+        enabled = true;
+    }
+    
+    public static void disableVision(){
+        enabled = false;
+    }
+
+    public static boolean isEnabled(){
+        return enabled;
+    }
+    
 }

@@ -14,6 +14,7 @@ import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
+import frc.robot.vision.VisionManager;
 import frc.robot.utils.RMath;
 
 public class OI {
@@ -166,12 +167,17 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
         if (drivingToReef){
+            VisionManager.disableVision();
             if(SwervePID.atDest() &&  SwervePID.atRot()){
                 System.out.println("at dest at rot");
                 drivingToReef = !drivingToReef;
             }
-            SwerveManager.rotateAndDrive(SwervePID.updateOutputRot(), SwervePID.updateOutputVel());
+            double rotOutput = SwervePID.updateOutputRot();
+            Vector2 driveOutput = SwervePID.updateOutputVel();
+            System.out.println("rot output: " + rotOutput + " drive output: " + driveOutput.toString());
+            SwerveManager.rotateAndDrive(rotOutput, driveOutput);
         } else {
+            VisionManager.enableVision();
             SwerveManager.rotateAndDrive(rotate, drive);
         }
 

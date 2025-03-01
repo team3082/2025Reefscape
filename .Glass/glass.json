@@ -71,10 +71,7 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289,
-        "window": {
-          "visible": true
-        }
+        "width": 17.54825210571289
       },
       "/Shuffleboard/Robot Views/Field View": {
         "bottom": 1476,
@@ -96,6 +93,14 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/Field": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875
       }
     }
   },
@@ -110,6 +115,7 @@
   },
   "NetworkTables Settings": {
     "mode": "Client (NT4)",
-    "port4": 10000
+    "port4": 5810,
+    "serverTeam": "3082"
   }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
+import frc.robot.vision.VisionManager;
 
 public class SwervePosition {
 
@@ -36,6 +37,8 @@ public class SwervePosition {
         lastOdomPos = odometryPos;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());
+
+        //System.out.println("lala odometry: " + odometryPos);
     }
 
     public static final double correctionMultiplier = 0.1;

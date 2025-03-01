@@ -42,6 +42,7 @@ public class Odometry {
     private static Thread odomThread= new Thread(){
         @Override
         public void run(){
+            System.out.println("Updating odom");
             while(!isInterrupted()){
                 double deltaTime = Timer.getFPGATimestamp() - lastLoopTimeStamp;
                 lastLoopTimeStamp += deltaTime;
@@ -78,16 +79,18 @@ public class Odometry {
                 
 
                 // TODO Migrate to Telemetry
-                if (!visionPos.isEmpty()) {
-                    Pose2d visionPose = new Pose2d(visionPos.get().rotate(Math.PI/2.0).x/Constants.METERSTOINCHES + 8.78, 
-                                                   visionPos.get().rotate(Math.PI/2.0).y/Constants.METERSTOINCHES + 4.01, 
-                                                   Rotation2d.fromRadians(Pigeon.getRotationRad()+ Robot.getAllianceMultiplier() * Math.PI / 2.0));
-                    Logger.recordOutput("Robot/Vision/Vision Pose", visionPose);
-                    Logger.recordOutput("Robot/Vision/Position", visionPos.get().rotate(Math.PI/2).toString());
-                    Logger.recordOutput("Robot/Vision/Position/x", visionPos.get().rotate(Math.PI/2).x);
-                    Logger.recordOutput("Robot/Vision/Position/y", visionPos.get().rotate(Math.PI/2).y);
-                }
-                
+                try{
+                    if (!visionPos.isEmpty() && VisionManager.isEnabled()) {
+                        // Pose2d visionPose = new Pose2d(visionPos.get().rotate(Math.PI/2.0).x/Constants.METERSTOINCHES + 8.78, 
+                        //                             visionPos.get().rotate(Math.PI/2.0).y/Constants.METERSTOINCHES + 4.01, 
+                        //                             Rotation2d.fromRadians(Pigeon.getRotationRad()+ Robot.getAllianceMultiplier() * Math.PI / 2.0));
+                        // Logger.recordOutput("Robot/Vision/Vision Pose", visionPose);
+                        // Logger.recordOutput("Robot/Vision/Position", visionPos.get().rotate(Math.PI/2).toString());
+                        // Logger.recordOutput("Robot/Vision/Position/x", visionPos.get().rotate(Math.PI/2).x);
+                        // Logger.recordOutput("Robot/Vision/Position/y", visionPos.get().rotate(Math.PI/2).y);
+                        position = new Vector2(-visionPos.get().y, visionPos.get().x);
+                    } 
+                } catch (Exception e) {}
                 try {
                     sleep(7);
                 } catch (InterruptedException e) {

@@ -116,9 +116,11 @@ public class Telemetry {
     private static void logValues(){
         Logger.recordOutput("Robot/SwervePID/Error", SwervePID.getError().toString());
         Logger.recordOutput("Robot/SwervePID/Rot Error", SwervePID.getRotationError());
-        Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.78,
-                                                                          SwervePID.getDest().y/Constants.METERSTOINCHES + 4.01,
-                                                                          Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
+        try {
+            Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.78,
+                                                                              SwervePID.getDest().y/Constants.METERSTOINCHES + 4.01,
+                                                                              Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
+        } catch (Exception e){}
         Logger.recordOutput("Robot/SwervePID/At Dest", SwervePID.atDest());
         Logger.recordOutput("Robot/SwervePID/At Dest/x", SwervePID.xPID.atSetpoint());
         Logger.recordOutput("Robot/SwervePID/At Dest/y", SwervePID.yPID.atSetpoint());
@@ -172,7 +174,11 @@ public class Telemetry {
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);
 
+        try {
         Logger.recordOutput("Robot/Swerve/Field Pose", currentPose);
+        } catch (Exception e) {
+            System.out.println("Oopsies!: " + e);
+        }
     }
 
     /**
