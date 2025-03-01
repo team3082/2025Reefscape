@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -31,7 +32,9 @@ public class VisionManager {
 
         for (Camera camera : cameras) {
             
+            PhotonPipelineResult latestResult = camera.photonCamera.getLatestResult();
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
+            
             
             if (target != null) if (camera.isLatestTarget(target)) {
                 System.out.println("skipped read");
@@ -57,7 +60,7 @@ public class VisionManager {
             double ydistRobot = vectorTransform.y;
 
             Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
-            if(distRobot.mag() < 1.0 || distRobot.mag() > 2.5){
+            if(distRobot.mag() < 0.5 || distRobot.mag() > 2.5){
                 continue;
             }
 

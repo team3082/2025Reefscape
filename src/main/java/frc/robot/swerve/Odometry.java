@@ -30,6 +30,8 @@ public class Odometry {
     private static double[] previousDrivePositions = new double[mods.length];
     private static double previousPigeonAngle;
 
+    private static OdometryBuffer odometryBuffer;
+
     public static void init(){
         lastLoopTimeStamp = Timer.getFPGATimestamp();
         position = new Vector2(0.0,0.0);
@@ -74,6 +76,7 @@ public class Odometry {
                 previousPigeonAngle = pigeonAngle;
 
                 position = position.add(innovation);
+                odometryBuffer.addValue(innovation);
 
                 Optional<Vector2> visionPos = VisionManager.getPosition(pigeonAngle);
                 
@@ -88,7 +91,7 @@ public class Odometry {
                         // Logger.recordOutput("Robot/Vision/Position", visionPos.get().rotate(Math.PI/2).toString());
                         // Logger.recordOutput("Robot/Vision/Position/x", visionPos.get().rotate(Math.PI/2).x);
                         // Logger.recordOutput("Robot/Vision/Position/y", visionPos.get().rotate(Math.PI/2).y);
-                        position = new Vector2(-visionPos.get().y, visionPos.get().x);
+                        position = new Vector2(-visionPos.get().y, visionPos.get().x).add(odometryBuffer.getTotalBuffer());
                     } 
                 } catch (Exception e) {}
                 try {
@@ -135,4 +138,28 @@ public class Odometry {
         }
     }
 
+    public class OdometryBuffer {
+        private final int BUFFER_SIZE = 8;
+        private Vector2[] buffer = new Vector2[BUFFER_SIZE];
+    
+        public void addValue(Vector2 newValue) {
+            Vector2[] initialBuffer = buffer.clone();
+            Vector2[] newBuffer = new Vector2[BUFFER_SIZE];
+    
+            newBuffer[0] = newValue;
+            for (int i = 1; i < BUFFER_SIZE; i++) {
+                newBuffer[i] = initialBuffer[i - 1];
+            }
+
+            buffer = newBuffer.clone();
+        }
+    
+        public Vector2 getTotalBuffer() {
+            Vector2 totalBuffer = new Vector2();
+            for (Vector2 vector : buffer) {
+                totalBuffer.add(vector);
+            }
+            return totalBuffer;
+        }
+    }
 }
