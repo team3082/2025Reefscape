@@ -23,7 +23,8 @@ public class EndEffector {
         HOLD_CORAL(0.0),
         DROP_CORAL(-0.5),
         INTAKE_ALGAE(0.5),
-        DROP_ALGAE(-0.5);
+        DROP_ALGAE(-0.5),
+        L1(-0.2);
 
         public double targetSpeed;
 
@@ -156,6 +157,9 @@ public class EndEffector {
         switch (ScoringManager.scoringPosition) {
             case ALGAE_INTAKE:
                 setIntakeState(IntakeState.DROP_ALGAE);
+                break;
+            case STOW:
+                setIntakeState(IntakeState.L1);
                 break;
             default:
                 setIntakeState(IntakeState.DROP_CORAL);

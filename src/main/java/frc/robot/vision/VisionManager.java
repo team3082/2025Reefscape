@@ -37,10 +37,10 @@ public class VisionManager {
             
             
             if (target != null) if (camera.isLatestTarget(target)) {
-                System.out.println("skipped read");
+                // System.out.println("skipped read");
                 continue;
             }
-            System.out.println("no skip");
+            // System.out.println("no skip");
 
             camera.setLatestTarget(target);
             if (target == null) continue; // Skip if no april tags are found
@@ -72,7 +72,7 @@ public class VisionManager {
             Vector2 aprilTagPos = new Vector2(Constants.APRIL_TAGS[id].getPosition().y, -Constants.APRIL_TAGS[id].getPosition().x);
             Vector2 cameraPos = aprilTagPos.sub(cameraToTag);
 
-            Vector2 robotPos = cameraPos.sub(camera.robotToCamera);
+            Vector2 robotPos = cameraPos.sub(camera.robotToCamera.rotate(pigeonAngle - (Math.PI/2.0)));
 
             positions.add(robotPos);
         }

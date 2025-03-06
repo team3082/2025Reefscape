@@ -8,6 +8,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import frc.robot.vision.VisionManager;
+import frc.robot.swerve.OdometryBuffer;
 
 import static frc.robot.swerve.SwerveManager.mods;
 
@@ -30,7 +31,7 @@ public class Odometry {
     private static double[] previousDrivePositions = new double[mods.length];
     private static double previousPigeonAngle;
 
-    private static OdometryBuffer odometryBuffer;
+    private static OdometryBuffer odometryBuffer = new OdometryBuffer();
 
     public static void init(){
         lastLoopTimeStamp = Timer.getFPGATimestamp();
@@ -46,6 +47,7 @@ public class Odometry {
         public void run(){
             System.out.println("Updating odom");
             while(!isInterrupted()){
+                System.out.println("whatup dude");
                 double deltaTime = Timer.getFPGATimestamp() - lastLoopTimeStamp;
                 lastLoopTimeStamp += deltaTime;
 
@@ -76,6 +78,7 @@ public class Odometry {
                 previousPigeonAngle = pigeonAngle;
 
                 position = position.add(innovation);
+
                 odometryBuffer.addValue(innovation);
 
                 Optional<Vector2> visionPos = VisionManager.getPosition(pigeonAngle);
@@ -91,6 +94,7 @@ public class Odometry {
                         // Logger.recordOutput("Robot/Vision/Position", visionPos.get().rotate(Math.PI/2).toString());
                         // Logger.recordOutput("Robot/Vision/Position/x", visionPos.get().rotate(Math.PI/2).x);
                         // Logger.recordOutput("Robot/Vision/Position/y", visionPos.get().rotate(Math.PI/2).y);
+                        // System.out.println("total buffer: " + odometryBuffer.getTotalBuffer().toString());
                         position = new Vector2(-visionPos.get().y, visionPos.get().x).add(odometryBuffer.getTotalBuffer());
                     } 
                 } catch (Exception e) {}
@@ -135,31 +139,6 @@ public class Odometry {
     public static void setPosition(Vector2 pos){
         synchronized(positionLock){
             position = pos;
-        }
-    }
-
-    public class OdometryBuffer {
-        private final int BUFFER_SIZE = 8;
-        private Vector2[] buffer = new Vector2[BUFFER_SIZE];
-    
-        public void addValue(Vector2 newValue) {
-            Vector2[] initialBuffer = buffer.clone();
-            Vector2[] newBuffer = new Vector2[BUFFER_SIZE];
-    
-            newBuffer[0] = newValue;
-            for (int i = 1; i < BUFFER_SIZE; i++) {
-                newBuffer[i] = initialBuffer[i - 1];
-            }
-
-            buffer = newBuffer.clone();
-        }
-    
-        public Vector2 getTotalBuffer() {
-            Vector2 totalBuffer = new Vector2();
-            for (Vector2 vector : buffer) {
-                totalBuffer.add(vector);
-            }
-            return totalBuffer;
         }
     }
 }
