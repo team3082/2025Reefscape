@@ -76,6 +76,7 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start(); // Start logging
+
   }
 
   @Override
@@ -99,7 +100,9 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    ScoringManager.setScoringPosition(ScoringPosition.STOW);
+  }
 
   @Override
   public void teleopPeriodic() {

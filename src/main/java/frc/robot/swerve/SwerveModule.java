@@ -200,6 +200,6 @@ public class SwerveModule {
 
     /** convert internal motor rotations to radians for the drive motor */
     private double rotToRadDrive(double rot) {
-        return (rot * (2.0 * Math.PI)) / Constants.Swerve.STEER_RATIO;
+        return (rot * (2.0 * Math.PI)) / Constants.Swerve.DRIVE_RATIO;
     }
 }
