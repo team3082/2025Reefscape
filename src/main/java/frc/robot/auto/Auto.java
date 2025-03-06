@@ -7,12 +7,15 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.Constants;
+import frc.robot.auto.commands.AlignToReef;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
+import frc.robot.auto.commands.MoveToCoralStation;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.auto.commands.RotateAndDriveTo;
+import frc.robot.auto.commands.ScoreAtLevel;
 
 
 /**
@@ -31,51 +34,15 @@ public class Auto {
         return routineManager.getAutoSelector();
     }
 
-
-    /**
-     * Example autonomous routine #1.
-     * This method will be automatically detected and registered by {@link RoutineManager}.
-     */
-    @AutoRoutine
-    public static SequentialCommandGroup autoRoutineOne() {
-        // Define autonomous routine logic here.
-        return new SequentialCommandGroup(
-            Commands.runOnce(()->System.out.println("Test One")),
-            Commands.runOnce(()->System.out.println("Test Two")),
-            Commands.runOnce(()->System.out.println("Test Three"))
-        );
-    }
-
-    /**
-     * Example autonomous routine #2.
-     * This method will also be automatically detected and registered.
-     */
-    @AutoRoutine
-    public static SequentialCommandGroup autoRoutineTwo() {
-        // Define autonomous routine logic here.
-        return new SequentialCommandGroup(
-            Commands.runOnce(()->System.out.println("But")),
-            new WaitCommand(1.0),
-            Commands.runOnce(()->System.out.println("When")),
-            new WaitCommand(1.0),
-            Commands.runOnce(()->System.out.println("You Close Your Eyes"))
-        );
-    }
-
     @AutoRoutine
     public SequentialCommandGroup scoringManagerTest(){
         return new SequentialCommandGroup(
-            new RotateAndDriveTo(Constants.APRIL_TAGS[10].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[10].getLeftPosition()),
-            new MoveToScorePos(ScoringPosition.L4),
-            new DropCoral(1),
-            new WaitCommand(1.0),
-            new MoveToScorePos(ScoringPosition.STOW),
-            new RotateAndDriveTo(Constants.APRIL_TAGS[2].getRotationZ() - Math.PI/2,Constants.APRIL_TAGS[2].getLeftPosition()),
+            new AlignToReef(7, true),
+            new ScoreAtLevel(ScoringPosition.L4),
+            new MoveToCoralStation(true),
             new IntakeCoral(),
-            new RotateAndDriveTo(Constants.APRIL_TAGS[8].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[8].getLeftPosition()),
-            new MoveToScorePos(ScoringPosition.L4),
-            new DropCoral(1),
-            new MoveToScorePos(ScoringPosition.STOW)
+            new AlignToReef(7, false),
+            new ScoreAtLevel(ScoringPosition.L4) 
         );
     }
 
