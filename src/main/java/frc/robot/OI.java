@@ -167,7 +167,7 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
         if (drivingToReef){
-            VisionManager.disableVision();
+            // VisionManager.disableVision();
             if(SwervePID.atDest() &&  SwervePID.atRot()){
                 System.out.println("at dest at rot");
                 drivingToReef = !drivingToReef;
@@ -182,7 +182,10 @@ public class OI {
         }
 
 
-        if (driverStick.getRawButtonPressed(lockIn)) ScoringManager.setScoringPosition(savedLevel);
+        if (driverStick.getRawButtonPressed(lockIn)) {
+            drivingToReef = false;
+            ScoringManager.setScoringPosition(savedLevel);
+        }
         if (driverStick.getRawButtonPressed(lockOut)) ScoringManager.setScoringPosition(ScoringPosition.STOW);
     }
 
