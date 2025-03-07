@@ -1,5 +1,15 @@
 package frc.robot;
 
+import java.util.List;
+
+import frc.robot.utils.Vector2;
+import frc.robot.utils.trajectories.QuadraticBezier;
+import frc.robot.utils.trajectories.RobotPath;
+import frc.robot.vision.AprilTag;
+import frc.robot.utils.trajectories.RotPoint;
+import frc.robot.utils.trajectories.Curve;
+import frc.robot.utils.trajectories.LinearBezier;
+
 public final class Tuning {
     //Swerve
     public static final double MOVEP = Robot.isReal() ? 0.05 : 0.05;
@@ -35,7 +45,7 @@ public final class Tuning {
      public static final double SWERVE_KVROT = 0.0;//0.55 / (3.0 * Math.PI);
      public static final double SWERVE_KAROT = 0.0;
  
-     public static final int CURVE_RESOLUTION = 3000;
+     public static final int CURVE_RESOLUTION = 100;
      public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
     
 
@@ -88,5 +98,40 @@ public final class Tuning {
 
         public static final double FEED_SPEED = 800.0;
         public static final double EJECT_SPEED = 0.0;
+    }
+
+    public static final class AutoPaths {
+
+        // RIGHT SIDE AUTOPATHS
+        public static final Curve START_TO_C = new LinearBezier(Constants.RIGHT_STARTING_POS, Constants.APRIL_TAGS[8].getLeftPosition());
+        public static final Curve START_TO_D = new LinearBezier(Constants.RIGHT_STARTING_POS, Constants.APRIL_TAGS[8].getRightPosition());
+        public static final Curve START_TO_E = new LinearBezier(Constants.RIGHT_STARTING_POS, Constants.APRIL_TAGS[9].getLeftPosition());
+        public static final Curve START_TO_F = new LinearBezier(Constants.RIGHT_STARTING_POS, Constants.APRIL_TAGS[9].getRightPosition());
+
+        public static final Curve STATION_TO_C = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[8].getLeftPosition());
+        public static final Curve STATION_TO_D = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[8].getRightPosition());
+        public static final Curve STATION_TO_E = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[9].getLeftPosition());
+        public static final Curve STATION_TO_F = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[9].getRightPosition());
+
+        public static final Curve C_TO_STATION = STATION_TO_C.reverse();
+        public static final Curve D_TO_STATION = STATION_TO_D.reverse();
+        public static final Curve E_TO_STATION = STATION_TO_E.reverse();
+        public static final Curve F_TO_STATION = STATION_TO_F.reverse();
+        
+        // LEFT SIDE AUTOPATHS
+        public static final Curve START_TO_L = START_TO_C.flipHorizontal();
+        public static final Curve START_TO_K = START_TO_D.flipHorizontal();
+        public static final Curve START_TO_J = START_TO_E.flipHorizontal();
+        public static final Curve START_TO_I = START_TO_F.flipHorizontal();
+
+        public static final Curve STATION_TO_L = STATION_TO_C.flipHorizontal();
+        public static final Curve STATION_TO_K = STATION_TO_D.flipHorizontal();
+        public static final Curve STATION_TO_J = STATION_TO_E.flipHorizontal();
+        public static final Curve STATION_TO_I = STATION_TO_F.flipHorizontal();
+
+        public static final Curve L_TO_STATION = STATION_TO_L.reverse();
+        public static final Curve K_TO_STATION = STATION_TO_K.reverse();
+        public static final Curve J_TO_STATION = STATION_TO_J.reverse();
+        public static final Curve I_TO_STATION = STATION_TO_I.reverse();
     }
 }

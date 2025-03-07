@@ -45,9 +45,7 @@ public class Odometry {
     private static Thread odomThread= new Thread(){
         @Override
         public void run(){
-            System.out.println("Updating odom");
             while(!isInterrupted()){
-                System.out.println("whatup dude");
                 double deltaTime = Timer.getFPGATimestamp() - lastLoopTimeStamp;
                 lastLoopTimeStamp += deltaTime;
 

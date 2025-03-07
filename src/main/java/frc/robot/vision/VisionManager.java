@@ -10,7 +10,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.Constants;
-
+import frc.robot.Robot;
 import frc.robot.utils.Vector2;
 
 public class VisionManager {
@@ -20,9 +20,11 @@ public class VisionManager {
 
     public static void init(){
 
-        cameras = new Camera[] {
-            new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-10, 10), 0.0, Math.toRadians(-19)) // test these later
-        };
+        if (Robot.isReal()) {
+            cameras = new Camera[] {
+                new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-10, 10), 0.0, Math.toRadians(-19)) // test these later
+            };
+        }
 
     }
 

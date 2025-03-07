@@ -11,13 +11,13 @@ import frc.robot.utils.Vector2;
 
 public class RobotPath {
     public List<Vector2> points;
-    public List<RotPoint> rotPoints;
+    public double targetRot;
 
     public double currentPosT = 0;
 
-    public RobotPath(List<Vector2> points, List<RotPoint> rotPoints) {
+    public RobotPath(List<Vector2> points, double targetRot) {
         this.points = points;
-        this.rotPoints = rotPoints;
+        this.targetRot = targetRot;
     }
 
     // update the closest point on the path from the robot's current position
@@ -88,12 +88,7 @@ public class RobotPath {
     }
 
     public double getTargetRot() {
-        for (RotPoint rotPoint : rotPoints) {
-            if (rotPoint.t >= currentPosT) {
-                return rotPoint.rot;
-            }
-        }
-        return Pigeon.getRotationRad();
+        return targetRot;
     }
 
     public void addCurvePoints(List<Vector2> curvePoints) {
@@ -107,15 +102,6 @@ public class RobotPath {
         return points.subList(startTIndex, endTIndex);
     }
 
-    public List<RotPoint> getRotPoints(double startT, double endT) {
-        List<RotPoint> returnedRotPoints = new ArrayList<>();
-        for (RotPoint rotPoint : rotPoints) {
-            if (rotPoint.t > startT && rotPoint.t <= endT) {
-                returnedRotPoints.add(rotPoint);
-            }
-        }
-        return returnedRotPoints;
-    }
 
     public List<RobotPath> separatePaths(List<Double> stopPointsList) {
         List<RobotPath> paths = new ArrayList<>();
@@ -124,16 +110,14 @@ public class RobotPath {
         double lastStopPoint = 0;
         for (double stopPoint : stopPointsList) {
             List<Vector2> curvePoints = getCurvePoints(lastStopPoint, stopPoint);
-            List<RotPoint> rotPoints = getRotPoints(lastStopPoint, stopPoint);
-            paths.add(new RobotPath(curvePoints, rotPoints));
+            paths.add(new RobotPath(curvePoints, targetRot));
             lastStopPoint = stopPoint;
         }
 
         // gets the very last path after the final specified stop point
         if (lastStopPoint < ((double) points.size() / (double) CURVE_RESOLUTION)) {
             List<Vector2> curvePoints = getCurvePoints(lastStopPoint, ((double) points.size() / (double) CURVE_RESOLUTION));
-            List<RotPoint> rotPoints = getRotPoints(lastStopPoint, ((double) points.size() / (double) CURVE_RESOLUTION));
-            paths.add(new RobotPath(curvePoints, rotPoints));
+            paths.add(new RobotPath(curvePoints, targetRot));
         }
 
         return paths;

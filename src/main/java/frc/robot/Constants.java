@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import frc.robot.utils.Vector2;
 import frc.robot.vision.AprilTag;
 
 
@@ -38,6 +39,11 @@ public class Constants {
         new AprilTag(22, -152.33, -28.33, 12.13, Math.toRadians(300), 0),                    // id 22
         
     };
+
+    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60, 105);
+    public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60, 0);
+    public static final Vector2 LEFT_STARTING_POS = new Vector2(60, -105);
+    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(300, 120);
 
     public static final class Elevator {
         public static final int MOTORID1 = 9;

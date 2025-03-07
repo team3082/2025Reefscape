@@ -9,7 +9,7 @@ public class OdometryBuffer {
     public OdometryBuffer() {}
 
     public void addValue(Vector2 newValue) {
-        System.out.println("adding value trust me bro");
+        // System.out.println("adding value trust me bro");
         Vector2[] initialBuffer = this.buffer.clone();
 
         buffer[0] = newValue;
