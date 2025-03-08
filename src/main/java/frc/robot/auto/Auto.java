@@ -80,6 +80,54 @@ public class Auto {
         );
     }
 
+    /** scores E4 - intakes */
+    @AutoRoutine
+    public SequentialCommandGroup onePieceRight() {
+        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        return new SequentialCommandGroup(
+            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.5, 0.3),
+            new ScoreAtLevel(ScoringPosition.L4)
+        );
+    }
+
+    /** scores J4 - intakes */
+    @AutoRoutine
+    public SequentialCommandGroup onePieceLeft() {
+        SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+        Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        return new SequentialCommandGroup(
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.5, 0.3),
+            new ScoreAtLevel(ScoringPosition.L4)
+        );
+    }
+
+    /** scores E4 - intakes */
+    @AutoRoutine
+    public SequentialCommandGroup oneHalfPieceRight() {
+        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        return new SequentialCommandGroup(
+            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.5, 0.3),
+            new ScoreAtLevel(ScoringPosition.L4),
+            new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3),
+            new IntakeCoral()
+        );
+    }
+
+    /** scores J4 - intakes */
+    @AutoRoutine
+    public SequentialCommandGroup oneHalfPieceLeft() {
+        SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+        Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        return new SequentialCommandGroup(
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.5, 0.3),
+            new ScoreAtLevel(ScoringPosition.L4),
+            new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3),
+            new IntakeCoral()
+        );
+    }
+
     /** scores E4 - intakes - scores D4 */
     @AutoRoutine
     public SequentialCommandGroup twoPieceRight() {
