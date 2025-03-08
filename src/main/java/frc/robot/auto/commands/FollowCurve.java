@@ -22,8 +22,14 @@ public class FollowCurve extends Command {
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
-        this.movePID = new PIDController(3.0, 0.01, 0.1, 0.0, 0.0, maxVelMove);
-        this.rotPID = new PIDController(0.4, 0.01, 0.15, 0.05, 0.1, maxVelMove);
+        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
+        this.rotPID = new PIDController(0.35, 0.015, 0.08, 0.035, 0.1, maxVelMove);
+    }
+
+    public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot, double rotDead) {
+        this.path = new RobotPath(curve.getPoints(), targetRot);
+        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
+        this.rotPID = new PIDController(0.35, 0.015, 0.08, rotDead, 0.1, maxVelMove);
     }
 
     @Override
@@ -47,9 +53,9 @@ public class FollowCurve extends Command {
         double rotOutput = rotPID.updateOutput(currentRot);
 
         Vector2 driveVector = path.getDriveVector().norm().mul(moveOutput);
-        if (Robot.isSimulation()) driveVector = driveVector.mul(0.25).rotate(-Math.PI / 2.0);
+        driveVector = driveVector.rotate(-Math.PI / 2.0);
 
-        System.out.println("rot: " + Pigeon.getRotationRad() + " target rot: " + rotPID.getDest() + " rot output: " + rotOutput);
+        // System.out.println("rot: " + Pigeon.getRotationRad() + " target rot: " + rotPID.getDest() + " rot output: " + rotOutput);
 
         // System.out.println("Remaining Path Length: " + path.getRemainingPathLength() + " Path Length: " + path.getPathLength());
         // System.out.println("Drive Vector: " + driveVector + " Move Output: " + moveOutput);
@@ -62,7 +68,7 @@ public class FollowCurve extends Command {
         if (rotFinished) rotOutput = 0.0;
 
         // System.out.println("Current Pos: " + SwervePosition.getPosition() + " Target Pos: " + path.getLastPos());
-        // System.out.println("Drive Finished: " + driveFinished + " Rot Finished: " + rotFinished);
+        System.out.println("Drive Finished: " + driveFinished + " Rot Finished: " + rotFinished);
 
         if (driveFinished && rotFinished) {
             isFinished = true;

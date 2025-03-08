@@ -62,7 +62,7 @@ public class VisionManager {
             double ydistRobot = vectorTransform.y;
 
             Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
-            if(distRobot.mag() < 0.5 || distRobot.mag() > 2.5){
+            if(distRobot.mag() < 0.5 || distRobot.mag() > 3){
                 continue;
             }
 

@@ -7,7 +7,7 @@ public class ScoreAtLevel extends SequentialCommandGroup {
     public ScoreAtLevel(ScoringPosition level) { 
         addCommands(
             new MoveToScorePos(level),
-            new DropCoral(0.5),
+            new DropCoral(),
             new MoveToScorePos(ScoringPosition.STOW)
             );
     }

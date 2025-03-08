@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.StaticBrake;
@@ -19,7 +20,7 @@ public class EndEffector {
     // contains all intake wheel control states, stores value for set wheel speed
     public enum IntakeState {
         OFF(0.0),
-        INTAKE_CORAL(-0.15),
+        INTAKE_CORAL(-0.285),
         HOLD_CORAL(0.0),
         DROP_CORAL(-0.5),
         INTAKE_ALGAE(0.5),
@@ -62,11 +63,8 @@ public class EndEffector {
         pivotConfig.Slot0.kP = Tuning.EndEffector.PIVOT_P;
         pivotConfig.Slot0.kI = Tuning.EndEffector.PIVOT_I;
         pivotConfig.Slot0.kD = Tuning.EndEffector.PIVOT_D;
-
-        // Motion Magic Configs
-        pivotConfig.MotionMagic.MotionMagicCruiseVelocity = Tuning.EndEffector.MOTION_MAGIC_CRUISE_VELOCITY;
-        pivotConfig.MotionMagic.MotionMagicAcceleration = Tuning.EndEffector.MOTION_MAGIC_ACCELERATION;
-        pivotConfig.MotionMagic.MotionMagicJerk = Tuning.EndEffector.JERK;
+        pivotConfig.MotionMagic.MotionMagicAcceleration = 300;
+        pivotConfig.MotionMagic.MotionMagicCruiseVelocity = 600;
 
         // Apply Configs
         pivotMotor.getConfigurator().apply(pivotConfig);
@@ -103,7 +101,7 @@ public class EndEffector {
         }
 
         // setting pivot angle
-        pivotMotor.setControl(new PositionDutyCycle(radToRot(targetAngle)));
+        pivotMotor.setControl(new MotionMagicDutyCycle(radToRot(targetAngle)));
 
         // UPDATE SIM
         if (Robot.isSimulation()) {
@@ -169,7 +167,7 @@ public class EndEffector {
 
     public boolean beambreakBroken = false;
     public double suckTime = 0.0;
-    public double neededSuckTime = 0.08; // the delay to stop moving the coral at the right spot
+    public double neededSuckTime = 0.00; // the delay to stop moving the coral at the right spot
 
     /**
      * Gets if the end effector has held the piece for the necessary amount of time

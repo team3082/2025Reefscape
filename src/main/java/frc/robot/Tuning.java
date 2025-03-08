@@ -15,7 +15,7 @@ public final class Tuning {
     public static final double MOVEP = Robot.isReal() ? 0.05 : 0.05;
     public static final double MOVEI = 0.0;
     public static final double MOVED = 0.0;
-    public static final double MOVEDEAD = Robot.isReal() ? 0.05 : 0.001;
+    public static final double MOVEDEAD = Robot.isReal() ? 0.5 : 0.001;
     public static final double MOVEVELDEAD = 0.01;
     public static final double MOVEMAXSPEED = Robot.isReal() ? 0.2 : 0.5;
     // public static final double ROTP = 0.225;
@@ -46,7 +46,7 @@ public final class Tuning {
      public static final double SWERVE_KAROT = 0.0;
  
      public static final int CURVE_RESOLUTION = 100;
-     public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
+     public static final double CURVE_DEADBAND = 0.75; // bro this is inches who had it at 0.001
     
 
     //Vision
@@ -57,15 +57,15 @@ public final class Tuning {
         /**0 for never on, 1 for only on with no rotation input, 2 for always on */
         public static final int YAWRATEFEEDBACKSTATUS = 0;
 
-        public static final double NORMALSPEED = 0.4;
+        public static final double NORMALSPEED = 1.0;
 
         public static final double ROTSPEED = 0.3;
     }
 
     public static final class Elevator {
-        public static final double ELEVATOR_P = 0.1;
+        public static final double ELEVATOR_P = 0.25;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.0;
+        public static final double ELEVATOR_D = 0.005;
 
         public static final double MOTION_MAGIC_CRUISE_VELOCITY = 0.0;
         public static final double MOTION_MAGIC_ACCELERATION = 0.0;

@@ -4,10 +4,12 @@
 
 package frc.robot.auto.commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.auto.commands.IntakeCoral;
 
 public class MoveToCoralStation extends SequentialCommandGroup {
   public MoveToCoralStation(boolean testing) {
@@ -19,8 +21,14 @@ public class MoveToCoralStation extends SequentialCommandGroup {
     else 
       aprilTagIndex = SwervePosition.getPosition().y > 0 ? 13 : 12;
 
-    addCommands(new RotateAndDriveTo(Constants.APRIL_TAGS[aprilTagIndex].getRotationZ() - Math.PI/2,
-                        Constants.APRIL_TAGS[aprilTagIndex].getCenterPosition()));
+    addCommands(
+      new ParallelCommandGroup(
+        new RotateAndDriveTo(
+          Constants.APRIL_TAGS[aprilTagIndex].getRotationZ() - Math.PI/2,
+          Constants.APRIL_TAGS[aprilTagIndex].getCenterPosition()),
+        new IntakeCoral()
+        )
+    );
   }
   /** Creates a new MoveToProcessor. */
   public MoveToCoralStation() {

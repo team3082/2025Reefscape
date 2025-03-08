@@ -27,20 +27,20 @@ public class OI {
     static final int moveY                       = LogitechF310.AXIS_LEFT_Y;
     static final int rotateX                     = LogitechF310.AXIS_RIGHT_X;
     
-    static final int boost                       = LogitechF310.AXIS_RIGHT_TRIGGER;
+    // static final int boost                       = LogitechF310.AXIS_RIGHT_TRIGGER;
  
     // zero is for Pigeon 
     static final int zero                        = LogitechF310.BUTTON_Y;
  
-    static final int funnyButtonLeft             = LogitechF310.DPAD_LEFT;
-    static final int funnyButtonRight            = LogitechF310.DPAD_RIGHT;
+    static final int funnyButtonLeft             = LogitechF310.BUTTON_LEFT_BUMPER;
+    static final int funnyButtonRight            = LogitechF310.BUTTON_RIGHT_BUMPER;
  
     private static final int lockIn              = LogitechF310.BUTTON_X;
     private static final int lockOut             = LogitechF310.BUTTON_B;
  
     // End Effector Control 
-    static final int intake                      = LogitechF310.BUTTON_LEFT_BUMPER;
-    static final int outtake                     = LogitechF310.BUTTON_RIGHT_BUMPER;
+    static final int intake                      = LogitechF310.AXIS_LEFT_TRIGGER;
+    static final int outtake                     = LogitechF310.AXIS_RIGHT_TRIGGER;
  
     private static boolean drivingToReef         = false;
     private static boolean previouslyPressedPOV  = false; // Checks if we previously pressed the dpad because getPOV() doesn't do that
@@ -87,21 +87,21 @@ public class OI {
         // Reset pigeon
         if (driverStick.getRawButton(zero)) Pigeon.reset();
 
-        double boostStrength = driverStick.getRawAxis(boost);
-        if(boostStrength < 0.1) boostStrength = 0;
+        // double boostStrength = driverStick.getRawAxis(boost);
+        // if(boostStrength < 0.1) boostStrength = 0;
 
-        double kBoostCoefficient = NORMALSPEED + boostStrength * (1.0 - NORMALSPEED);
+        // double kBoostCoefficient = NORMALSPEED + boostStrength * (1.0 - NORMALSPEED);
 
         /*--------------------------------------------------------------------------------------------------------*/
         // SETUP
 
-        Vector2 drive = new Vector2(driverStick.getRawAxis(moveX), -driverStick.getRawAxis(moveY));
+        Vector2 drive = new Vector2(driverStick.getRawAxis(moveX) * Math.abs(driverStick.getRawAxis(moveX)), -driverStick.getRawAxis(moveY) * Math.abs(driverStick.getRawAxis(moveY)));
         double rotate =  RMath.smoothJoystick1(driverStick.getRawAxis(rotateX)) * -ROTSPEED;
 
-        if (drive.mag() < 0.125) {
+        if (drive.mag() < 0.05) {
             drive = new Vector2();
         } else {
-            drive = RMath.smoothJoystick2(drive).mul(kBoostCoefficient);
+            drive = RMath.smoothJoystick2(drive);
         }
         if (Math.abs(rotate) < 0.005) {
             rotate = 0;
@@ -112,10 +112,9 @@ public class OI {
         // SWERVE
 
         // SCORING
-        if ((driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight) && !previouslyPressedPOV) {
-            previouslyPressedPOV = true;
+        if ((driverStick.getRawButtonPressed(funnyButtonLeft) || driverStick.getRawButtonPressed(funnyButtonRight)) && !previouslyPressedPOV) {
             drivingToReef = !drivingToReef;
-            boolean isRight = (driverStick.getPOV() == funnyButtonRight);
+            boolean isRight = (driverStick.getRawButton(funnyButtonRight));
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
                 
@@ -160,8 +159,8 @@ public class OI {
 
         /*-End Effector-------------------------------------------------------------------------------------------*/
 
-        if (driverStick.getRawButton(intake)) ScoringManager.endEffector.intake();
-        else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.outtake();
+        if (driverStick.getRawAxis(intake) > 0.25) ScoringManager.endEffector.intake();
+        else if (driverStick.getRawAxis(outtake) > 0.25) ScoringManager.endEffector.outtake();
         else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
 
         /*--------------------------------------------------------------------------------------------------------*/
