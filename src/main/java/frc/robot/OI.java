@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.controllermaps.LogitechF310;
+import frc.robot.Constants.Elevator;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -62,6 +63,16 @@ public class OI {
 
     private static ScoringPosition savedLevel = ScoringPosition.STOW;
 
+    enum AutoAlignState {
+        NOT_ALIGNING,
+        DRIVING_TO_REEF,
+        ELEVATOR_RAISING,
+        SCORING,
+        ELEVATOR_DESCENDING
+    }
+
+    public static AutoAlignState aligningState;
+
     /**
      * Initialize OI with preset joystick ports.
      */
@@ -111,12 +122,18 @@ public class OI {
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
 
+        
+
         // SCORING
         if ((driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight) && !previouslyPressedPOV) {
             previouslyPressedPOV = true;
-            drivingToReef = !drivingToReef;
+            if (aligningState == AutoAlignState.NOT_ALIGNING) {
+                aligningState = AutoAlignState.DRIVING_TO_REEF;
+            } else {
+                aligningState = AutoAlignState.NOT_ALIGNING;
+            }
             boolean isRight = (driverStick.getPOV() == funnyButtonRight);
-            if(drivingToReef) {
+            if(aligningState == AutoAlignState.DRIVING_TO_REEF) {
                 Vector2 currentPos = SwervePosition.getPosition();
                 
                 int allianceStartIndex = 6;
@@ -158,27 +175,60 @@ public class OI {
             previouslyPressedPOV = false;
         }
 
-        /*-End Effector-------------------------------------------------------------------------------------------*/
-
-        if (driverStick.getRawButton(intake)) ScoringManager.endEffector.intake();
-        else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.outtake();
-        else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
-
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
-        if (drivingToReef){
-            // VisionManager.disableVision();
-            if(SwervePID.atDest() &&  SwervePID.atRot()){
-                System.out.println("at dest at rot");
-                drivingToReef = !drivingToReef;
-            }
-            double rotOutput = SwervePID.updateOutputRot();
-            Vector2 driveOutput = SwervePID.updateOutputVel();
-            System.out.println("rot output: " + rotOutput + " drive output: " + driveOutput.toString());
-            SwerveManager.rotateAndDrive(rotOutput, driveOutput);
-        } else {
-            VisionManager.enableVision();
-            SwerveManager.rotateAndDrive(rotate, drive);
+        // if (drivingToReef){
+        //     // VisionManager.disableVision();
+        //     if(SwervePID.atDest() &&  SwervePID.atRot()){
+        //         System.out.println("at dest at rot");
+        //         drivingToReef = !drivingToReef;
+        //     }
+        //     double rotOutput = SwervePID.updateOutputRot();
+        //     Vector2 driveOutput = SwervePID.updateOutputVel();
+        //     System.out.println("rot output: " + rotOutput + " drive output: " + driveOutput.toString());
+        //     SwerveManager.rotateAndDrive(rotOutput, driveOutput);
+        // } else {
+        //     VisionManager.enableVision();
+        //     SwerveManager.rotateAndDrive(rotate, drive);
+        // }
+        VisionManager.enableVision();
+        switch (aligningState) {
+            case NOT_ALIGNING:
+                if (driverStick.getRawButton(intake)) ScoringManager.endEffector.intake();
+                else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.outtake();
+                else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
+                SwerveManager.rotateAndDrive(rotate, drive);
+                break;
+        
+            case DRIVING_TO_REEF:
+                if(SwervePID.atDest() &&  SwervePID.atRot()){
+                    System.out.println("at dest at rot");
+                    aligningState = AutoAlignState.ELEVATOR_RAISING;
+                }
+                double rotOutput = SwervePID.updateOutputRot();
+                Vector2 driveOutput = SwervePID.updateOutputVel();
+                System.out.println("rot output: " + rotOutput + " drive output: " + driveOutput.toString());
+                SwerveManager.rotateAndDrive(rotOutput, driveOutput);
+                break;
+
+            case ELEVATOR_RAISING:
+                ScoringManager.setScoringPosition(savedLevel);
+                if (ScoringManager.elevator.atPosition()) {
+                    aligningState = AutoAlignState.SCORING;
+                }
+                break;
+
+            case SCORING:
+                ScoringManager.endEffector.outtake();
+                if (!ScoringManager.endEffector.isHoldingCoral()) {
+                    aligningState = AutoAlignState.ELEVATOR_DESCENDING;
+                }
+                break;
+
+            case ELEVATOR_DESCENDING:
+                ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
+                aligningState = AutoAlignState.NOT_ALIGNING; // may change later
+                break;
         }
 
 
