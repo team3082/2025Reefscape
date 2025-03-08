@@ -154,10 +154,4 @@ public class Vector2 {
     public Vector2 copy() {
         return new Vector2(this.x, this.y);
     }
-
-    public Vector2 allianceFlip() {
-        if (Robot.getAllianceMultiplier() == -1)
-            return this.rotate(Math.PI);
-        return this;
-    }
 }

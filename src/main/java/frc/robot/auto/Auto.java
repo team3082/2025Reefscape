@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Tuning;
 import frc.robot.auto.commands.AlignToReef;
 import frc.robot.auto.commands.FollowCurve;
@@ -154,8 +155,10 @@ public class Auto {
     /** scores E4 - intakes - scores D4 */
     @AutoRoutine
     public SequentialCommandGroup twoPieceRight() {
-        // SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
-        // Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        if (Robot.isSimulation()) {
+            SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+            Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        }
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),

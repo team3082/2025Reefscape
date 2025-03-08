@@ -141,7 +141,7 @@ public final class Tuning {
         public static final Curve BACK_ALGAE_TO_WAIT = WAIT_TO_BACK_ALGAE.reverse();
 
         public static Curve getAutoPath(Curve path) {
-            return Robot.getAllianceMultiplier() == 1 ? path : path.rotate(Math.PI);
+            return path;
         }
     }
 }
