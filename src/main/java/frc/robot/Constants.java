@@ -9,6 +9,43 @@ import frc.robot.vision.AprilTag;
 
 
 public class Constants {
+    public enum REEF_POSITIONS {
+        A(7, 18, false),
+        B(7, 18, true),
+        C(8, 17, false),
+        D(8, 17, true),
+        E(9, 22, false),
+        F(9, 22, true),
+        G(10, 21, false),
+        H(10, 21, true),
+        I(11, 20, false),
+        J(11, 20, true),
+        K(6, 19, false),
+        L(6, 19, true);
+
+        public AprilTag redTag;
+        public AprilTag blueTag;
+        private boolean right;
+
+        REEF_POSITIONS(int redID, int blueID, boolean isRight){
+            this.right = isRight;
+            this.redTag = APRIL_TAGS[redID];
+            this.blueTag = APRIL_TAGS[blueID];
+        }
+        
+        public Vector2 getPosition(){
+            AprilTag tag = redTag;
+            if(right){
+                return tag.getRightPosition();
+            } else {
+                return tag.getLeftPosition();
+            }
+        }
+        public double getRotation(){
+            AprilTag tag = redTag;
+            return tag.getRotationZ();
+        }
+    }
     
     public static final AprilTag[] APRIL_TAGS = {
         null,

@@ -148,6 +148,6 @@ public class Robot extends LoggedRobot {
   public static int getAllianceMultiplier() {
     // Best line of code ever written
     // - John Malvin
-    return Robot.isSimulation() ? 1 : (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1);
+    return Robot.isSimulation() ? -1 : (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1);
   }
 }

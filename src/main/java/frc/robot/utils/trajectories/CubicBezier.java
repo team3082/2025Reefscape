@@ -68,4 +68,12 @@ public class CubicBezier implements Curve {
         }
         return new CubicBezier(flipped);
     }
+
+    public CubicBezier rotate(double angle) {
+        List<Vector2> rotated = new ArrayList<>();
+        for (Vector2 point : points) {
+            rotated.add(point.rotate(angle));
+        }
+        return new CubicBezier(rotated);
+    }
 }

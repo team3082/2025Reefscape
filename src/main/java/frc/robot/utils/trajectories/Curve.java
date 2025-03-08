@@ -10,4 +10,5 @@ public interface Curve {
     List<Vector2> getPoints();
     Curve reverse();
     Curve flipHorizontal();
+    Curve rotate(double angle);
 }
