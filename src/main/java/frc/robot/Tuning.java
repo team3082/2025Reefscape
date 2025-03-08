@@ -45,7 +45,7 @@ public final class Tuning {
      public static final double SWERVE_KVROT = 0.0;//0.55 / (3.0 * Math.PI);
      public static final double SWERVE_KAROT = 0.0;
  
-     public static final int CURVE_RESOLUTION = 100;
+     public static final int CURVE_RESOLUTION = 250;
      public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
     
 
@@ -110,8 +110,8 @@ public final class Tuning {
 
         public static final Curve STATION_TO_C = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[8].getLeftPosition());
         public static final Curve STATION_TO_D = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[8].getRightPosition());
-        public static final Curve STATION_TO_E = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[9].getLeftPosition());
-        public static final Curve STATION_TO_F = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.APRIL_TAGS[9].getRightPosition());
+        public static final Curve STATION_TO_E = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.APRIL_TAGS[9].getLeftPosition());
+        public static final Curve STATION_TO_F = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.APRIL_TAGS[9].getRightPosition());
 
         public static final Curve C_TO_STATION = STATION_TO_C.reverse();
         public static final Curve D_TO_STATION = STATION_TO_D.reverse();
@@ -133,5 +133,15 @@ public final class Tuning {
         public static final Curve K_TO_STATION = STATION_TO_K.reverse();
         public static final Curve J_TO_STATION = STATION_TO_J.reverse();
         public static final Curve I_TO_STATION = STATION_TO_I.reverse();
+
+        // MIDDLE AUTOPATHS
+        public static final Curve START_TO_G = new LinearBezier(Constants.MIDDLE_STARTING_POS, Constants.APRIL_TAGS[10].getLeftPosition());
+        public static final Curve START_TO_H = new LinearBezier(Constants.MIDDLE_STARTING_POS, Constants.APRIL_TAGS[10].getRightPosition());
+
+        public static final Curve G_TO_WAIT = new LinearBezier(Constants.APRIL_TAGS[10].getLeftPosition(), Constants.MIDDLE_WAIT_POS);
+        public static final Curve H_TO_WAIT = new LinearBezier(Constants.APRIL_TAGS[10].getRightPosition(), Constants.MIDDLE_WAIT_POS);
+
+        public static final Curve WAIT_TO_BACK_ALGAE = new LinearBezier(Constants.MIDDLE_WAIT_POS, new Vector2(Constants.APRIL_TAGS[10].getPosition().x - 18, Constants.APRIL_TAGS[10].getPosition().y));
+        public static final Curve BACK_ALGAE_TO_WAIT = WAIT_TO_BACK_ALGAE.reverse();
     }
 }

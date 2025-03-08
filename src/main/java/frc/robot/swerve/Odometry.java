@@ -79,7 +79,9 @@ public class Odometry {
 
                 odometryBuffer.addValue(innovation);
 
-                Optional<Vector2> visionPos = VisionManager.getPosition(pigeonAngle);
+                Optional<Vector2> visionPos = Optional.empty();
+                if (Robot.isReal()) visionPos = VisionManager.getPosition(pigeonAngle);
+
                 
 
                 // TODO Migrate to Telemetry
