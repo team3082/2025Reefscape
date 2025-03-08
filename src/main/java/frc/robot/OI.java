@@ -8,6 +8,7 @@ import frc.robot.Constants.Elevator;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
+import frc.robot.subsystems.ScoringManager.TransitoryState;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePID;
@@ -69,7 +70,7 @@ public class OI {
         ELEVATOR_DESCENDING
     }
 
-    public static AutoAlignState aligningState;
+    public static AutoAlignState aligningState = AutoAlignState.NOT_ALIGNING;
 
     /**
      * Initialize OI with preset joystick ports.
@@ -155,10 +156,10 @@ public class OI {
 
                 // Set destination and rotation based on AprilTag data
                 Vector2 targetPosition =  isRight ?  Constants.APRIL_TAGS[minIndex].getRightPosition() : Constants.APRIL_TAGS[minIndex].getLeftPosition();
-
                 SwervePID.setDestPt(targetPosition);
-                
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ());
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
+
+                aligningState = AutoAlignState.DRIVING_TO_REEF;
 
             }
         } else if (!(driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight)) {
@@ -197,24 +198,26 @@ public class OI {
                 break;
         
             case DRIVING_TO_REEF:
+                System.out.println("Driving to Reef");
                 if(SwervePID.atDest() &&  SwervePID.atRot()){
-                    System.out.println("at dest at rot");
                     aligningState = AutoAlignState.ELEVATOR_RAISING;
                 }
                 double rotOutput = SwervePID.updateOutputRot();
                 Vector2 driveOutput = SwervePID.updateOutputVel();
-                System.out.println("rot output: " + rotOutput + " drive output: " + driveOutput.toString());
                 SwerveManager.rotateAndDrive(rotOutput, driveOutput);
                 break;
 
             case ELEVATOR_RAISING:
+                System.out.println("Elevator Raising");
                 ScoringManager.setScoringPosition(savedLevel);
-                if (ScoringManager.elevator.atPosition()) {
+                System.out.println("Saved Level: " + savedLevel.toString());
+                if (ScoringManager.transitoryState == TransitoryState.FINISHED) {
                     aligningState = AutoAlignState.SCORING;
                 }
                 break;
 
             case SCORING:
+                System.out.println("Scoring");
                 ScoringManager.endEffector.outtake();
                 if (!ScoringManager.endEffector.isHoldingCoral()) {
                     aligningState = AutoAlignState.ELEVATOR_DESCENDING;
@@ -222,7 +225,9 @@ public class OI {
                 break;
 
             case ELEVATOR_DESCENDING:
+                System.out.println("Elevator Descending");
                 ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
+                ScoringManager.setScoringPosition(ScoringPosition.STOW);
                 aligningState = AutoAlignState.NOT_ALIGNING; // may change later
                 break;
         }
