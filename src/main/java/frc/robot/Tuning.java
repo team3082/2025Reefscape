@@ -45,7 +45,7 @@ public final class Tuning {
      public static final double SWERVE_KVROT = 0.0;//0.55 / (3.0 * Math.PI);
      public static final double SWERVE_KAROT = 0.0;
  
-     public static final int CURVE_RESOLUTION = 250;
+     public static final int CURVE_RESOLUTION = 100;
      public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
     
 
