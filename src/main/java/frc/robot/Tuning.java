@@ -106,8 +106,8 @@ public final class Tuning {
 
         public static final Curve STATION_TO_C = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.REEF_POSITIONS.C.getPosition());
         public static final Curve STATION_TO_D = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.REEF_POSITIONS.D.getPosition());
-        public static final Curve STATION_TO_E = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130 * Robot.getAllianceMultiplier(), 70 * Robot.getAllianceMultiplier()), Constants.REEF_POSITIONS.E.getPosition());
-        public static final Curve STATION_TO_F = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130 * Robot.getAllianceMultiplier(), 70 * Robot.getAllianceMultiplier()), Constants.REEF_POSITIONS.F.getPosition());
+        public static final Curve STATION_TO_E = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.REEF_POSITIONS.E.getPosition());
+        public static final Curve STATION_TO_F = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.REEF_POSITIONS.F.getPosition());
 
         public static final Curve C_TO_STATION = STATION_TO_C.reverse();
         public static final Curve D_TO_STATION = STATION_TO_D.reverse();
@@ -137,7 +137,11 @@ public final class Tuning {
         public static final Curve G_TO_WAIT = new LinearBezier(Constants.REEF_POSITIONS.G.getPosition(), Constants.MIDDLE_WAIT_POS);
         public static final Curve H_TO_WAIT = new LinearBezier(Constants.REEF_POSITIONS.H.getPosition(), Constants.MIDDLE_WAIT_POS);
 
-        public static final Curve WAIT_TO_BACK_ALGAE = new LinearBezier(Constants.MIDDLE_WAIT_POS, new Vector2(REEF_POSITIONS.G.tag.getCenterPosition().x - 18, REEF_POSITIONS.G.tag.getCenterPosition().y));
+        public static final Curve WAIT_TO_BACK_ALGAE = new LinearBezier(Constants.MIDDLE_WAIT_POS, new Vector2(REEF_POSITIONS.G.redTag.getCenterPosition().x - 18, REEF_POSITIONS.G.redTag.getCenterPosition().y));
         public static final Curve BACK_ALGAE_TO_WAIT = WAIT_TO_BACK_ALGAE.reverse();
+
+        public static Curve getAutoPath(Curve path) {
+            return Robot.getAllianceMultiplier() == 1 ? path : path.rotate(Math.PI);
+        }
     }
 }

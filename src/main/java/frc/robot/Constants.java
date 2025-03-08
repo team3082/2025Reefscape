@@ -10,36 +10,40 @@ import frc.robot.vision.AprilTag;
 
 public class Constants {
     public enum REEF_POSITIONS {
-        A(Robot.getAllianceMultiplier() == 1 ? 7 : 18, false),
-        B(Robot.getAllianceMultiplier() == 1 ? 7 : 18, true),
-        C(Robot.getAllianceMultiplier() == 1 ? 8 : 17, false),
-        D(Robot.getAllianceMultiplier() == 1 ? 8 : 17, true),
-        E(Robot.getAllianceMultiplier() == 1 ? 9 : 22, false),
-        F(Robot.getAllianceMultiplier() == 1 ? 9 : 22, true),
-        G(Robot.getAllianceMultiplier() == 1 ? 10 : 21, false),
-        H(Robot.getAllianceMultiplier() == 1 ? 10 : 21, true),
-        I(Robot.getAllianceMultiplier() == 1 ? 11 : 20, false),
-        J(Robot.getAllianceMultiplier() == 1 ? 11 : 20, true),
-        K(Robot.getAllianceMultiplier() == 1 ? 6 : 19, false),
-        L(Robot.getAllianceMultiplier() == 1 ? 6 : 19, true);
+        A(7, 18, false),
+        B(7, 18, true),
+        C(8, 17, false),
+        D(8, 17, true),
+        E(9, 22, false),
+        F(9, 22, true),
+        G(10, 21, false),
+        H(10, 21, true),
+        I(11, 20, false),
+        J(11, 20, true),
+        K(6, 19, false),
+        L(6, 19, true);
 
-        public AprilTag tag;
+        public AprilTag redTag;
+        public AprilTag blueTag;
         private boolean right;
 
-        REEF_POSITIONS(int id, boolean isRight){
+        REEF_POSITIONS(int redID, int blueID, boolean isRight){
             this.right = isRight;
-            this.tag = APRIL_TAGS[id];
+            this.redTag = APRIL_TAGS[redID];
+            this.blueTag = APRIL_TAGS[blueID];
         }
         
         public Vector2 getPosition(){
+            AprilTag tag = redTag;
             if(right){
-                return this.tag.getRightPosition();
+                return tag.getRightPosition();
             } else {
-                return this.tag.getLeftPosition();
+                return tag.getLeftPosition();
             }
         }
         public double getRotation(){
-            return this.tag.getRotationZ();
+            AprilTag tag = redTag;
+            return tag.getRotationZ();
         }
     }
     
@@ -73,12 +77,12 @@ public class Constants {
         
     };
 
-    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60 * Robot.getAllianceMultiplier(), 90 * Robot.getAllianceMultiplier());
-    public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60 * Robot.getAllianceMultiplier(), 0);
-    public static final Vector2 MIDDLE_WAIT_POS = new Vector2(80 * Robot.getAllianceMultiplier(), 0);
-    public static final Vector2 LEFT_STARTING_POS = new Vector2(60 * Robot.getAllianceMultiplier(), -90 * Robot.getAllianceMultiplier());
-    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(285 * Robot.getAllianceMultiplier(), 130 * Robot.getAllianceMultiplier());
-    public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(285 * Robot.getAllianceMultiplier(), -130 * Robot.getAllianceMultiplier());
+    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60, 90);
+    public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60, 0);
+    public static final Vector2 MIDDLE_WAIT_POS = new Vector2(80, 0);
+    public static final Vector2 LEFT_STARTING_POS = new Vector2(60, -90);
+    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(285, 130);
+    public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(285, -130);
 
     public static final class Elevator {
         public static final int MOTORID1 = 9;

@@ -21,7 +21,7 @@ public class FollowCurve extends Command {
     private PIDController rotPID;
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot) {
-        this.path = new RobotPath(curve.getPoints(), targetRot);
+        this.path = new RobotPath(Tuning.AutoPaths.getAutoPath(curve).getPoints(), targetRot);
         this.movePID = new PIDController(3.0, 0.01, 0.1, 0.0, 0.0, maxVelMove);
         this.rotPID = new PIDController(0.4, 0.01, 0.15, 0.05, 0.1, maxVelMove);
     }

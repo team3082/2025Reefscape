@@ -59,4 +59,12 @@ public class QuadraticBezier implements Curve {
         }
         return new QuadraticBezier(flipped);
     }
+
+    public QuadraticBezier rotate(double angle) {
+        List<Vector2> rotated = new ArrayList<>();
+        for (Vector2 point : points) {
+            rotated.add(point.rotate(angle));
+        }
+        return new QuadraticBezier(rotated);
+    }
 }

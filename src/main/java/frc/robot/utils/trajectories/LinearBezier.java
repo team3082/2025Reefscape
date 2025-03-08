@@ -57,4 +57,12 @@ public class LinearBezier implements Curve {
         }
         return new LinearBezier(flipped);
     }
+
+    public LinearBezier rotate(double angle) {
+        List<Vector2> rotated = new ArrayList<>();
+        for (Vector2 point : points) {
+            rotated.add(point.rotate(angle));
+        }
+        return new LinearBezier(rotated);
+    }
 }

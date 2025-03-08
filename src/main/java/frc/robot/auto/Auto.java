@@ -40,7 +40,7 @@ public class Auto {
      /** scores G4 */
      @AutoRoutine
      public SequentialCommandGroup onePieceMiddleRight() {
-         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
+         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS.allianceFlip());
          Pigeon.setYawRad((Constants.REEF_POSITIONS.G.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
          return new SequentialCommandGroup (
              new FollowCurve(Tuning.AutoPaths.START_TO_G, Constants.REEF_POSITIONS.G.getRotation(), 0.75, 0.2),
@@ -51,7 +51,7 @@ public class Auto {
      /** scores G4 */
      @AutoRoutine
      public SequentialCommandGroup onePieceMiddleLeft() {
-         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
+         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS.allianceFlip());
          Pigeon.setYawRad((Constants.REEF_POSITIONS.H.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
          return new SequentialCommandGroup (
              new FollowCurve(Tuning.AutoPaths.START_TO_H, Constants.REEF_POSITIONS.H.getRotation(), 0.75, 0.2),
@@ -62,7 +62,7 @@ public class Auto {
     /** scores G4 - removes back algae */
     @AutoRoutine
     public SequentialCommandGroup onePieceMiddleRightAlgae() {
-        SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
+        SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.APRIL_TAGS[10].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup (
             new FollowCurve(Tuning.AutoPaths.START_TO_G, Constants.REEF_POSITIONS.G.getRotation(), 0.75, 0.2),
@@ -84,7 +84,7 @@ public class Auto {
     /** scores G4 - removes back algae */
     @AutoRoutine
     public SequentialCommandGroup onePieceMiddleLeftAlgae() {
-        SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
+        SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.H.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup (
             new FollowCurve(Tuning.AutoPaths.START_TO_H, Constants.REEF_POSITIONS.H.getRotation(), 0.75, 0.2),
@@ -106,7 +106,7 @@ public class Auto {
     /** scores E4 - intakes */
     @AutoRoutine
     public SequentialCommandGroup onePieceRight() {
-        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.E.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3),
@@ -117,7 +117,7 @@ public class Auto {
     /** scores J4 - intakes */
     @AutoRoutine
     public SequentialCommandGroup onePieceLeft() {
-        SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+        SwervePosition.setPosition(Constants.LEFT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.J.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3),
@@ -128,7 +128,7 @@ public class Auto {
     /** scores E4 - intakes */
     @AutoRoutine
     public SequentialCommandGroup oneHalfPieceRight() {
-        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.E.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3),
@@ -141,7 +141,7 @@ public class Auto {
     /** scores J4 - intakes */
     @AutoRoutine
     public SequentialCommandGroup oneHalfPieceLeft() {
-        SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+        SwervePosition.setPosition(Constants.LEFT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.J.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3),
@@ -154,7 +154,7 @@ public class Auto {
     /** scores E4 - intakes - scores D4 */
     @AutoRoutine
     public SequentialCommandGroup twoPieceRight() {
-        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.E.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3),
@@ -169,7 +169,7 @@ public class Auto {
     /** scores J4 - intakes - scores K4 */
     @AutoRoutine
     public SequentialCommandGroup twoPieceLeft() {
-        SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+        SwervePosition.setPosition(Constants.LEFT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.J.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3),
@@ -184,7 +184,7 @@ public class Auto {
     /** scores E4 - intakes - scores D4 - intakes */
     @AutoRoutine
     public SequentialCommandGroup twoHalfPieceRight() {
-        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.E.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3),
@@ -201,7 +201,7 @@ public class Auto {
     /** scores J4 - intakes - scores K4 - intakes */
     @AutoRoutine
     public SequentialCommandGroup twoHalfPieceLeft() {
-        SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+        SwervePosition.setPosition(Constants.LEFT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.J.getRotation()+ Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3),
@@ -218,7 +218,7 @@ public class Auto {
     /** scores E4 - intakes - scores D4 - intakes - scores C4 */
     @AutoRoutine
     public SequentialCommandGroup threePieceRight() {
-        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        SwervePosition.setPosition(Constants.RIGHT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.E.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3),
@@ -237,7 +237,7 @@ public class Auto {
     /** scores J4 - intakes - scores K4 - intakes - scores L4 */
     @AutoRoutine
     public SequentialCommandGroup threePieceLeft() {
-        SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+        SwervePosition.setPosition(Constants.LEFT_STARTING_POS.allianceFlip());
         Pigeon.setYawRad((Constants.REEF_POSITIONS.J.getRotation() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
             new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3),
