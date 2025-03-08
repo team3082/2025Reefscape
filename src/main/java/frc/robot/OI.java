@@ -205,6 +205,7 @@ public class OI {
                 double rotOutput = SwervePID.updateOutputRot();
                 Vector2 driveOutput = SwervePID.updateOutputVel();
                 SwerveManager.rotateAndDrive(rotOutput, driveOutput);
+                ScoringManager.setScoringPosition(savedLevel);
                 break;
 
             case ELEVATOR_RAISING:
@@ -229,6 +230,7 @@ public class OI {
                 ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
                 ScoringManager.setScoringPosition(ScoringPosition.STOW);
                 aligningState = AutoAlignState.NOT_ALIGNING; // may change later
+                drivingToReef = false;
                 break;
         }
 
