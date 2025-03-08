@@ -5,7 +5,6 @@ import static frc.robot.Tuning.CURVE_RESOLUTION;
 import java.util.ArrayList;
 import java.util.List;
 
-import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 

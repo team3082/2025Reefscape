@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.utils.Vector2;
@@ -34,15 +35,12 @@ public class VisionManager {
 
         for (Camera camera : cameras) {
             
-            PhotonPipelineResult latestResult = camera.photonCamera.getLatestResult();
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
             
             
             if (target != null) if (camera.isLatestTarget(target)) {
-                // System.out.println("skipped read");
                 continue;
             }
-            // System.out.println("no skip");
 
             camera.setLatestTarget(target);
             if (target == null) continue; // Skip if no april tags are found
@@ -71,7 +69,13 @@ public class VisionManager {
 
             Vector2 cameraToTag = new Vector2(xdistField, ydistField);
 
+
+
             Vector2 aprilTagPos = new Vector2(Constants.APRIL_TAGS[id].getPosition().y, -Constants.APRIL_TAGS[id].getPosition().x);
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                aprilTagPos = aprilTagPos.rotate(Math.PI);
+            }
+            
             Vector2 cameraPos = aprilTagPos.sub(cameraToTag);
 
             Vector2 robotPos = cameraPos.sub(camera.robotToCamera.rotate(pigeonAngle - (Math.PI/2.0)));

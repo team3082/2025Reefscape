@@ -15,6 +15,7 @@ public class QuadraticBezier implements Curve {
     private List<Vector2> points = new ArrayList<>();
 
     public QuadraticBezier(Vector2 a, Vector2 b, Vector2 c) {
+        System.out.println("Creating QuadraticBezier");
         this.a = a;
         this.b = b;
         this.c = c;
@@ -23,6 +24,7 @@ public class QuadraticBezier implements Curve {
     }
 
     public QuadraticBezier(List<Vector2> points) {
+        System.out.println("Creating QuadraticBezier");
         this.points = points;
     }
 

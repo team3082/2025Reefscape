@@ -169,7 +169,7 @@ public class Telemetry {
         Pose2d currentPose = new Pose2d(
             SwervePosition.getPosition().x /Constants.METERSTOINCHES + 8.78,
             SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
-            Rotation2d.fromRadians(Pigeon.getRotationRad() + Robot.getAllianceMultiplier() * Math.PI / 2.0)
+            Rotation2d.fromRadians(Pigeon.getRotationRad() + Math.PI / 2.0)
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);

@@ -2,9 +2,7 @@ package frc.robot;
 
 import static frc.robot.Tuning.OI.*;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.controllermaps.LogitechF310;
 import frc.robot.Constants.Elevator;
 import frc.robot.subsystems.ScoringManager;
@@ -24,9 +22,9 @@ public class OI {
     // ------------------ Driver Controls ------------------ //
 
     // Movement
-    static final int moveX                       = LogitechF310.AXIS_LEFT_X;
-    static final int moveY                       = LogitechF310.AXIS_LEFT_Y;
-    static final int rotateX                     = LogitechF310.AXIS_RIGHT_X;
+    public static final int moveX                       = LogitechF310.AXIS_LEFT_X;
+    public static final int moveY                       = LogitechF310.AXIS_LEFT_Y;
+    public static final int rotateX                     = LogitechF310.AXIS_RIGHT_X;
     
     // static final int boost                       = LogitechF310.AXIS_RIGHT_TRIGGER;
  
@@ -61,7 +59,7 @@ public class OI {
  
 
 
-    private static ScoringPosition savedLevel = ScoringPosition.STOW;
+    public static ScoringPosition savedLevel = ScoringPosition.STOW;
 
     enum AutoAlignState {
         NOT_ALIGNING,
@@ -131,21 +129,18 @@ public class OI {
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
                 
-                int allianceStartIndex = 6;
-                // Determine reef AprilTag locations based on alliance
-                if(Robot.isReal())
-                    allianceStartIndex = DriverStation.getAlliance().get() == Alliance.Red ? 6 : 17;
-  
+                int startIndex = 6;
+                
                 // Find the shortest scoring position from the robot
                 double min;
                 if (isRight)
-                    min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getRightPosition()).mag();
+                    min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getRightPosition()).mag();
                 else 
-                    min = currentPos.sub(Constants.APRIL_TAGS[allianceStartIndex].getLeftPosition()).mag();
+                    min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getLeftPosition()).mag();
                 
-                int minIndex = allianceStartIndex;
+                int minIndex = startIndex;
 
-                for (int i = allianceStartIndex+1; i < allianceStartIndex + 6; i++){
+                for (int i = startIndex + 1; i < startIndex + 6; i++){
                     Vector2 aprilPosition;
                     if (isRight)
                         aprilPosition = Constants.APRIL_TAGS[i].getRightPosition();
@@ -163,7 +158,7 @@ public class OI {
 
                 SwervePID.setDestPt(targetPosition);
                 
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) * Math.PI/2);
+                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ());
 
             }
         } else if (!(driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight)) {

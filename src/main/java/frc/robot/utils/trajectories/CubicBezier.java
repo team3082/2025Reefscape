@@ -16,6 +16,8 @@ public class CubicBezier implements Curve {
     private List<Vector2> points = new ArrayList<>();
 
     public CubicBezier(Vector2 a, Vector2 b, Vector2 c, Vector2 d) {
+        System.out.println("Creating CubicBezier");
+
         this.a = a;
         this.b = b;
         this.c = c;
@@ -25,6 +27,7 @@ public class CubicBezier implements Curve {
     }
 
     public CubicBezier(List<Vector2> points) {
+        System.out.println("Creating CubicBezier");
         this.points = points;
     }
 

@@ -1,20 +1,14 @@
 package frc.robot.swerve;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.Vector2;
 import frc.robot.vision.VisionManager;
-import frc.robot.swerve.OdometryBuffer;
 
 import static frc.robot.swerve.SwerveManager.mods;
 
 import java.util.Optional;
-
-import org.littletonrobotics.junction.Logger;
 
 public class Odometry {
 
@@ -82,22 +76,10 @@ public class Odometry {
                 Optional<Vector2> visionPos = Optional.empty();
                 if (Robot.isReal()) visionPos = VisionManager.getPosition(pigeonAngle);
 
-                
-
-                // TODO Migrate to Telemetry
                 try{
-                    if (!visionPos.isEmpty() && VisionManager.isEnabled()) {
-                        // Pose2d visionPose = new Pose2d(visionPos.get().rotate(Math.PI/2.0).x/Constants.METERSTOINCHES + 8.78, 
-                        //                             visionPos.get().rotate(Math.PI/2.0).y/Constants.METERSTOINCHES + 4.01, 
-                        //                             Rotation2d.fromRadians(Pigeon.getRotationRad()+ Robot.getAllianceMultiplier() * Math.PI / 2.0));
-                        // Logger.recordOutput("Robot/Vision/Vision Pose", visionPose);
-                        // Logger.recordOutput("Robot/Vision/Position", visionPos.get().rotate(Math.PI/2).toString());
-                        // Logger.recordOutput("Robot/Vision/Position/x", visionPos.get().rotate(Math.PI/2).x);
-                        // Logger.recordOutput("Robot/Vision/Position/y", visionPos.get().rotate(Math.PI/2).y);
-                        // System.out.println("total buffer: " + odometryBuffer.getTotalBuffer().toString());
-                        position = new Vector2(-visionPos.get().y, visionPos.get().x).add(odometryBuffer.getTotalBuffer());
-                    } 
+                    if (!visionPos.isEmpty() && VisionManager.isEnabled()) position = new Vector2(-visionPos.get().y, visionPos.get().x).add(odometryBuffer.getTotalBuffer());
                 } catch (Exception e) {}
+
                 try {
                     sleep(7);
                 } catch (InterruptedException e) {
@@ -133,7 +115,7 @@ public class Odometry {
     }
 
     public static Vector2 poseExponentiation(Vector2 deltaPos, double theta0, double deltaTheta){
-        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta).rotate(/*(DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1) */ Math.PI/2);
+        return poseExponentiation(deltaPos.mag(), theta0 + deltaPos.atan2(), deltaTheta).rotate(Math.PI/2);
     }
 
     public static void setPosition(Vector2 pos){

@@ -7,7 +7,6 @@ package frc.robot.auto.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.auto.commands.IntakeCoral;
 
@@ -15,11 +14,7 @@ public class MoveToCoralStation extends SequentialCommandGroup {
   public MoveToCoralStation(boolean testing) {
     // Red IDs 1 and 2
     // Blue IDs 12 and 13
-    int aprilTagIndex;
-    if (Robot.getAllianceMultiplier() == 1) 
-      aprilTagIndex = SwervePosition.getPosition().y > 0 || testing ? 2 : 1;
-    else 
-      aprilTagIndex = SwervePosition.getPosition().y > 0 ? 13 : 12;
+    int aprilTagIndex = SwervePosition.getPosition().y > 0 || testing ? 2 : 1;
 
     addCommands(
       new ParallelCommandGroup(

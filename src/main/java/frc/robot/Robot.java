@@ -7,9 +7,6 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
@@ -145,9 +142,4 @@ public class Robot extends LoggedRobot {
   @Override
   public void simulationPeriodic() {}
 
-  public static int getAllianceMultiplier() {
-    // Best line of code ever written
-    // - John Malvin
-    return Robot.isSimulation() ? -1 : (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1);
-  }
 }

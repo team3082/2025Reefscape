@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
-import frc.robot.vision.VisionManager;
 
 public class SwervePosition {
 

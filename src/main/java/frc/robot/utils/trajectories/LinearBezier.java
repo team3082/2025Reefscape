@@ -14,6 +14,7 @@ public class LinearBezier implements Curve {
     private List<Vector2> points = new ArrayList<>();
 
     public LinearBezier(Vector2 a, Vector2 b) {
+        System.out.println("Creating LinearBezier");
         this.a = a;
         this.b = b;
 
@@ -21,6 +22,7 @@ public class LinearBezier implements Curve {
     }
 
     public LinearBezier(List<Vector2> points) {
+        System.out.println("Creating LinearBezier");
         this.points = points;
     }
 

@@ -56,7 +56,7 @@ public class SwervePID {
     }
     
     public static double updateOutputX() {
-        return (xPID.atSetpoint() ? 0 : Robot.getAllianceMultiplier()) * xPID.updateOutput(SwervePosition.getPosition().x);
+        return (xPID.atSetpoint() ? 0 : 1) * xPID.updateOutput(SwervePosition.getPosition().x);
     }
 
     public static double updateOutputY() {
@@ -68,7 +68,7 @@ public class SwervePID {
     }
 
     public static Vector2 updateOutputVel() {
-        return new Vector2(updateOutputX(), updateOutputY()).rotate(-Robot.getAllianceMultiplier() * Math.PI/2);
+        return new Vector2(updateOutputX(), updateOutputY()).rotate(-Math.PI/2);
     }
 
     public static Vector2 getDest() {
