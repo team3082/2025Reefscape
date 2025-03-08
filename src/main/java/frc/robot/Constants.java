@@ -9,6 +9,39 @@ import frc.robot.vision.AprilTag;
 
 
 public class Constants {
+    public enum REEF_POSITIONS {
+        A(Robot.getAllianceMultiplier() == 1 ? 7 : 18, false),
+        B(Robot.getAllianceMultiplier() == 1 ? 7 : 18, true),
+        C(Robot.getAllianceMultiplier() == 1 ? 8 : 17, false),
+        D(Robot.getAllianceMultiplier() == 1 ? 8 : 17, true),
+        E(Robot.getAllianceMultiplier() == 1 ? 9 : 22, false),
+        F(Robot.getAllianceMultiplier() == 1 ? 9 : 22, true),
+        G(Robot.getAllianceMultiplier() == 1 ? 10 : 21, false),
+        H(Robot.getAllianceMultiplier() == 1 ? 10 : 21, true),
+        I(Robot.getAllianceMultiplier() == 1 ? 11 : 20, false),
+        J(Robot.getAllianceMultiplier() == 1 ? 11 : 20, true),
+        K(Robot.getAllianceMultiplier() == 1 ? 6 : 19, false),
+        L(Robot.getAllianceMultiplier() == 1 ? 6 : 19, true);
+
+        public AprilTag tag;
+        private boolean right;
+
+        REEF_POSITIONS(int id, boolean isRight){
+            this.right = isRight;
+            this.tag = APRIL_TAGS[id];
+        }
+        
+        public Vector2 getPosition(){
+            if(right){
+                return this.tag.getRightPosition();
+            } else {
+                return this.tag.getLeftPosition();
+            }
+        }
+        public double getRotation(){
+            return this.tag.getRotationZ();
+        }
+    }
     
     public static final AprilTag[] APRIL_TAGS = {
         null,
@@ -40,12 +73,12 @@ public class Constants {
         
     };
 
-    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60, 90);
-    public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60, 0);
-    public static final Vector2 MIDDLE_WAIT_POS = new Vector2(80, 0);
-    public static final Vector2 LEFT_STARTING_POS = new Vector2(60, -90);
-    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(285, 130);
-    public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(285, -130);
+    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60 * Robot.getAllianceMultiplier(), 90 * Robot.getAllianceMultiplier());
+    public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60 * Robot.getAllianceMultiplier(), 0);
+    public static final Vector2 MIDDLE_WAIT_POS = new Vector2(80 * Robot.getAllianceMultiplier(), 0);
+    public static final Vector2 LEFT_STARTING_POS = new Vector2(60 * Robot.getAllianceMultiplier(), -90 * Robot.getAllianceMultiplier());
+    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(285 * Robot.getAllianceMultiplier(), 130 * Robot.getAllianceMultiplier());
+    public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(285 * Robot.getAllianceMultiplier(), -130 * Robot.getAllianceMultiplier());
 
     public static final class Elevator {
         public static final int MOTORID1 = 9;
