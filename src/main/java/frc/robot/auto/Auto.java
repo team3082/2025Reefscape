@@ -38,15 +38,37 @@ public class Auto {
         return routineManager.getAutoSelector();
     }
 
+     /** scores G4 */
+     @AutoRoutine
+     public SequentialCommandGroup onePieceMiddleRight() {
+         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
+         Pigeon.setYawRad((Constants.APRIL_TAGS[10].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+         return new SequentialCommandGroup (
+             new FollowCurve(Tuning.AutoPaths.START_TO_G, Constants.APRIL_TAGS[10].getRotationZ(), 0.75, 0.2),
+             new ScoreAtLevel(ScoringPosition.L4)
+         );
+     }
+ 
+     /** scores G4 */
+     @AutoRoutine
+     public SequentialCommandGroup onePieceMiddleLeft() {
+         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
+         Pigeon.setYawRad((Constants.APRIL_TAGS[10].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+         return new SequentialCommandGroup (
+             new FollowCurve(Tuning.AutoPaths.START_TO_H, Constants.APRIL_TAGS[10].getRotationZ(), 0.75, 0.2),
+             new ScoreAtLevel(ScoringPosition.L4)
+         );
+     }
+
     /** scores G4 - removes back algae */
     @AutoRoutine
-    public SequentialCommandGroup onePieceMiddleRight() {
+    public SequentialCommandGroup onePieceMiddleRightAlgae() {
         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[10].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup (
-            new FollowCurve(Tuning.AutoPaths.START_TO_G, Constants.APRIL_TAGS[10].getRotationZ(), 0.5, 0.2),
+            new FollowCurve(Tuning.AutoPaths.START_TO_G, Constants.APRIL_TAGS[10].getRotationZ(), 0.75, 0.2),
             new ScoreAtLevel(ScoringPosition.L4),
-            new FollowCurve(Tuning.AutoPaths.G_TO_WAIT, Constants.APRIL_TAGS[10].getRotationZ(), 0.5, 0.2),
+            new FollowCurve(Tuning.AutoPaths.G_TO_WAIT, Constants.APRIL_TAGS[10].getRotationZ(), 0.75, 0.2),
             new MoveToScorePos(ScoringPosition.ALGAE1),
             new SetIntakeState(IntakeState.DROP_CORAL),
             new FollowCurve(Tuning.AutoPaths.WAIT_TO_BACK_ALGAE, Constants.APRIL_TAGS[10].getRotationZ(), 0.2, 0.2),
@@ -61,13 +83,13 @@ public class Auto {
 
     /** scores G4 - removes back algae */
     @AutoRoutine
-    public SequentialCommandGroup onePieceMiddleLeft() {
+    public SequentialCommandGroup onePieceMiddleLeftAlgae() {
         SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[10].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup (
-            new FollowCurve(Tuning.AutoPaths.START_TO_H, Constants.APRIL_TAGS[10].getRotationZ(), 0.5, 0.2),
+            new FollowCurve(Tuning.AutoPaths.START_TO_H, Constants.APRIL_TAGS[10].getRotationZ(), 0.75, 0.2),
             new ScoreAtLevel(ScoringPosition.L4),
-            new FollowCurve(Tuning.AutoPaths.H_TO_WAIT, Constants.APRIL_TAGS[10].getRotationZ(), 0.5, 0.2),
+            new FollowCurve(Tuning.AutoPaths.H_TO_WAIT, Constants.APRIL_TAGS[10].getRotationZ(), 0.75, 0.2),
             new MoveToScorePos(ScoringPosition.ALGAE1),
             new SetIntakeState(IntakeState.DROP_CORAL),
             new FollowCurve(Tuning.AutoPaths.WAIT_TO_BACK_ALGAE, Constants.APRIL_TAGS[10].getRotationZ(), 0.2, 0.2),
@@ -86,7 +108,7 @@ public class Auto {
         SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4)
         );
     }
@@ -97,7 +119,7 @@ public class Auto {
         SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4)
         );
     }
@@ -108,7 +130,7 @@ public class Auto {
         SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral()
@@ -121,7 +143,7 @@ public class Auto {
         SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral()
@@ -134,11 +156,11 @@ public class Auto {
         SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.APRIL_TAGS[8].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.APRIL_TAGS[8].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4)
         );
     }
@@ -149,11 +171,11 @@ public class Auto {
         SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.APRIL_TAGS[6].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.APRIL_TAGS[6].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4)
         );
     }
@@ -164,11 +186,11 @@ public class Auto {
         SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.APRIL_TAGS[8].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.APRIL_TAGS[8].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.D_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral()
@@ -181,11 +203,11 @@ public class Auto {
         SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.APRIL_TAGS[6].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.APRIL_TAGS[6].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral()
@@ -198,15 +220,15 @@ public class Auto {
         SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.APRIL_TAGS[9].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.APRIL_TAGS[8].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.APRIL_TAGS[8].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.D_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_C, Constants.APRIL_TAGS[8].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_C, Constants.APRIL_TAGS[8].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4)
         );
     }
@@ -217,15 +239,15 @@ public class Auto {
         SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
         Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.APRIL_TAGS[11].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.APRIL_TAGS[6].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.APRIL_TAGS[6].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4),
             new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.APRIL_TAGS[6].getRotationZ(), 0.5, 0.3),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.APRIL_TAGS[6].getRotationZ(), 0.75, 0.3),
             new ScoreAtLevel(ScoringPosition.L4)
         );
     }
