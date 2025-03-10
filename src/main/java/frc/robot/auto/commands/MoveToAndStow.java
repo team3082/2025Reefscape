@@ -20,7 +20,7 @@ public class MoveToAndStow extends Command {
 
     @Override
     public void execute() {
-        if (!(ScoringManager.transitoryState == TransitoryState.FINISHED && ScoringManager.scoringPosition == ScoringPosition.STOW)) {
+        if (!(ScoringManager.getElevator().getElevatorHeight() < 48 && ScoringManager.scoringPosition == ScoringPosition.STOW)) {
             ScoringManager.setScoringPosition(ScoringPosition.STOW);
             followCurve.setMaxSpeed(0.5);
         } else {

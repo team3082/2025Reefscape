@@ -26,7 +26,7 @@ public class IntakeCoral extends Command{
 
     @Override
     public boolean isFinished() {
-        return ScoringManager.getEndEffector().isHoldingCoral() || (Robot.isSimulation());
+        return ScoringManager.getEndEffector().isHoldingCoral() || (Robot.isSimulation() && RTime.now() - startTime > 1.0);
     }
 
 } 

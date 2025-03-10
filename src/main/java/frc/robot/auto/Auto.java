@@ -146,6 +146,27 @@ public class Auto {
         );
     }
 
+    /** scores J4 - intakes - scores K4 - intakes - scores L4 */
+    @AutoRoutine
+    public SequentialCommandGroup threePieceLeft() {
+        if (Robot.isSimulation()) {
+            SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+            Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        }
+        return new SequentialCommandGroup(
+            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3),
+            new ScoreAtLevel(ScoringPosition.L4),
+            new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075),
+            new IntakeCoral(),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.REEF_POSITIONS.K.getRotation(), 0.75, 0.3),
+            new ScoreAtLevel(ScoringPosition.L4),
+            new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075),
+            new IntakeCoral(),
+            new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.REEF_POSITIONS.L.getRotation(), 0.75, 0.3),
+            new ScoreAtLevel(ScoringPosition.L4)
+        );
+    }
+
     @AutoRoutine
     public SequentialCommandGroup threePieceRightFast() {
         if (Robot.isSimulation()) {
@@ -167,22 +188,68 @@ public class Auto {
         );
     }
 
-    /** scores J4 - intakes - scores K4 - intakes - scores L4 */
     @AutoRoutine
-    public SequentialCommandGroup threePieceLeft() {
-        // SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
-        // Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+    public SequentialCommandGroup threePieceLeftFast() {
+        if (Robot.isSimulation()) {
+            SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+            Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        }
         return new SequentialCommandGroup(
-            new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3),
-            new ScoreAtLevel(ScoringPosition.L4),
-            new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.REEF_POSITIONS.K.getRotation(), 0.75, 0.3),
-            new ScoreAtLevel(ScoringPosition.L4),
-            new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.REEF_POSITIONS.K.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
             new IntakeCoral(),
-            new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.REEF_POSITIONS.L.getRotation(), 0.75, 0.3),
-            new ScoreAtLevel(ScoringPosition.L4)
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.REEF_POSITIONS.L.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToScorePos(ScoringPosition.STOW)
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup threeHalfPieceRight() {
+        if (Robot.isSimulation()) {
+            SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+            Pigeon.setYawRad((Constants.APRIL_TAGS[9].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        }
+        return new SequentialCommandGroup(
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.REEF_POSITIONS.D.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.D_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_C, Constants.REEF_POSITIONS.C.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.C_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral()
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup threeHalfPieceLeft() {
+        if (Robot.isSimulation()) {
+            SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+            Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        }
+        return new SequentialCommandGroup(
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.REEF_POSITIONS.K.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.REEF_POSITIONS.L.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.L_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral()
         );
     }
 

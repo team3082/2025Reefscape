@@ -108,11 +108,15 @@ public final class Tuning {
         public static final Curve STATION_TO_D = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.REEF_POSITIONS.D.getPosition());
         public static final Curve STATION_TO_E = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.REEF_POSITIONS.E.getPosition());
         public static final Curve STATION_TO_F = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.REEF_POSITIONS.F.getPosition());
+        public static final Curve STATION_TO_B = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.REEF_POSITIONS.B.getPosition());
+        public static final Curve STATION_TO_G = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(95, 95), Constants.REEF_POSITIONS.G.getPosition());
 
         public static final Curve C_TO_STATION = STATION_TO_C.reverse();
         public static final Curve D_TO_STATION = STATION_TO_D.reverse();
         public static final Curve E_TO_STATION = STATION_TO_E.reverse();
         public static final Curve F_TO_STATION = STATION_TO_F.reverse();
+        public static final Curve B_TO_STATION = STATION_TO_B.reverse();
+        public static final Curve G_TO_STATION = STATION_TO_G.reverse();
         
         // LEFT SIDE AUTOPATHS
         public static final Curve START_TO_L = START_TO_C.flipHorizontal();
@@ -124,11 +128,15 @@ public final class Tuning {
         public static final Curve STATION_TO_K = STATION_TO_D.flipHorizontal();
         public static final Curve STATION_TO_J = STATION_TO_E.flipHorizontal();
         public static final Curve STATION_TO_I = STATION_TO_F.flipHorizontal();
+        public static final Curve STATION_TO_A = STATION_TO_B.flipHorizontal();
+        public static final Curve STATION_TO_H = STATION_TO_G.flipHorizontal();
 
         public static final Curve L_TO_STATION = STATION_TO_L.reverse();
         public static final Curve K_TO_STATION = STATION_TO_K.reverse();
         public static final Curve J_TO_STATION = STATION_TO_J.reverse();
         public static final Curve I_TO_STATION = STATION_TO_I.reverse();
+        public static final Curve A_TO_STATION = STATION_TO_A.reverse();
+        public static final Curve H_TO_STATION = STATION_TO_H.reverse();
 
         // MIDDLE AUTOPATHS
         public static final Curve START_TO_G = new LinearBezier(Constants.MIDDLE_STARTING_POS, Constants.REEF_POSITIONS.G.getPosition());

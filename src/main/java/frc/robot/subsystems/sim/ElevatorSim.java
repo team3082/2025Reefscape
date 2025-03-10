@@ -9,6 +9,7 @@ import frc.robot.utils.RTime;
  */
 public class ElevatorSim {
 
+    // max speeds - 100 to sim 15:1 ratio - 75 to sim 25:1 ratio
     private static PIDController posPID = new PIDController(100, 0, 0, 0, 0, 75.0);
 
     private static double targetPos; // Inches
