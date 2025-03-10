@@ -20,6 +20,8 @@ public class FollowCurve extends Command {
     private PIDController movePID;
     private PIDController rotPID;
 
+    double maxSpeed = 1.0;
+
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
         this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
@@ -60,6 +62,10 @@ public class FollowCurve extends Command {
         // System.out.println("Remaining Path Length: " + path.getRemainingPathLength() + " Path Length: " + path.getPathLength());
         // System.out.println("Drive Vector: " + driveVector + " Move Output: " + moveOutput);
 
+        if (driveVector.mag() > maxSpeed) {
+            driveVector = driveVector.norm().mul(maxSpeed);
+        }
+
         SwerveManager.rotateAndDrive(rotOutput, driveVector);
 
         boolean driveFinished = (SwervePosition.getPosition().sub(path.getLastPos()).mag() < Tuning.CURVE_DEADBAND);
@@ -85,5 +91,13 @@ public class FollowCurve extends Command {
     public void end(boolean interrupted) {
         SwerveManager.rotateAndDrive(0.0, new Vector2());
         System.out.println("FollowCurve ended");
+    }
+
+    public double getRemainingPathLength() {
+        return path.getRemainingPathLength();
+    }
+
+    public void setMaxSpeed(double speed) {
+        this.maxSpeed = speed;
     }
 }

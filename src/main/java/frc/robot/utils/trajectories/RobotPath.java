@@ -68,8 +68,9 @@ public class RobotPath {
             }
             lastPoint = point;
         }
-
-        // System.out.println("remaining path length: " + length);
+        
+        length += points.get((int) (currentPosT * (double) CURVE_RESOLUTION)).sub(SwervePosition.getPosition()).mag();
+        
         return length;
     }
 
