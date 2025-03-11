@@ -79,6 +79,13 @@ public final class Tuning {
 
         public static final double INTAKE_SPEED = 0.4;
     }
+
+    public static final class Climber {
+        public static final double CLIMBER_P = 0.4;
+        public static final double CLIMBER_I = 0;
+        public static final double CLIMBER_D = 0.4;
+
+    }
   
     public static final class Intake {
         public static final double STOW_ANGLE = 0.0;

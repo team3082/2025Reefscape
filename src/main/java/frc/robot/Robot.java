@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 // AUTO
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.Auto;
-
+import frc.robot.subsystems.Climber;
 // SUBSYSTEMS
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -51,7 +51,7 @@ public class Robot extends LoggedRobot {
 
     // Subsystems
     ScoringManager.init();
-    // Climber.init();
+    Climber.init();
 
     // Logging
     Telemetry.init();
@@ -86,6 +86,7 @@ public class Robot extends LoggedRobot {
     SwerveManager.update();
     Pigeon.update();
     ScoringManager.update();
+    Climber.update();
   }
 
   @Override

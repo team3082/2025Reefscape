@@ -7,12 +7,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.Constants;
+import frc.robot.auto.commands.ClimbToPos;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.auto.commands.RotateAndDriveTo;
+import frc.robot.subsystems.Climber.ClimbState;
 
 
 /**
@@ -76,6 +78,16 @@ public class Auto {
             new MoveToScorePos(ScoringPosition.L4),
             new DropCoral(1),
             new MoveToScorePos(ScoringPosition.STOW)
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup climbTest(){
+        return new SequentialCommandGroup(
+            new WaitCommand(3.0),
+            new ClimbToPos(ClimbState.CLIMBING),
+            new WaitCommand(3.0),
+            new ClimbToPos(ClimbState.RESTING)
         );
     }
 

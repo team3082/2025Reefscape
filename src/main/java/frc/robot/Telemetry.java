@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Auto;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.subsystems.visualizer.ClimberVisualizer;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
 import frc.robot.swerve.SwerveManager;
@@ -88,6 +89,8 @@ public class Telemetry {
         ElevatorVisualizer.init();
         EndEffectorVisualizer.init();
         SwerveBaseVisualizer.init();
+        ClimberVisualizer.init();
+        
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
         // robotTab.addString("Dest Error", () -> SwervePID.getError().toString());
@@ -192,6 +195,7 @@ public class Telemetry {
 
         ElevatorVisualizer.update();
         EndEffectorVisualizer.update();
+        ClimberVisualizer.update();
 
         Logger.recordOutput("Robot/Subsystem View", subsystemView);
     }

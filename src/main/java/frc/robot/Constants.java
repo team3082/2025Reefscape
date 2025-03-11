@@ -46,6 +46,15 @@ public class Constants {
         public static final double GEARRATIO = 25.0; 
         public static final double INCHESPERROTATION = 2.865 * GEARRATIO / 3.0; // sprocket chain pitch diameter * gear ratio
     }
+    
+    public static final class Climber {
+        public static final int ROTMOTORID = 0;
+        
+        public static final double GEARRATIO = 115.0;
+        
+        public static final double CLIMBINGANGLE = Math.toRadians(-15.0);
+        public static final double RESTINGANGLE = Math.toRadians(30.0);
+    }
 
     public static final class EndEffector {
         public static final int PIVOTID = 11;
