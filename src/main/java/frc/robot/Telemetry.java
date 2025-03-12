@@ -124,8 +124,6 @@ public class Telemetry {
                                                                               Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
         } catch (Exception e){}
         Logger.recordOutput("Robot/SwervePID/At Dest", SwervePID.atDest());
-        Logger.recordOutput("Robot/SwervePID/At Dest/x", SwervePID.xPID.atSetpoint());
-        Logger.recordOutput("Robot/SwervePID/At Dest/y", SwervePID.yPID.atSetpoint());
         Logger.recordOutput("Robot/SwervePID/At Rot", SwervePID.atRot());
         Logger.recordOutput("Robot/Swerve Position", SwervePosition.getPosition().toString());
         Logger.recordOutput("Robot/Swerve Position/x", SwervePosition.getPosition().x);
