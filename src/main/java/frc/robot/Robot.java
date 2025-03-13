@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 // AUTO
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.Auto;
-
+import frc.robot.subsystems.BannerLight;
 // SUBSYSTEMS
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -76,6 +76,7 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start(); // Start logging
+    BannerLight.init();
   }
 
   @Override
@@ -86,6 +87,7 @@ public class Robot extends LoggedRobot {
     SwerveManager.update();
     Pigeon.update();
     ScoringManager.update();
+    BannerLight.update();
   }
 
   @Override

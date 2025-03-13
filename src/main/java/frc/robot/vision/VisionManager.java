@@ -119,6 +119,10 @@ public class VisionManager {
         return Optional.of(averageRotation);
     }
 
+    /**
+     * Checks if vision sees a tag
+     * @return true if a tag is there
+     */
     public static boolean hasTag(){
         for(Camera camera : cameras){
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();

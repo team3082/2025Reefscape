@@ -12,8 +12,10 @@ public class BannerLight {
 
     private static BannerState bannerState;
 
-    /** Enum managing color on banner light with each boolean  
-     *  representing power in each colored output wire */
+    /** 
+     * Enum managing color on banner light with each boolean  
+     *  representing power in each colored output wire 
+     * */
     public enum BannerState {
         NONE(false, false, false, false),
         GREEN(true, false, false, false),
@@ -56,8 +58,11 @@ public class BannerLight {
         black.set(state.black);
     }
 
-    /** Sets the banner light color to green if an april  
-     *  tag is seen and red if no april tags are seen. */
+    /** 
+     * Sets the banner light color to green if an april  
+     *  tag is seen and red if no april tags are seen.
+     *  
+     * */
     public static void update(){
         if(VisionManager.hasTag()){
             setState(BannerState.GREEN);
