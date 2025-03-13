@@ -118,4 +118,14 @@ public class VisionManager {
 
         return Optional.of(averageRotation);
     }
+
+    public static boolean hasTag(){
+        for(Camera camera : cameras){
+            PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
+            if (target != null){
+                return true;
+            }
+        }
+        return true;
+    }
 }
