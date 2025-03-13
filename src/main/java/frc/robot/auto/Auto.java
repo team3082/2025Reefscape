@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.Constants;
-import frc.robot.auto.commands.ClimbToPos;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
@@ -80,17 +79,6 @@ public class Auto {
             new MoveToScorePos(ScoringPosition.STOW)
         );
     }
-
-    @AutoRoutine
-    public SequentialCommandGroup climbTest(){
-        return new SequentialCommandGroup(
-            new WaitCommand(3.0),
-            new ClimbToPos(ClimbState.CLIMBING),
-            new WaitCommand(3.0),
-            new ClimbToPos(ClimbState.RESTING)
-        );
-    }
-
 
     /**
      * Initializes the autonomous system by creating a {@link RoutineManager}

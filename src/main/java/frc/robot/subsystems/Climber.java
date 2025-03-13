@@ -8,63 +8,81 @@ import frc.robot.Robot;
 import frc.robot.Tuning;
 import frc.robot.subsystems.sim.ClimberSim;
 
+/**
+ * Represents the climber subsystem and has methods for climbing
+ */
 public class Climber {
-    // gear ratio 115:1
-    private static ClimbState state;
-
+    private static ClimbState climbState;
     public static TalonFX rotationMotor;
 
     public enum ClimbState {
         RESTING(Constants.Climber.RESTINGANGLE),
         CLIMBING(Constants.Climber.CLIMBINGANGLE);
 
-        public double targetAngle;
+        public double targetRadians;
 
-        ClimbState(double targetAngle) {
-            this.targetAngle = targetAngle;
+        ClimbState(double targetRadians) {
+            this.targetRadians = targetRadians;
         }
     }
 
+    /**
+     * Inits the Climber Subystem
+     */
     public static void init() {
         rotationMotor = new TalonFX(Constants.Climber.ROTMOTORID);
-        state = ClimbState.RESTING;
+        climbState = ClimbState.RESTING;
+
         rotationMotor.getConfigurator().apply(new TalonFXConfiguration());
         TalonFXConfiguration rotConfig = new TalonFXConfiguration();
 
-        // PID Configs
         rotConfig.Slot0.kP = Tuning.Climber.CLIMBER_P;
         rotConfig.Slot0.kI = Tuning.Climber.CLIMBER_I;
         rotConfig.Slot0.kD = Tuning.Climber.CLIMBER_D;
 
-        // Apply Configs
         rotationMotor.getConfigurator().apply(rotConfig);
     }
 
+    /**
+     * Updates the Climber Subsytem
+     */
     public static void update() {
         if (Robot.isReal()) {
-            rotationMotor.setPosition(state.targetAngle);
+            double raidansToRotations = 1/(Math.PI * 2 * Constants.Climber.GEARRATIO);
+            rotationMotor.setPosition(climbState.targetRadians * raidansToRotations);
         }
         
         if (Robot.isSimulation()) {
-            ClimberSim.setAngle(state.targetAngle);
+            ClimberSim.setAngle(climbState.targetRadians);
             ClimberSim.update();
         }
     }
 
+    /**
+     * Sets the Climber State
+     * @param newState The new state
+     */
     public static void setState(ClimbState newState) {
-        state = newState;
+        climbState = newState;
     }
 
+    /**
+     * Gets the climber state
+     * @return A Climbstate Enum
+     */
     public static ClimbState getState() {
-        return state;
+        return climbState;
     }
 
+    /**
+     * Gets the climber angle
+     * @return A double in radians
+     */
     public static double getClimberAngle() {
         if (Robot.isReal()) {
             return rotationMotor.getPosition().getValueAsDouble() * Math.PI * 2 * Constants.Climber.GEARRATIO;
-        } else {
-            return ClimberSim.getAngle();
         }
-    }
 
+        return ClimberSim.getAngle();
+    }
 }

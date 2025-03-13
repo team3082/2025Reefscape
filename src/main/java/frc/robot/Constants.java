@@ -50,7 +50,7 @@ public class Constants {
     public static final class Climber {
         public static final int ROTMOTORID = 0;
         
-        public static final double GEARRATIO = 115.0;
+        public static final double GEARRATIO = 1/115.0;
         
         public static final double CLIMBINGANGLE = Math.toRadians(-15.0);
         public static final double RESTINGANGLE = Math.toRadians(30.0);
