@@ -3,7 +3,7 @@ package frc.robot.swerve;
 import frc.robot.utils.Vector2;
 
 public class OdometryBuffer {
-    private final int BUFFER_SIZE = 9;
+    private final int BUFFER_SIZE = 4;
     private Vector2[] buffer = new Vector2[BUFFER_SIZE];
 
     public OdometryBuffer() {}

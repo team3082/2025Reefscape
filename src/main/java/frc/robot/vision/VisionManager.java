@@ -23,7 +23,8 @@ public class VisionManager {
 
         if (Robot.isReal()) {
             cameras = new Camera[] {
-                new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-10, 9), 0.0, Math.toRadians(-19)) // test these later
+                // new Camera(new PhotonCamera("ApriltagCamera3"), new Vector2(-9.75, 9), 0.0, Math.toRadians(-15)), // test these later
+                new Camera(new PhotonCamera("Global_Shutter_Camera"), new Vector2(10, 10), 0, Math.toRadians(15))
             };
         }
 
@@ -37,6 +38,7 @@ public class VisionManager {
             
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
             
+            System.out.println();
             
             if (target != null) if (camera.isLatestTarget(target)) {
                 continue;
@@ -60,7 +62,7 @@ public class VisionManager {
             double ydistRobot = vectorTransform.y;
 
             Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
-            if(distRobot.mag() < 0.5 || distRobot.mag() > 3){
+            if(distRobot.mag() < 0 || distRobot.mag() > 3){
                 continue;
             }
 

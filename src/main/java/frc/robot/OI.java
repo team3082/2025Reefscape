@@ -127,6 +127,7 @@ public class OI {
         if ((driverStick.getRawButtonPressed(funnyButtonLeft) || driverStick.getRawButtonPressed(funnyButtonRight)) && !previouslyPressedPOV) {
             drivingToReef = !drivingToReef;
             boolean isRight = (driverStick.getRawButton(funnyButtonRight));
+            
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
                 
@@ -161,6 +162,8 @@ public class OI {
 
                 aligningState = AutoAlignState.DRIVING_TO_REEF;
 
+            } else {
+                aligningState = AutoAlignState.NOT_ALIGNING;
             }
         } else if (!(driverStick.getPOV() == funnyButtonLeft || driverStick.getPOV() == funnyButtonRight)) {
             previouslyPressedPOV = false;
@@ -191,9 +194,6 @@ public class OI {
         VisionManager.enableVision();
         switch (aligningState) {
             case NOT_ALIGNING:
-                if (driverStick.getRawButton(intake)) ScoringManager.endEffector.intake();
-                else if (driverStick.getRawButton(outtake)) ScoringManager.endEffector.outtake();
-                else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
                 SwerveManager.rotateAndDrive(rotate, drive);
                 break;
         
