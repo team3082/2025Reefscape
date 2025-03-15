@@ -11,68 +11,45 @@ import frc.robot.Robot;
 
 public class SwervePID {
 
-    public static PIDController xPID, yPID, rotPID;
+    public static PIDController movePID, rotPID;
+    private static Vector2 startPos;
+    private static Vector2 moveDest = new Vector2();
 
-    public static double moveP = MOVEP;
-    public static double moveI = MOVEI;
-    public static double moveD = MOVED;
-    public static double moveDead = MOVEDEAD;
-    public static double moveVelDead = MOVEVELDEAD;
-    public static double moveSpeedMax = MOVEMAXSPEED;
-
-    public static double rotP = ROTP;
-    public static double rotI = ROTI;
-    public static double rotD = ROTD;
-    public static double rotDead = ROTDEAD;
-    public static double rotVelDead = ROTVELDEAD;
-    public static double rotSpeedMax = ROTMAXSPEED;
+    private static double totalDist;
+    private static double rotDest;
 
     public static void init() {
-        xPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
-        yPID = new PIDController(moveP, moveI, moveD, moveDead, moveVelDead, moveSpeedMax);
-        rotPID = new RotationalPIDController(rotP, rotI, rotD, rotDead, rotVelDead, rotSpeedMax);
+        movePID = new PIDController(MOVEP, MOVEI, MOVED, 0.0, 0.01, MOVEMAXSPEED);
+        rotPID = new RotationalPIDController(ROTP, ROTI, ROTD, ROTDEAD, 0.01, ROTMAXSPEED);
     }
 
     public static void setDestState(Vector2 dest, double destRot) {
-        setDestPt(dest);
-        setDestRot(destRot);
-    }
-
-    public static void setDestPt(Vector2 dest) {
-        setDestX(dest.x);
-        setDestY(dest.y);
-    }
-
-    public static void setDestX(double dest) {
-        xPID.setDest(dest);
-    }
-
-    public static void setDestY(double dest) {
-        yPID.setDest(dest);
-    }
-
-    public static void setDestRot(double dest) {
-        rotPID.setDest(RMath.targetAngleAbsolute(Pigeon.getRotationRad(), dest, 2*Math.PI));
+        moveDest = dest;
+        startPos = SwervePosition.getPosition();
+        totalDist = dest.sub(startPos).mag();
+        rotDest = destRot;
+        movePID.setDest(1);
+        rotPID.setDest(destRot);
     }
     
-    public static double updateOutputX() {
-        return (xPID.atSetpoint() ? 0 : 1) * xPID.updateOutput(SwervePosition.getPosition().x);
-    }
-
-    public static double updateOutputY() {
-        return yPID.atSetpoint() ? 0 : yPID.updateOutput(SwervePosition.getPosition().y);
-    }
-
     public static double updateOutputRot() {
         return rotPID.updateOutput(Pigeon.getRotationRad());
     }
 
     public static Vector2 updateOutputVel() {
-        return new Vector2(updateOutputX(), updateOutputY()).rotate(-Math.PI/2);
+        Vector2 currentPos = SwervePosition.getPosition();
+        Vector2 driveVector = moveDest.sub(currentPos).norm();
+        double currentDist = moveDest.sub(currentPos).mag();
+        double driveOutput = movePID.updateOutput((totalDist - currentDist) / totalDist);
+        driveVector = driveVector.mul(driveOutput);
+
+        if (atDest()) driveVector = new Vector2(0, 0);
+
+        return driveVector.rotate(-Math.PI/2);
     }
 
     public static Vector2 getDest() {
-        return new Vector2(xPID.getDest(), yPID.getDest());
+        return moveDest;
     }
 
     public static double getTargetRot(){
@@ -80,7 +57,7 @@ public class SwervePID {
     }
 
     public static boolean atDest() {
-        return xPID.atSetpoint() && yPID.atSetpoint();
+        return moveDest.sub(SwervePosition.getPosition()).mag() < MOVEDEAD;
     }
     
     public static boolean atRot() {
@@ -88,7 +65,7 @@ public class SwervePID {
     }
 
     public static Vector2 getError() {
-        return new Vector2(xPID.getError(), yPID.getError());
+        return moveDest.sub(SwervePosition.getPosition());
     }
 
     public static double getRotationError() {

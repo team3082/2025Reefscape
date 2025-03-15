@@ -23,7 +23,7 @@ public final class Tuning {
     public static final double ROTD = 0.0;
     public static final double ROTDEAD = 0.1;
     public static final double ROTVELDEAD = 0.01;
-    public static final double ROTMAXSPEED = Robot.isReal() ? 0.25 : 0.5;
+    public static final double ROTMAXSPEED = 0.4;
  
      // TODO Tune
      public static final double SWERVE_TRJ_PPOS = 0.05;

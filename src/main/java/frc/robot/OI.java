@@ -157,9 +157,9 @@ public class OI {
 
                 // Set destination and rotation based on AprilTag data
                 Vector2 targetPosition =  isRight ?  Constants.APRIL_TAGS[minIndex].getRightPosition() : Constants.APRIL_TAGS[minIndex].getLeftPosition();
-                SwervePID.setDestPt(targetPosition);
-                SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
-
+                // SwervePID.setDestPt(targetPosition);
+                // SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
+                SwervePID.setDestState(targetPosition, Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
                 aligningState = AutoAlignState.DRIVING_TO_REEF;
 
             } else {
