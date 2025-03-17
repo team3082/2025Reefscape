@@ -89,12 +89,12 @@ public class Elevator {
 
     /** converts inches to internal motor rotations */
     private double inchToRot(double inch) {
-        return inch; // not needed currenly
+        return inch * (15/25);
     }
 
     /** converts internal motor rotations to inches */
     private double rotToInch(double rot) {
-        return rot; // not needed currently
+        return rot / (15/25);
     }
 
     public void disable(){
