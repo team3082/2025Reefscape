@@ -97,7 +97,7 @@ public class Constants {
         public static final int INTAKEID = 12;
         public static final int END_EFFECTOR_SENSOR_ID = 9;
 
-        public static final double GEARRATIO = 32.0;
+        public static final double GEARRATIO = 30.0;
     }
 
     public static final class Swerve {

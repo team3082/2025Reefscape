@@ -20,6 +20,12 @@ public class Elevator {
 
     public double targetHeight;
 
+    private final int STAGES = 3;
+    private final double GEAR_RATIO = 15.0;
+    private final double SPROCKET_PITCH_DIAMETER = 1.910;
+
+    private final double INCHES_PER_ROTATION = ((Math.PI * SPROCKET_PITCH_DIAMETER) / GEAR_RATIO) * (double) STAGES; // inches per motor rotation
+
     public Elevator() {
         init();
     }
@@ -89,12 +95,12 @@ public class Elevator {
 
     /** converts inches to internal motor rotations */
     private double inchToRot(double inch) {
-        return inch * (15/25);
+        return inch / INCHES_PER_ROTATION;
     }
 
     /** converts internal motor rotations to inches */
     private double rotToInch(double rot) {
-        return rot / (15/25);
+        return rot * INCHES_PER_ROTATION;
     }
 
     public void disable(){

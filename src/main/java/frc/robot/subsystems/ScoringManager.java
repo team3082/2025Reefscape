@@ -14,12 +14,12 @@ public class ScoringManager {
         DISABLED(0.0, 0.0),
         TEST(0.0, 0.0),
         STOW(0.0, 0.0),
-        ALGAE1(12, Math.PI/3.0),
-        ALGAE2(38, Math.PI/3.0),
-        L2(24.5, Math.toRadians(30.0)),
-        L3(46.25, Math.toRadians(30.0)),
-        L4(83, Math.toRadians(38.0)),
-        ALGAE_INTAKE(11, Math.PI / 2.0 + Math.toRadians(5));
+        ALGAE1(8.6, Math.PI/3.0),
+        ALGAE2(27.3, Math.PI/3.0),
+        L2(17.6, Math.toRadians(30.0)),
+        L3(33.3, Math.toRadians(30.0)),
+        L4(59.8, Math.toRadians(38.0)),
+        ALGAE_INTAKE(7.9, Math.PI / 2.0 + Math.toRadians(5));
 
         public double targetHeight;
         public double targetAngle;
