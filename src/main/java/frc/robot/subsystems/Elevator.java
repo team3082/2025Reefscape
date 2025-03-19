@@ -66,7 +66,7 @@ public class Elevator {
      *  only call in ScoringManager.update()
     */
     public void update() {
-        extensionMotor1.setControl(new MotionMagicDutyCycle(inchToRot(targetHeight)));
+        extensionMotor1.setControl(new MotionMagicDutyCycle(inchToRot(targetHeight)).withFeedForward(0.05)); // feedforward for gravity compensation - needs tuning
 
         // UPDATE SIM
         if (Robot.isSimulation()) {
