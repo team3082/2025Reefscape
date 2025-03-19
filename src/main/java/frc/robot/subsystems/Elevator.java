@@ -44,9 +44,9 @@ public class Elevator {
         extensionMotor1Config.Slot0.kI = Tuning.Elevator.ELEVATOR_I;
         extensionMotor1Config.Slot0.kD = Tuning.Elevator.ELEVATOR_D;
         extensionMotor1Config.Slot0.kG = Tuning.Elevator.ELEVATOR_G;
-        extensionMotor1Config.MotionMagic.MotionMagicAcceleration = 1000;
-        extensionMotor1Config.MotionMagic.MotionMagicCruiseVelocity = 1500;
-        extensionMotor1Config.MotionMagic.MotionMagicJerk = 2500;
+        extensionMotor1Config.MotionMagic.MotionMagicCruiseVelocity = Tuning.Elevator.MOTION_MAGIC_CRUISE_VELOCITY;
+        extensionMotor1Config.MotionMagic.MotionMagicAcceleration = Tuning.Elevator.MOTION_MAGIC_ACCELERATION;
+        extensionMotor1Config.MotionMagic.MotionMagicJerk = Tuning.Elevator.MOTION_MAGIC_JERK;
 
         TalonFXConfiguration extensionMotor2Config = new TalonFXConfiguration();
 

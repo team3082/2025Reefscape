@@ -65,9 +65,9 @@ public final class Tuning {
         public static final double ELEVATOR_D = 0.005;
         public static final double ELEVATOR_G = 0.05; // feed forward
 
-        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 0.0;
-        public static final double MOTION_MAGIC_ACCELERATION = 0.0;
-        public static final double JERK = 0.0;
+        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 1500;
+        public static final double MOTION_MAGIC_ACCELERATION = 1000;
+        public static final double MOTION_MAGIC_JERK = 2500;
 
         public static final double HEIGHT_DEADBAND = 1.0; // in inches
     }
