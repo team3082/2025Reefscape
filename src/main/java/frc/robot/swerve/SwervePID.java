@@ -4,10 +4,8 @@ import static frc.robot.Tuning.*;
 
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.PIDController;
-import frc.robot.utils.RMath;
 import frc.robot.utils.RotationalPIDController;
 import frc.robot.utils.Vector2;
-import frc.robot.Robot;
 
 public class SwervePID {
 
@@ -16,7 +14,6 @@ public class SwervePID {
     private static Vector2 moveDest = new Vector2();
 
     private static double totalDist;
-    private static double rotDest;
 
     public static void init() {
         movePID = new PIDController(MOVEP, MOVEI, MOVED, 0.0, 0.01, MOVEMAXSPEED);
@@ -27,8 +24,7 @@ public class SwervePID {
         moveDest = dest;
         startPos = SwervePosition.getPosition();
         totalDist = dest.sub(startPos).mag();
-        rotDest = destRot;
-        movePID.setDest(1);
+        movePID.setDest(totalDist);
         rotPID.setDest(destRot);
     }
     
@@ -40,7 +36,7 @@ public class SwervePID {
         Vector2 currentPos = SwervePosition.getPosition();
         Vector2 driveVector = moveDest.sub(currentPos).norm();
         double currentDist = moveDest.sub(currentPos).mag();
-        double driveOutput = movePID.updateOutput((totalDist - currentDist) / totalDist);
+        double driveOutput = movePID.updateOutput((totalDist - currentDist));
         driveVector = driveVector.mul(driveOutput);
 
         if (atDest()) driveVector = new Vector2(0, 0);

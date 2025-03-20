@@ -9,21 +9,19 @@ import frc.robot.utils.trajectories.LinearBezier;
 
 public final class Tuning {
     //Swerve
-    public static final double MOVEP = Robot.isReal() ? 0.0375 : 0.05;
+    public static final double MOVEP = 0.0375;
     public static final double MOVEI = 0.0;
-    public static final double MOVED = 0.0001;
-    public static final double MOVEDEAD = Robot.isReal() ? 1.1 : 0.001;
-    public static final double MOVEVELDEAD = 0.04;
-    public static final double MOVEMAXSPEED = Robot.isReal() ? 0.2 : 0.5;
-    // public static final double ROTP = 0.225;
-    // public static final double ROTI = 0.0;
-    // public static final double ROTD = 0.7;
-    public static final double ROTP = 0.3;
-    public static final double ROTI = 0.01;
-    public static final double ROTD = 0.0;
-    public static final double ROTDEAD = 0.1;
-    public static final double ROTVELDEAD = 0.01;
-    public static final double ROTMAXSPEED = 0.4;
+    public static final double MOVED = 0.0;
+    public static final double MOVEDEAD = 0.5;
+    public static final double MOVEVELDEAD = 0.25;
+    public static final double MOVEMAXSPEED = 0.3;
+    
+    public static final double ROTP = 0.35;
+    public static final double ROTI = 0.015;
+    public static final double ROTD = 0.08;
+    public static final double ROTDEAD = 0.035;
+    public static final double ROTVELDEAD = 0.1;
+    public static final double ROTMAXSPEED = 0.3;
  
      // TODO Tune
      public static final double SWERVE_TRJ_PPOS = 0.05;
@@ -63,10 +61,11 @@ public final class Tuning {
         public static final double ELEVATOR_P = 0.25;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.005;
+        public static final double ELEVATOR_G = 0.05; // feed forward
 
-        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 0.0;
-        public static final double MOTION_MAGIC_ACCELERATION = 0.0;
-        public static final double JERK = 0.0;
+        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 1500;
+        public static final double MOTION_MAGIC_ACCELERATION = 1000;
+        public static final double MOTION_MAGIC_JERK = 2500;
 
         public static final double HEIGHT_DEADBAND = 1.0; // in inches
     }
@@ -76,11 +75,11 @@ public final class Tuning {
         public static final double PIVOT_I = 0.0;
         public static final double PIVOT_D = 0.0;
 
-        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 0.0;
-        public static final double MOTION_MAGIC_ACCELERATION = 0.0;
-        public static final double JERK = 0.0;
+        public static final double MOTION_MAGIC_CRUISE_VELOCITY = 600;
+        public static final double MOTION_MAGIC_ACCELERATION = 300;
+        public static final double MOTION_MAGIC_JERK = 0.0;
 
-        public static final double SAFE_ANGLE = Math.toRadians(28.0); // for moving the elevator so the end effector doesn't hit anything
+        public static final double SAFE_ANGLE = Math.toRadians(30.0); // for moving the elevator so the end effector doesn't hit anything
 
         public static final double PIVOT_DEADBAND = Math.toRadians(1.0);
 

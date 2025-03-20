@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.auto.commands.IntakeCoral;
 
 public class MoveToCoralStation extends SequentialCommandGroup {
   public MoveToCoralStation(boolean testing) {
