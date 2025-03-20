@@ -9,21 +9,19 @@ import frc.robot.utils.trajectories.LinearBezier;
 
 public final class Tuning {
     //Swerve
-    public static final double MOVEP = Robot.isReal() ? 0.0375 : 0.05;
+    public static final double MOVEP = 0.0375;
     public static final double MOVEI = 0.0;
-    public static final double MOVED = 0.0001;
-    public static final double MOVEDEAD = Robot.isReal() ? 1.1 : 0.001;
-    public static final double MOVEVELDEAD = 0.04;
-    public static final double MOVEMAXSPEED = Robot.isReal() ? 0.2 : 0.5;
-    // public static final double ROTP = 0.225;
-    // public static final double ROTI = 0.0;
-    // public static final double ROTD = 0.7;
-    public static final double ROTP = 0.3;
-    public static final double ROTI = 0.01;
-    public static final double ROTD = 0.0;
-    public static final double ROTDEAD = 0.1;
-    public static final double ROTVELDEAD = 0.01;
-    public static final double ROTMAXSPEED = 0.4;
+    public static final double MOVED = 0.0;
+    public static final double MOVEDEAD = 0.5;
+    public static final double MOVEVELDEAD = 0.25;
+    public static final double MOVEMAXSPEED = 0.3;
+    
+    public static final double ROTP = 0.35;
+    public static final double ROTI = 0.015;
+    public static final double ROTD = 0.08;
+    public static final double ROTDEAD = 0.035;
+    public static final double ROTVELDEAD = 0.1;
+    public static final double ROTMAXSPEED = 0.3;
  
      // TODO Tune
      public static final double SWERVE_TRJ_PPOS = 0.05;
