@@ -63,8 +63,8 @@ public class EndEffector {
         pivotConfig.Slot0.kP = Tuning.EndEffector.PIVOT_P;
         pivotConfig.Slot0.kI = Tuning.EndEffector.PIVOT_I;
         pivotConfig.Slot0.kD = Tuning.EndEffector.PIVOT_D;
-        pivotConfig.MotionMagic.MotionMagicAcceleration = 300;
-        pivotConfig.MotionMagic.MotionMagicCruiseVelocity = 600;
+        pivotConfig.MotionMagic.MotionMagicCruiseVelocity = Tuning.EndEffector.MOTION_MAGIC_CRUISE_VELOCITY;
+        pivotConfig.MotionMagic.MotionMagicAcceleration = Tuning.EndEffector.MOTION_MAGIC_ACCELERATION;
 
         // Apply Configs
         pivotMotor.getConfigurator().apply(pivotConfig);
