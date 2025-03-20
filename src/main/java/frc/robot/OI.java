@@ -4,7 +4,6 @@ import static frc.robot.Tuning.OI.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.controllermaps.LogitechF310;
-import frc.robot.Constants.Elevator;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;

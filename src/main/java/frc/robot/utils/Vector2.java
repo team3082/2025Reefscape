@@ -1,7 +1,5 @@
 package frc.robot.utils;
 
-import frc.robot.Robot;
-
 // import org.w3c.dom.views.DocumentView;
 
 public class Vector2 {
