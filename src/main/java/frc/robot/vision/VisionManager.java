@@ -19,12 +19,12 @@ public class VisionManager {
     private static Camera[] cameras;
     private static boolean enabled;
 
-    public static void init(){
+    public static void init() {
 
         if (Robot.isReal()) {
             cameras = new Camera[] {
-                new Camera(new PhotonCamera("ApriltagCamera3"), new Vector2(-9.3, 8.9), 0.0, Math.toRadians(-15)), // test these later
-                new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(9.3, 8.9), 0, Math.toRadians(15))
+                new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-9.3, 8.9), 0.0, Math.toRadians(-15)), // test these later
+                new Camera(new PhotonCamera("ApriltagCamera2"), new Vector2(9.3, 8.9), 0, Math.toRadians(15))
             };
         }
 
