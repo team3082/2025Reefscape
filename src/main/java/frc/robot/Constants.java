@@ -26,11 +26,19 @@ public class Constants {
         public AprilTag redTag;
         public AprilTag blueTag;
         private boolean right;
+        public Vector2 redOffset = new Vector2();
+        public Vector2 blueOffset = new Vector2();
 
         REEF_POSITIONS(int redID, int blueID, boolean isRight){
             this.right = isRight;
             this.redTag = APRIL_TAGS[redID];
             this.blueTag = APRIL_TAGS[blueID];
+        }
+
+        REEF_POSITIONS(int redID, int blueID, boolean isRight, Vector2 redOffset, Vector2 blueOffset) {
+            this(redID, blueID, isRight);
+            this.redOffset = redOffset;
+            this.blueOffset = blueOffset;
         }
         
         public Vector2 getPosition(){
@@ -45,6 +53,16 @@ public class Constants {
             AprilTag tag = redTag;
             return tag.getRotationZ();
         }
+
+        public static REEF_POSITIONS getPositionFromTagID(int id, boolean isRight) {
+            for (REEF_POSITIONS position : REEF_POSITIONS.values()) {
+                if (position.right == isRight && (position.redTag.getID() == id || position.blueTag.getID() == id)) {
+                    return position;
+                }
+            }
+            return null; // Return null if no matching position is found
+        }
+
     }
     
     public static final AprilTag[] APRIL_TAGS = {
