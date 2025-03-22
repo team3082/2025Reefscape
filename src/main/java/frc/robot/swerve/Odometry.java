@@ -27,6 +27,8 @@ public class Odometry {
 
     private static OdometryBuffer odometryBuffer = new OdometryBuffer();
 
+    private static boolean real = true;
+
     public static void init(){
         lastLoopTimeStamp = Timer.getFPGATimestamp();
         position = new Vector2(0.0,0.0);
@@ -39,50 +41,52 @@ public class Odometry {
     private static Thread odomThread= new Thread(){
         @Override
         public void run(){
+            real = Robot.isReal();
             while(!isInterrupted()){
-                double deltaTime = Timer.getFPGATimestamp() - lastLoopTimeStamp;
-                lastLoopTimeStamp += deltaTime;
-
-                //how far the robot has moved in robot frame since the last loop
-                Vector2 robotDisp = new Vector2();
-                
-                for(int i = 0; i < mods.length; i++){
-
-                    double drivePosition = mods[i].getDrivePosition();
-                    double disp = drivePosition - previousDrivePositions[i];
-                    previousDrivePositions[i] = drivePosition;
-
-                    double angle = mods[i].getSteerAngle();
-
-                    robotDisp = robotDisp.add(Vector2.fromPolar(angle, disp));
-                }
-
-                Vector2 meanDisp = robotDisp.div(mods.length);
-
-                double pigeonAngle = Pigeon.getRotationRad();
-                double deltaAngle = 0.0;
-                if(previousPigeonAngle != Double.NaN){
-                    deltaAngle = pigeonAngle - previousPigeonAngle;
-                }
-                
-                //- Math.PI/2.0 is becuase pigeon rotation is offset
-                Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2, deltaAngle);
-                previousPigeonAngle = pigeonAngle;
-
-                position = position.add(innovation);
-
-                odometryBuffer.addValue(innovation);
-
-                Optional<Vector2> visionPos = Optional.empty();
-                if (Robot.isReal()) visionPos = VisionManager.getPosition(pigeonAngle);
-
-                try{
-                    if (!visionPos.isEmpty() && VisionManager.isEnabled()) position = new Vector2(-visionPos.get().y, visionPos.get().x).add(odometryBuffer.getTotalBuffer());
-                } catch (Exception e) {}
-
                 try {
-                    sleep(7);
-                } catch (InterruptedException e) {
+                    double deltaTime = Timer.getFPGATimestamp() - lastLoopTimeStamp;
+                    lastLoopTimeStamp += deltaTime;
+
+                    //how far the robot has moved in robot frame since the last loop
+                    Vector2 robotDisp = new Vector2();
+                    
+                    for(int i = 0; i < mods.length; i++){
+
+                        double drivePosition = mods[i].getDrivePosition();
+                        double disp = drivePosition - previousDrivePositions[i];
+                        previousDrivePositions[i] = drivePosition;
+
+                        double angle = mods[i].getSteerAngle();
+
+                        robotDisp = robotDisp.add(Vector2.fromPolar(angle, disp));
+                    }
+
+                    Vector2 meanDisp = robotDisp.div(mods.length);
+
+                    double pigeonAngle = Pigeon.getRotationRad();
+                    double deltaAngle = 0.0;
+                    if(!(Double.isNaN(previousPigeonAngle))){
+                        deltaAngle = pigeonAngle - previousPigeonAngle;
+                    }
+                    
+                    //- Math.PI/2.0 is becuase pigeon rotation is offset
+                    Vector2 innovation = poseExponentiation(meanDisp, previousPigeonAngle - Math.PI/2, deltaAngle);
+                    previousPigeonAngle = pigeonAngle;
+
+                    position = position.add(innovation);
+
+                    odometryBuffer.addValue(innovation);
+
+                    Optional<Vector2> visionPos = Optional.empty();
+                    if (real) visionPos = VisionManager.getPosition(pigeonAngle);
+                    if (visionPos.isPresent() && VisionManager.isEnabled()) position = new Vector2(-visionPos.get().y, visionPos.get().x).add(odometryBuffer.getTotalBuffer());
+
+                    try {
+                        sleep(7);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
