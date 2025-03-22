@@ -52,8 +52,10 @@ public class Constants {
         
         public static final double GEARRATIO = 1/115.0;
         
-        public static final double CLIMBINGANGLE = Math.toRadians(-15.0);
-        public static final double RESTINGANGLE = Math.toRadians(30.0);
+        public static final double CLIMBINGANGLE = Math.toRadians(-30.0);
+        public static final double RESTINGANGLE = Math.toRadians(40.0);
+
+        public static double deadband = Math.toRadians(4);
     }
 
     public static final class EndEffector {

@@ -13,7 +13,7 @@ public class ClimberSim {
         Tuning.Climber.CLIMBER_P, 
         Tuning.Climber.CLIMBER_I, 
         Tuning.Climber.CLIMBER_D,
-        0, 0, 0.0
+        0, 0, 5
     );
 
     private static double targetAngleRaidans;

@@ -17,6 +17,7 @@ import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.ClimberVisualizer;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
 import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
+import frc.robot.subsystems.visualizer.FunnelVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.swerve.visualizer.SwerveBaseVisualizer;
@@ -90,6 +91,7 @@ public class Telemetry {
         EndEffectorVisualizer.init();
         SwerveBaseVisualizer.init();
         ClimberVisualizer.init();
+        FunnelVisualizer.init();
         
         robotTab.addString("Position", () -> SwervePosition.getPosition().toString());
         robotTab.addString("PID Dest Position", () -> SwervePID.getDest().toString());
@@ -196,6 +198,7 @@ public class Telemetry {
         ElevatorVisualizer.update();
         EndEffectorVisualizer.update();
         ClimberVisualizer.update();
+        FunnelVisualizer.update();
 
         Logger.recordOutput("Robot/Subsystem View", subsystemView);
     }

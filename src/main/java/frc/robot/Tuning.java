@@ -37,6 +37,7 @@ public final class Tuning {
  
      public static final int CURVE_RESOLUTION = 3000;
      public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
+
     
 
     //Vision
@@ -83,8 +84,14 @@ public final class Tuning {
     public static final class Climber {
         public static final double CLIMBER_P = 0.4;
         public static final double CLIMBER_I = 0;
-        public static final double CLIMBER_D = 0.4;
+        public static final double CLIMBER_D = 0.1;
+    }
 
+    public static final class Funnel {
+        public static final double CLIMBER_P = 0.3;
+        public static final double CLIMBER_I = 0;
+        public static final double CLIMBER_D = 0.1;
+        
     }
   
     public static final class Intake {

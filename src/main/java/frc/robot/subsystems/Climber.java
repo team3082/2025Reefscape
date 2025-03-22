@@ -85,4 +85,8 @@ public class Climber {
 
         return ClimberSim.getAngle();
     }
+
+    public static boolean climberAtPosition(){
+        return climbState.targetRadians - getClimberAngle() < Constants.Climber.deadband;
+    } 
 }

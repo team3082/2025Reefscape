@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.Auto;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Climber.ClimbState;
 // SUBSYSTEMS
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -52,6 +53,7 @@ public class Robot extends LoggedRobot {
     // Subsystems
     ScoringManager.init();
     Climber.init();
+    
 
     // Logging
     Telemetry.init();
@@ -100,7 +102,9 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    Climber.setState(ClimbState.CLIMBING);
+  }
 
   @Override
   public void teleopPeriodic() {
@@ -132,6 +136,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     ScoringManager.setScoringPosition(ScoringPosition.TEST);
+    Climber.setState(ClimbState.RESTING);
   }
 
   @Override
