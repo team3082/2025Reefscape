@@ -48,7 +48,7 @@ public class AprilTag {
      * @return the position of the robot if it were right in front of the apriltag
      */
     public Vector2 getCenterPosition() {
-        return getPosition().add(new Vector2(Constants.Swerve.WIDTH/2 + 11.0, 0).rotate(getRotationZ()));
+        return getPosition().add(new Vector2(Constants.Swerve.WIDTH/2 + 8, 0).rotate(getRotationZ()));
     }
 
     /**

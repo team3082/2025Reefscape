@@ -237,6 +237,7 @@ public class Auto {
             SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
             Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
         }
+        Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
         return new SequentialCommandGroup(
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
             new DropCoral(),

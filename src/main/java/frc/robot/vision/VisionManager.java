@@ -17,7 +17,7 @@ import frc.robot.utils.Vector2;
 public class VisionManager {
 
     private static Camera[] cameras;
-    private static boolean enabled;
+    private static boolean enabled = true;
 
     public static void init() {
 
@@ -62,9 +62,6 @@ public class VisionManager {
             double ydistRobot = vectorTransform.y;
 
             Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
-            if(distRobot.mag() < 0 || distRobot.mag() > 3){
-                continue;
-            }
 
             double xdistField = (Math.cos(pigeonAngle) * distRobot.x - Math.sin(pigeonAngle) * distRobot.y) * Constants.METERSTOINCHES;
             double ydistField = (Math.cos(pigeonAngle) * distRobot.y + Math.sin(pigeonAngle) * distRobot.x) * Constants.METERSTOINCHES;

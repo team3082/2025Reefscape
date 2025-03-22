@@ -16,9 +16,9 @@ public class ScoringManager {
         STOW(0.0, 0.0),
         ALGAE1(8.6, Math.PI/3.0),
         ALGAE2(27.3, Math.PI/3.0),
-        L2(17.6, Math.toRadians(30.0)),
-        L3(33.3, Math.toRadians(30.0)),
-        L4(59.8, Math.toRadians(38.0)),
+        L2(18, Math.toRadians(30.0)),
+        L3(32.5, Math.toRadians(30.0)),
+        L4(58.5, Math.toRadians(40.0)),
         ALGAE_INTAKE(7.9, Math.PI / 2.0 + Math.toRadians(5));
 
         public double targetHeight;

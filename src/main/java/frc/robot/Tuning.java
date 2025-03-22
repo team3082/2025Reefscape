@@ -10,17 +10,17 @@ import frc.robot.utils.trajectories.LinearBezier;
 public final class Tuning {
     //Swerve
     public static final double MOVEP = 0.0375;
-    public static final double MOVEI = 0.0;
-    public static final double MOVED = 0.0;
+    public static final double MOVEI = 0.0001;
+    public static final double MOVED = 0.001;
     public static final double MOVEDEAD = 0.5;
-    public static final double MOVEVELDEAD = 0.25;
+    public static final double MOVEVELDEAD = 0.05;
     public static final double MOVEMAXSPEED = 0.3;
     
-    public static final double ROTP = 0.35;
-    public static final double ROTI = 0.015;
-    public static final double ROTD = 0.08;
-    public static final double ROTDEAD = 0.035;
-    public static final double ROTVELDEAD = 0.1;
+    public static final double ROTP = 0.4;
+    public static final double ROTI = 0.05;
+    public static final double ROTD = 0.075;
+    public static final double ROTDEAD = 0.02;
+    public static final double ROTVELDEAD = 0.05;
     public static final double ROTMAXSPEED = 0.3;
  
      // TODO Tune
@@ -58,10 +58,10 @@ public final class Tuning {
     }
 
     public static final class Elevator {
-        public static final double ELEVATOR_P = 0.25;
+        public static final double ELEVATOR_P = 0.35;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.005;
-        public static final double ELEVATOR_G = 0.05; // feed forward
+        public static final double ELEVATOR_G = 0.075; // feed forward
 
         public static final double MOTION_MAGIC_CRUISE_VELOCITY = 1500;
         public static final double MOTION_MAGIC_ACCELERATION = 1000;
