@@ -11,7 +11,7 @@ public final class Tuning {
     //Swerve
     public static final double MOVEP = 0.0375;
     public static final double MOVEI = 0.0001;
-    public static final double MOVED = 0.001;
+    public static final double MOVED = 0.005;
     public static final double MOVEDEAD = 0.5;
     public static final double MOVEVELDEAD = 0.05;
     public static final double MOVEMAXSPEED = 0.3;
@@ -41,7 +41,7 @@ public final class Tuning {
      public static final double SWERVE_KAROT = 0.0;
  
      public static final int CURVE_RESOLUTION = 100;
-     public static final double CURVE_DEADBAND = 0.75; // bro this is inches who had it at 0.001
+     public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
     
 
     //Vision

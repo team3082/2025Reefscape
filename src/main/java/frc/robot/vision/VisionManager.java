@@ -53,6 +53,10 @@ public class VisionManager {
             if (id < 0 || id > Constants.APRIL_TAGS.length) {
                 continue; // Skip invalid id
             }
+
+            if (DriverStation.getAlliance().get() == Alliance.Red ? id < 6 || id > 11 : id < 17 || id > 22) {
+                continue;
+            }
             
             Vector2 vectorTransform = new Vector2(transform.getX(), transform.getY());
             vectorTransform = vectorTransform.rotate(camera.cameraYaw);

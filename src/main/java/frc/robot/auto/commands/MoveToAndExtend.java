@@ -24,7 +24,7 @@ public class MoveToAndExtend extends Command {
     public void execute() {
         if (followCurve.getRemainingPathLength() < 100) {
             ScoringManager.setScoringPosition(scoringLevel);
-            if (ScoringManager.getElevator().getElevatorHeight() > 48) followCurve.setMaxSpeed(0.3);
+            if (ScoringManager.getElevator().getElevatorHeight() > 25) followCurve.setMaxSpeed(0.2);
         }
 
         followCurve.execute();

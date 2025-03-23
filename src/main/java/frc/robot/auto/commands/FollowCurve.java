@@ -21,20 +21,20 @@ public class FollowCurve extends Command {
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
-        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
+        this.movePID = new PIDController(0.025, 0.0003, 0.0049, 0.0, 0.0, maxVelMove);
         this.rotPID = new PIDController(0.35, 0.015, 0.08, 0.035, 0.1, maxVelMove);
     }
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot, double rotDead) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
-        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
+        this.movePID = new PIDController(0.025, 0.0003, 0.0049, 0.0, 0.0, maxVelMove);
         this.rotPID = new PIDController(0.35, 0.015, 0.08, rotDead, 0.1, maxVelMove);
     }
 
     @Override
     public void initialize() {
         System.out.println("FollowCurve Initialized");
-        this.movePID.setDest(1);
+        this.movePID.setDest(path.getPathLength());
         this.rotPID.setDest((path.getTargetRot() + Math.PI / 2.0) % (2.0 * Math.PI));
     }
 
@@ -48,7 +48,7 @@ public class FollowCurve extends Command {
             currentRot += 2.0 * Math.PI;
         }
 
-        double moveOutput = movePID.updateOutput( (path.getPathLength() - path.getRemainingPathLength()) / path.getPathLength() );
+        double moveOutput = movePID.updateOutput((path.getPathLength() - path.getRemainingPathLength()));
         double rotOutput = rotPID.updateOutput(currentRot);
 
         Vector2 driveVector = path.getDriveVector().norm().mul(moveOutput);

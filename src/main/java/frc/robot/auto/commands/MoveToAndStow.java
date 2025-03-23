@@ -20,9 +20,9 @@ public class MoveToAndStow extends Command {
 
     @Override
     public void execute() {
-        if (!(ScoringManager.getElevator().getElevatorHeight() < 48 && ScoringManager.scoringPosition == ScoringPosition.STOW)) {
+        if (!(ScoringManager.getElevator().getElevatorHeight() < 25 && ScoringManager.scoringPosition == ScoringPosition.STOW)) {
             ScoringManager.setScoringPosition(ScoringPosition.STOW);
-            followCurve.setMaxSpeed(0.3);
+            followCurve.setMaxSpeed(0.2);
         } else {
             followCurve.setMaxSpeed(1.0);
         }
