@@ -7,7 +7,7 @@ import java.util.List;
 
 import frc.robot.utils.Vector2;
 
-public class BezierCurve {
+public class CubicBezier implements Curve {
     private Vector2 a;
     private Vector2 b;
     private Vector2 c;
@@ -15,13 +15,20 @@ public class BezierCurve {
 
     private List<Vector2> points = new ArrayList<>();
 
-    public BezierCurve(Vector2 a, Vector2 b, Vector2 c, Vector2 d) {
+    public CubicBezier(Vector2 a, Vector2 b, Vector2 c, Vector2 d) {
+        System.out.println("Creating CubicBezier");
+
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
 
         getEvenlySpacedPoints();
+    }
+
+    public CubicBezier(List<Vector2> points) {
+        System.out.println("Creating CubicBezier");
+        this.points = points;
     }
 
     public void getEvenlySpacedPoints() {
@@ -47,5 +54,29 @@ public class BezierCurve {
 
     public List<Vector2> getPoints() {
         return points;
+    }
+
+    public CubicBezier reverse() {
+        List<Vector2> reversed = new ArrayList<>();
+        for (int i = points.size() - 1; i >= 0; i--) {
+            reversed.add(points.get(i));
+        }
+        return new CubicBezier(reversed);
+    }
+
+    public CubicBezier flipHorizontal() {
+        List<Vector2> flipped = new ArrayList<>();
+        for (Vector2 point : points) {
+            flipped.add(new Vector2(point.x, -point.y));
+        }
+        return new CubicBezier(flipped);
+    }
+
+    public CubicBezier rotate(double angle) {
+        List<Vector2> rotated = new ArrayList<>();
+        for (Vector2 point : points) {
+            rotated.add(point.rotate(angle));
+        }
+        return new CubicBezier(rotated);
     }
 }

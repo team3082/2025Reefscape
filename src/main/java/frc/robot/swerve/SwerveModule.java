@@ -48,9 +48,9 @@ public class SwerveModule {
 
         steerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor; 
 
-        steerConfig.Slot0.kP = 0.35;
-        steerConfig.Slot0.kI = 0.0;
-        steerConfig.Slot0.kD = 0.0;
+        steerConfig.Slot0.kP = 0.5;
+        steerConfig.Slot0.kI = 0.0001;
+        steerConfig.Slot0.kD = 0.0025;
 
         steerConfig.MotionMagic.MotionMagicCruiseVelocity = 40000;
         steerConfig.MotionMagic.MotionMagicAcceleration = 40000;
@@ -200,6 +200,6 @@ public class SwerveModule {
 
     /** convert internal motor rotations to radians for the drive motor */
     private double rotToRadDrive(double rot) {
-        return (rot * (2.0 * Math.PI)) / Constants.Swerve.STEER_RATIO;
+        return (rot * (2.0 * Math.PI)) / Constants.Swerve.DRIVE_RATIO;
     }
 }

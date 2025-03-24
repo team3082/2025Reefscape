@@ -2,18 +2,28 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.Tuning;
+import frc.robot.auto.commands.AlignToReef;
 import frc.robot.auto.commands.DropCoral;
+import frc.robot.auto.commands.FollowCurve;
 import frc.robot.auto.commands.IntakeCoral;
+import frc.robot.auto.commands.MoveToAndExtend;
+import frc.robot.auto.commands.MoveToAndStow;
+import frc.robot.auto.commands.MoveToCoralStation;
+import frc.robot.auto.commands.MoveToScorePos;
+import frc.robot.auto.commands.OverrideWristPos;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
+import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
-import frc.robot.auto.commands.RotateAndDriveTo;
-
+import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.swerve.SwervePosition;
+import frc.robot.auto.commands.ScoreAtLevel;
+import frc.robot.auto.commands.SetIntakeState;
 
 /**
  * Manages autonomous routines for the robot.
@@ -31,54 +41,98 @@ public class Auto {
         return routineManager.getAutoSelector();
     }
 
-
-    /**
-     * Example autonomous routine #1.
-     * This method will be automatically detected and registered by {@link RoutineManager}.
-     */
+    /** scores G4 - removes back algae */
     @AutoRoutine
-    public static SequentialCommandGroup autoRoutineOne() {
-        // Define autonomous routine logic here.
-        return new SequentialCommandGroup(
-            Commands.runOnce(()->System.out.println("Test One")),
-            Commands.runOnce(()->System.out.println("Test Two")),
-            Commands.runOnce(()->System.out.println("Test Three"))
-        );
-    }
+    public SequentialCommandGroup onePieceMiddleRightAlgae() {
+        if (Robot.isSimulation()) SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
 
-    /**
-     * Example autonomous routine #2.
-     * This method will also be automatically detected and registered.
-     */
-    @AutoRoutine
-    public static SequentialCommandGroup autoRoutineTwo() {
-        // Define autonomous routine logic here.
-        return new SequentialCommandGroup(
-            Commands.runOnce(()->System.out.println("But")),
-            new WaitCommand(1.0),
-            Commands.runOnce(()->System.out.println("When")),
-            new WaitCommand(1.0),
-            Commands.runOnce(()->System.out.println("You Close Your Eyes"))
-        );
-    }
+        Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
 
-    @AutoRoutine
-    public SequentialCommandGroup scoringManagerTest(){
-        return new SequentialCommandGroup(
-            new RotateAndDriveTo(Constants.APRIL_TAGS[10].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[10].getLeftPosition()),
-            new MoveToScorePos(ScoringPosition.L4),
-            new DropCoral(1),
-            new WaitCommand(1.0),
-            new MoveToScorePos(ScoringPosition.STOW),
-            new RotateAndDriveTo(Constants.APRIL_TAGS[2].getRotationZ() - Math.PI/2,Constants.APRIL_TAGS[2].getLeftPosition()),
-            new IntakeCoral(),
-            new RotateAndDriveTo(Constants.APRIL_TAGS[8].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[8].getLeftPosition()),
-            new MoveToScorePos(ScoringPosition.L4),
-            new DropCoral(1),
+        return new SequentialCommandGroup (
+            new FollowCurve(Tuning.AutoPaths.START_TO_G, Constants.REEF_POSITIONS.G.getRotation(), 0.75, 0.2),
+            new ScoreAtLevel(ScoringPosition.L4),
+            new FollowCurve(Tuning.AutoPaths.G_TO_WAIT, Constants.APRIL_TAGS[10].getRotationZ(), 0.75, 0.2, 0.075),
+            new MoveToScorePos(ScoringPosition.ALGAE1),
+            new SetIntakeState(IntakeState.DROP_CORAL),
+            new FollowCurve(Tuning.AutoPaths.WAIT_TO_BACK_ALGAE, Constants.APRIL_TAGS[10].getRotationZ(), 0.2, 0.2, 0.075),
+            new WaitCommand(0.25),
+            new FollowCurve(Tuning.AutoPaths.BACK_ALGAE_TO_WAIT, Constants.APRIL_TAGS[10].getRotationZ(), 0.4, 0.2, 0.075),
+            new OverrideWristPos((5.0 * Math.PI) / 8.0),
+            new SetIntakeState(IntakeState.INTAKE_ALGAE),
+            new WaitCommand(1),
+            new SetIntakeState(IntakeState.HOLD_CORAL),
             new MoveToScorePos(ScoringPosition.STOW)
         );
     }
 
+    /** scores G4 - removes back algae */
+    @AutoRoutine
+    public SequentialCommandGroup onePieceMiddleLeftAlgae() {
+        if( Robot.isSimulation()) SwervePosition.setPosition(Constants.MIDDLE_STARTING_POS);
+
+        Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
+
+        return new SequentialCommandGroup (
+            new FollowCurve(Tuning.AutoPaths.START_TO_H, Constants.REEF_POSITIONS.H.getRotation(), 0.75, 0.2),
+            new ScoreAtLevel(ScoringPosition.L4),
+            new FollowCurve(Tuning.AutoPaths.H_TO_WAIT, Constants.REEF_POSITIONS.H.getRotation(), 0.75, 0.2),
+            new MoveToScorePos(ScoringPosition.ALGAE1),
+            new SetIntakeState(IntakeState.DROP_CORAL),
+            new FollowCurve(Tuning.AutoPaths.WAIT_TO_BACK_ALGAE, Constants.REEF_POSITIONS.H.getRotation(), 0.2, 0.2),
+            new WaitCommand(0.25),
+            new FollowCurve(Tuning.AutoPaths.BACK_ALGAE_TO_WAIT, Constants.REEF_POSITIONS.H.getRotation(), 0.4, 0.2),
+            new OverrideWristPos((5.0 * Math.PI) / 8.0),
+            new SetIntakeState(IntakeState.INTAKE_ALGAE),
+            new WaitCommand(1),
+            new SetIntakeState(IntakeState.HOLD_CORAL),
+            new MoveToScorePos(ScoringPosition.STOW)
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup threeHalfPieceRight() {
+        if (Robot.isSimulation()) SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+
+        Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
+
+        return new SequentialCommandGroup(
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.REEF_POSITIONS.D.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.D_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_C, Constants.REEF_POSITIONS.C.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.C_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
+            new IntakeCoral()
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup threeHalfPieceLeft() {
+        if (Robot.isSimulation()) {
+            SwervePosition.setPosition(Constants.LEFT_STARTING_POS);
+            Pigeon.setYawRad((Constants.APRIL_TAGS[11].getRotationZ() + Math.PI / 2.0) % (2.0 * Math.PI));
+        }
+        Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
+        return new SequentialCommandGroup(
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.REEF_POSITIONS.K.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075)),
+            new IntakeCoral(),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.REEF_POSITIONS.L.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.L_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075)),
+            new IntakeCoral()
+        );
+    }
 
     /**
      * Initializes the autonomous system by creating a {@link RoutineManager}

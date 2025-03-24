@@ -23,8 +23,7 @@ public class RotateAndDriveTo extends Command{
 
     @Override
     public void initialize() {
-        SwervePID.setDestPt(pos);
-        SwervePID.setDestRot(rot);
+        SwervePID.setDestState(pos, rot);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package frc.robot.vision;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import frc.robot.utils.Vector2;
 
@@ -10,6 +11,7 @@ public class Camera {
     public Vector2 robotToCamera;
     public double cameraPitch;
     public double cameraYaw;
+    public PhotonTrackedTarget latestTarget;
 
     public Camera(PhotonCamera photonCamera, Vector2 robotToCamera, double cameraPitch, double cameraYaw) {
 
@@ -18,5 +20,13 @@ public class Camera {
         this.cameraPitch = cameraPitch;
         this.cameraYaw = cameraYaw;
 
+    }
+
+    public boolean isLatestTarget(PhotonTrackedTarget target) {
+        return (target.equals(latestTarget));
+    }
+
+    public void setLatestTarget(PhotonTrackedTarget target) {
+        this.latestTarget = target;
     }
 }

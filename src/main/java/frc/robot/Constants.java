@@ -3,11 +3,67 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import frc.robot.utils.Vector2;
 import frc.robot.vision.AprilTag;
 
 
 
 public class Constants {
+    public enum REEF_POSITIONS {
+        A(7, 18, false, new Vector2(-1, 0), new Vector2()),
+        B(7, 18, true),
+        C(8, 17, false),
+        D(8, 17, true),
+        E(9, 22, false),
+        F(9, 22, true),
+        G(10, 21, false),
+        H(10, 21, true),
+        I(11, 20, false, new Vector2(-1, 0), new Vector2()),
+        J(11, 20, true),
+        K(6, 19, false),
+        L(6, 19, true);
+
+        public AprilTag redTag;
+        public AprilTag blueTag;
+        private boolean right;
+        public Vector2 redOffset = new Vector2();
+        public Vector2 blueOffset = new Vector2();
+
+        REEF_POSITIONS(int redID, int blueID, boolean isRight){
+            this.right = isRight;
+            this.redTag = APRIL_TAGS[redID];
+            this.blueTag = APRIL_TAGS[blueID];
+        }
+
+        REEF_POSITIONS(int redID, int blueID, boolean isRight, Vector2 redOffset, Vector2 blueOffset) {
+            this(redID, blueID, isRight);
+            this.redOffset = redOffset;
+            this.blueOffset = blueOffset;
+        }
+        
+        public Vector2 getPosition(){
+            AprilTag tag = redTag;
+            if(right){
+                return tag.getRightPosition();
+            } else {
+                return tag.getLeftPosition();
+            }
+        }
+        public double getRotation(){
+            AprilTag tag = redTag;
+            return tag.getRotationZ();
+        }
+
+        public static REEF_POSITIONS getPositionFromTagID(int id, boolean isRight) {
+            for (REEF_POSITIONS position : REEF_POSITIONS.values()) {
+                if (position.right == isRight && (position.redTag.getID() == id || position.blueTag.getID() == id)) {
+                    return position;
+                }
+            }
+            return null; // Return null if no matching position is found
+        }
+
+    }
     
     public static final AprilTag[] APRIL_TAGS = {
         null,
@@ -39,6 +95,13 @@ public class Constants {
         
     };
 
+    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60, 85);
+    public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60, 0);
+    public static final Vector2 MIDDLE_WAIT_POS = new Vector2(80, 0);
+    public static final Vector2 LEFT_STARTING_POS = new Vector2(60, -85);
+    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(293, 127);
+    public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(293, -127);
+
     public static final class Elevator {
         public static final int MOTORID1 = 9;
         public static final int MOTORID2 = 10;
@@ -52,7 +115,7 @@ public class Constants {
         public static final int INTAKEID = 12;
         public static final int END_EFFECTOR_SENSOR_ID = 9;
 
-        public static final double GEARRATIO = 32.0;
+        public static final double GEARRATIO = 30.0;
     }
 
     public static final class Swerve {

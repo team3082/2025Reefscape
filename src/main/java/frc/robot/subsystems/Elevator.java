@@ -2,8 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -18,6 +18,12 @@ public class Elevator {
     public TalonFX extensionMotor2;
 
     public double targetHeight;
+
+    private final int STAGES = 3;
+    private final double GEAR_RATIO = 15.0;
+    private final double SPROCKET_PITCH_DIAMETER = 1.910;
+
+    private final double INCHES_PER_ROTATION = ((Math.PI * SPROCKET_PITCH_DIAMETER) / GEAR_RATIO) * (double) STAGES; // inches per motor rotation
 
     public Elevator() {
         init();
@@ -36,10 +42,10 @@ public class Elevator {
         extensionMotor1Config.Slot0.kP = Tuning.Elevator.ELEVATOR_P;
         extensionMotor1Config.Slot0.kI = Tuning.Elevator.ELEVATOR_I;
         extensionMotor1Config.Slot0.kD = Tuning.Elevator.ELEVATOR_D;
-
+        extensionMotor1Config.Slot0.kG = Tuning.Elevator.ELEVATOR_G;
         extensionMotor1Config.MotionMagic.MotionMagicCruiseVelocity = Tuning.Elevator.MOTION_MAGIC_CRUISE_VELOCITY;
         extensionMotor1Config.MotionMagic.MotionMagicAcceleration = Tuning.Elevator.MOTION_MAGIC_ACCELERATION;
-        extensionMotor1Config.MotionMagic.MotionMagicJerk = Tuning.Elevator.JERK;
+        extensionMotor1Config.MotionMagic.MotionMagicJerk = Tuning.Elevator.MOTION_MAGIC_JERK;
 
         TalonFXConfiguration extensionMotor2Config = new TalonFXConfiguration();
 
@@ -60,7 +66,7 @@ public class Elevator {
      *  only call in ScoringManager.update()
     */
     public void update() {
-        extensionMotor1.setControl(new PositionDutyCycle(inchToRot(targetHeight)));
+        extensionMotor1.setControl(new MotionMagicDutyCycle(inchToRot(targetHeight)));
 
         // UPDATE SIM
         if (Robot.isSimulation()) {
@@ -89,12 +95,12 @@ public class Elevator {
 
     /** converts inches to internal motor rotations */
     private double inchToRot(double inch) {
-        return inch; // not needed currenly
+        return inch / INCHES_PER_ROTATION;
     }
 
     /** converts internal motor rotations to inches */
     private double rotToInch(double rot) {
-        return rot; // not needed currently
+        return rot * INCHES_PER_ROTATION;
     }
 
     public void disable(){

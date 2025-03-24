@@ -36,6 +36,8 @@ public class SwervePosition {
         lastOdomPos = odometryPos;
 
         absVelocity = odometryInnovation.div(RTime.deltaTime());
+
+        //System.out.println("lala odometry: " + odometryPos);
     }
 
     public static final double correctionMultiplier = 0.1;

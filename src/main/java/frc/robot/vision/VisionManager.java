@@ -8,19 +8,25 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
-
+import frc.robot.Robot;
 import frc.robot.utils.Vector2;
 
 public class VisionManager {
 
     private static Camera[] cameras;
+    private static boolean enabled = true;
 
-    public static void init(){
+    public static void init() {
 
-        cameras = new Camera[] {
-            new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-10, 10), 0.0, Math.toRadians(-19)) // test these later
-        };
+        if (Robot.isReal()) {
+            cameras = new Camera[] {
+                new Camera(new PhotonCamera("ApriltagCamera4"), new Vector2(-9.3, 8.9), 0.0, Math.toRadians(-15)), // test these later
+                new Camera(new PhotonCamera("ApriltagCamera2"), new Vector2(9.3, 8.9), 0, Math.toRadians(15))
+            };
+        }
 
     }
 
@@ -31,6 +37,14 @@ public class VisionManager {
         for (Camera camera : cameras) {
             
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
+            
+            System.out.println();
+            
+            if (target != null) if (camera.isLatestTarget(target)) {
+                continue;
+            }
+
+            camera.setLatestTarget(target);
             if (target == null) continue; // Skip if no april tags are found
 
             Transform3d transform = target.getBestCameraToTarget();
@@ -38,6 +52,10 @@ public class VisionManager {
 
             if (id < 0 || id > Constants.APRIL_TAGS.length) {
                 continue; // Skip invalid id
+            }
+
+            if (DriverStation.getAlliance().get() == Alliance.Red ? id < 6 || id > 11 : id < 17 || id > 22) {
+                continue;
             }
             
             Vector2 vectorTransform = new Vector2(transform.getX(), transform.getY());
@@ -48,19 +66,22 @@ public class VisionManager {
             double ydistRobot = vectorTransform.y;
 
             Vector2 distRobot = new Vector2(xdistRobot, ydistRobot);
-            if(distRobot.mag() < 1.0 || distRobot.mag() > 2.5){
-                continue;
-            }
 
             double xdistField = (Math.cos(pigeonAngle) * distRobot.x - Math.sin(pigeonAngle) * distRobot.y) * Constants.METERSTOINCHES;
             double ydistField = (Math.cos(pigeonAngle) * distRobot.y + Math.sin(pigeonAngle) * distRobot.x) * Constants.METERSTOINCHES;
 
             Vector2 cameraToTag = new Vector2(xdistField, ydistField);
 
+
+
             Vector2 aprilTagPos = new Vector2(Constants.APRIL_TAGS[id].getPosition().y, -Constants.APRIL_TAGS[id].getPosition().x);
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                aprilTagPos = aprilTagPos.rotate(Math.PI);
+            }
+            
             Vector2 cameraPos = aprilTagPos.sub(cameraToTag);
 
-            Vector2 robotPos = cameraPos.sub(camera.robotToCamera);
+            Vector2 robotPos = cameraPos.sub(camera.robotToCamera.rotate(pigeonAngle - (Math.PI/2.0)));
 
             positions.add(robotPos);
         }
@@ -118,4 +139,17 @@ public class VisionManager {
 
         return Optional.of(averageRotation);
     }
+
+    public static void enableVision(){
+        enabled = true;
+    }
+    
+    public static void disableVision(){
+        enabled = false;
+    }
+
+    public static boolean isEnabled(){
+        return enabled;
+    }
+    
 }

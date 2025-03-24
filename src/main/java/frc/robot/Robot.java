@@ -7,9 +7,9 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
@@ -76,6 +76,8 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start(); // Start logging
+
+    actuator = new PWM(1);
   }
 
   @Override
@@ -98,12 +100,23 @@ public class Robot extends LoggedRobot {
     Auto.update();
   }
 
+  PWM actuator;
+
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    
+    ScoringManager.setScoringPosition(ScoringPosition.STOW);
+  }
 
   @Override
   public void teleopPeriodic() {
     OI.userInput();
+    try {
+      actuator.setPosition(0.9);
+    } catch (Exception e) {
+      // TODO: handle exception
+    }
+
   }
 
   @Override
@@ -142,9 +155,4 @@ public class Robot extends LoggedRobot {
   @Override
   public void simulationPeriodic() {}
 
-  public static int getAllianceMultiplier() {
-    // Best line of code ever written
-    // - John Malvin
-    return Robot.isSimulation() ? 1 : (DriverStation.getAlliance().get() == Alliance.Blue ? -1 : 1);
-  }
 }

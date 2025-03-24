@@ -6,6 +6,8 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -116,12 +118,12 @@ public class Telemetry {
     private static void logValues(){
         Logger.recordOutput("Robot/SwervePID/Error", SwervePID.getError().toString());
         Logger.recordOutput("Robot/SwervePID/Rot Error", SwervePID.getRotationError());
-        Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.78,
-                                                                          SwervePID.getDest().y/Constants.METERSTOINCHES + 4.01,
-                                                                          Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
+        try {
+            Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.78,
+                                                                              SwervePID.getDest().y/Constants.METERSTOINCHES + 4.01,
+                                                                              Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
+        } catch (Exception e){}
         Logger.recordOutput("Robot/SwervePID/At Dest", SwervePID.atDest());
-        Logger.recordOutput("Robot/SwervePID/At Dest/x", SwervePID.xPID.atSetpoint());
-        Logger.recordOutput("Robot/SwervePID/At Dest/y", SwervePID.yPID.atSetpoint());
         Logger.recordOutput("Robot/SwervePID/At Rot", SwervePID.atRot());
         Logger.recordOutput("Robot/Swerve Position", SwervePosition.getPosition().toString());
         Logger.recordOutput("Robot/Swerve Position/x", SwervePosition.getPosition().x);
@@ -163,16 +165,31 @@ public class Telemetry {
      */
     private static void updateField() {
         // Current position adjusted to be in the center of the field at (0,0)
+
+        int alliancePosMultiplier = 1;
+        double allianceRotOffset = 0;
+        if (!DriverStation.getAlliance().isEmpty()) {
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                alliancePosMultiplier = -1;
+                allianceRotOffset = Math.PI;
+            }
+        }
+
+        // System.out.println("Alliance Pos Multiplier: " + alliancePosMultiplier + " Alliance Rot Offset: " + allianceRotOffset);
         
         Pose2d currentPose = new Pose2d(
-            SwervePosition.getPosition().x /Constants.METERSTOINCHES + 8.78,
-            SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
-            Rotation2d.fromRadians(Pigeon.getRotationRad() + Robot.getAllianceMultiplier() * Math.PI / 2.0)
+            alliancePosMultiplier * SwervePosition.getPosition().x /Constants.METERSTOINCHES + 8.78,
+            alliancePosMultiplier * SwervePosition.getPosition().y/Constants.METERSTOINCHES + 4.01,
+            Rotation2d.fromRadians(Pigeon.getRotationRad() + Math.PI / 2.0 + allianceRotOffset)
         );
         fieldView.setRobotPose(currentPose);
         SmartDashboard.putData(fieldView);
 
+        try {
         Logger.recordOutput("Robot/Swerve/Field Pose", currentPose);
+        } catch (Exception e) {
+            System.out.println("Oopsies!: " + e);
+        }
     }
 
     /**
