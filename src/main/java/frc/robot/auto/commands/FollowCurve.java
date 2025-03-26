@@ -1,17 +1,13 @@
 package frc.robot.auto.commands;
 
-import org.littletonrobotics.junction.Logger;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Tuning;
-import frc.robot.subsystems.sensors.Pigeon;
+import frc.robot.utils.Vector2;
+import frc.robot.utils.PIDController;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
-import frc.robot.utils.PIDController;
-import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.Curve;
+import frc.robot.subsystems.sensors.Pigeon;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.trajectories.RobotPath;
 
 public class FollowCurve extends Command {
@@ -25,24 +21,21 @@ public class FollowCurve extends Command {
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
-        this.movePID = new PIDController(0.025, 0.0003, 0.0049, 0.0, 0.0, maxVelMove);
+        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
         this.rotPID = new PIDController(0.35, 0.015, 0.08, 0.035, 0.1, maxVelMove);
     }
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot, double rotDead) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
-        this.movePID = new PIDController(0.025, 0.0003, 0.0049, 0.0, 0.0, maxVelMove);
+        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
         this.rotPID = new PIDController(0.35, 0.015, 0.08, rotDead, 0.1, maxVelMove);
     }
 
     @Override
     public void initialize() {
         System.out.println("FollowCurve Initialized");
-        this.movePID.setDest(path.getPathLength());
+        this.movePID.setDest(1);
         this.rotPID.setDest((path.getTargetRot() + Math.PI / 2.0) % (2.0 * Math.PI));
-        try{
-            Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(path.getLastPos().convertToFieldCoords().x, path.getLastPos().convertToFieldCoords().y, Rotation2d.fromRadians(path.getTargetRot())));
-        } catch (Exception e){}
     }
 
     @Override
@@ -55,16 +48,11 @@ public class FollowCurve extends Command {
             currentRot += 2.0 * Math.PI;
         }
 
-        double moveOutput = movePID.updateOutput((path.getPathLength() - path.getRemainingPathLength()));
+        double moveOutput = movePID.updateOutput((path.getPathLength() - path.getRemainingPathLength()) / path.getPathLength());
         double rotOutput = rotPID.updateOutput(currentRot);
 
         Vector2 driveVector = path.getDriveVector().norm().mul(moveOutput);
         driveVector = driveVector.rotate(-Math.PI / 2.0);
-
-        // System.out.println("rot: " + Pigeon.getRotationRad() + " target rot: " + rotPID.getDest() + " rot output: " + rotOutput);
-
-        // System.out.println("Remaining Path Length: " + path.getRemainingPathLength() + " Path Length: " + path.getPathLength());
-        // System.out.println("Drive Vector: " + driveVector + " Move Output: " + moveOutput);
 
         if (driveVector.mag() > maxSpeed) {
             driveVector = driveVector.norm().mul(maxSpeed);
@@ -76,9 +64,6 @@ public class FollowCurve extends Command {
         if (driveFinished) driveVector = new Vector2();
         boolean rotFinished = rotPID.atSetpoint();
         if (rotFinished) rotOutput = 0.0;
-
-        // System.out.println("Current Pos: " + SwervePosition.getPosition() + " Target Pos: " + path.getLastPos());
-        System.out.println("Drive Finished: " + driveFinished + " Rot Finished: " + rotFinished);
 
         if (driveFinished && rotFinished) {
             isFinished = true;
