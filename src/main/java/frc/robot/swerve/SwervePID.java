@@ -2,6 +2,10 @@ package frc.robot.swerve;
 
 import static frc.robot.Tuning.*;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.utils.PIDController;
 import frc.robot.utils.RotationalPIDController;
@@ -21,6 +25,11 @@ public class SwervePID {
     }
 
     public static void setDestState(Vector2 dest, double destRot) {
+        try {
+            Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(dest.convertToFieldCoords().x,
+                                                                              dest.convertToFieldCoords().y,
+                                                                              Rotation2d.fromRadians(destRot + Math.PI/2)));
+        } catch (Exception e) {}
         moveDest = dest;
         startPos = SwervePosition.getPosition();
         totalDist = dest.sub(startPos).mag();

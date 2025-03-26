@@ -12,14 +12,14 @@ public class Camera {
     public double cameraPitch;
     public double cameraYaw;
     public PhotonTrackedTarget latestTarget;
+    private boolean disabled;
 
     public Camera(PhotonCamera photonCamera, Vector2 robotToCamera, double cameraPitch, double cameraYaw) {
-
         this.photonCamera = photonCamera;
         this.robotToCamera = robotToCamera;
         this.cameraPitch = cameraPitch;
         this.cameraYaw = cameraYaw;
-
+        disabled = false;
     }
 
     public boolean isLatestTarget(PhotonTrackedTarget target) {
@@ -29,4 +29,16 @@ public class Camera {
     public void setLatestTarget(PhotonTrackedTarget target) {
         this.latestTarget = target;
     }
+
+    public void disable(){
+        disabled = true;
+    }
+    public void enable(){
+        disabled = false;
+    }
+
+    public boolean isDisabled(){
+        return disabled;
+    }
+
 }

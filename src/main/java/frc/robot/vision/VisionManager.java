@@ -35,10 +35,12 @@ public class VisionManager {
         List<Vector2> positions = new ArrayList<>();
 
         for (Camera camera : cameras) {
-            
+            if(camera.isDisabled()) continue;
             PhotonTrackedTarget target = camera.photonCamera.getLatestResult().getBestTarget();
             
             System.out.println();
+            
+            
             
             if (target != null) if (camera.isLatestTarget(target)) {
                 continue;
@@ -152,4 +154,24 @@ public class VisionManager {
         return enabled;
     }
     
+
+    public static void disableLeftCam() {
+        System.out.println("Disabled left camera");
+        if (Robot.isReal()) cameras[0].disable();
+    }
+
+    public static void disableRightCam() {
+        System.out.println("Disabled right camera");
+        if (Robot.isReal()) cameras[1].disable();
+    }
+
+    public static void enableLeftCam() {
+        System.out.println("Enabled left camera");
+        if (Robot.isReal()) cameras[0].enable();
+    }
+
+    public static void enableRightCam() {
+        System.out.println("Enabled right camera");
+        if (Robot.isReal()) cameras[1].enable();
+    }
 }

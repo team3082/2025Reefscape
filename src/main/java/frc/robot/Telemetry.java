@@ -3,6 +3,8 @@ package frc.robot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 
+import com.ctre.phoenix6.controls.PositionDutyCycle;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
@@ -21,6 +23,7 @@ import frc.robot.subsystems.visualizer.EndEffectorVisualizer;
 import frc.robot.swerve.SwerveManager;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.swerve.visualizer.SwerveBaseVisualizer;
+import frc.robot.utils.Vector2;
 import frc.robot.swerve.SwervePID;
 
 /*
@@ -118,11 +121,6 @@ public class Telemetry {
     private static void logValues(){
         Logger.recordOutput("Robot/SwervePID/Error", SwervePID.getError().toString());
         Logger.recordOutput("Robot/SwervePID/Rot Error", SwervePID.getRotationError());
-        try {
-            Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(SwervePID.getDest().x/Constants.METERSTOINCHES + 8.78,
-                                                                              SwervePID.getDest().y/Constants.METERSTOINCHES + 4.01,
-                                                                              Rotation2d.fromRadians(SwervePID.getTargetRot() + Math.PI/2)));
-        } catch (Exception e){}
         Logger.recordOutput("Robot/SwervePID/At Dest", SwervePID.atDest());
         Logger.recordOutput("Robot/SwervePID/At Rot", SwervePID.atRot());
         Logger.recordOutput("Robot/Swerve Position", SwervePosition.getPosition().toString());
@@ -212,4 +210,6 @@ public class Telemetry {
 
         Logger.recordOutput("Robot/Subsystem View", subsystemView);
     }
+
+    
 }

@@ -1,5 +1,7 @@
 package frc.robot.utils;
 
+import frc.robot.Constants;
+
 // import org.w3c.dom.views.DocumentView;
 
 public class Vector2 {
@@ -151,5 +153,9 @@ public class Vector2 {
      */
     public Vector2 copy() {
         return new Vector2(this.x, this.y);
+    }
+
+    public Vector2 convertToFieldCoords(){
+        return new Vector2(this.x/Constants.METERSTOINCHES + 8.78,  this.y/Constants.METERSTOINCHES + 4.01);
     }
 }

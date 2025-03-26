@@ -49,7 +49,7 @@ public class OI {
     public static Joystick operatorStick; 
  
     // Scoring Positions 
-    private static final int stow                = LogitechF310.BUTTON_A;
+    private static final int L1                = LogitechF310.BUTTON_A;
     private static final int L2                  = LogitechF310.BUTTON_B;
     private static final int L3                  = LogitechF310.BUTTON_X;
     private static final int L4                  = LogitechF310.BUTTON_Y;
@@ -197,7 +197,6 @@ public class OI {
                 break;
         
             case DRIVING_TO_REEF:
-                System.out.println("Driving to Reef");
                 if(SwervePID.atDest() &&  SwervePID.atRot()){
                     aligningState = AutoAlignState.ELEVATOR_RAISING;
                 }
@@ -208,16 +207,13 @@ public class OI {
                 break;
 
             case ELEVATOR_RAISING:
-                System.out.println("Elevator Raising");
                 ScoringManager.setScoringPosition(savedLevel);
-                System.out.println("Saved Level: " + savedLevel.toString());
                 if (ScoringManager.transitoryState == TransitoryState.FINISHED) {
                     aligningState = AutoAlignState.SCORING;
                 }
                 break;
 
             case SCORING:
-                System.out.println("Scoring");
                 ScoringManager.endEffector.outtake();
                 if (!ScoringManager.endEffector.isHoldingCoral()) {
                     aligningState = AutoAlignState.ELEVATOR_DESCENDING;
@@ -225,7 +221,6 @@ public class OI {
                 break;
 
             case ELEVATOR_DESCENDING:
-                System.out.println("Elevator Descending");
                 ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
                 ScoringManager.setScoringPosition(ScoringPosition.STOW);
                 aligningState = AutoAlignState.NOT_ALIGNING; // may change later
@@ -243,7 +238,7 @@ public class OI {
 
     public static void operatorInput() {
         /*-Scoring Manager----------------------------------------------------------------------------------------*/
-        if (operatorStick.getRawButtonPressed(stow)) savedLevel = ScoringPosition.STOW;
+        if (operatorStick.getRawButtonPressed(L1)) savedLevel = ScoringPosition.L1;
         else if (operatorStick.getRawButtonPressed(L2)) savedLevel = ScoringPosition.L2;
         else if (operatorStick.getRawButtonPressed(L3)) savedLevel = ScoringPosition.L3;
         else if (operatorStick.getRawButtonPressed(L4)) savedLevel = ScoringPosition.L4;

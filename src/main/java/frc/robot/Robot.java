@@ -7,8 +7,6 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -104,7 +102,8 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
-    
+    VisionManager.enableLeftCam();
+    VisionManager.enableRightCam();
     ScoringManager.setScoringPosition(ScoringPosition.STOW);
   }
 
@@ -113,9 +112,7 @@ public class Robot extends LoggedRobot {
     OI.userInput();
     try {
       actuator.setPosition(0.9);
-    } catch (Exception e) {
-      // TODO: handle exception
-    }
+    } catch (Exception e) {}
 
   }
 

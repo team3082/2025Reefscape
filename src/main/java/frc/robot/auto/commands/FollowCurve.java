@@ -1,5 +1,9 @@
 package frc.robot.auto.commands;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Tuning;
 import frc.robot.subsystems.sensors.Pigeon;
@@ -36,6 +40,9 @@ public class FollowCurve extends Command {
         System.out.println("FollowCurve Initialized");
         this.movePID.setDest(path.getPathLength());
         this.rotPID.setDest((path.getTargetRot() + Math.PI / 2.0) % (2.0 * Math.PI));
+        try{
+            Logger.recordOutput("Robot/SwervePID/Destination", new Pose2d(path.getLastPos().convertToFieldCoords().x, path.getLastPos().convertToFieldCoords().y, Rotation2d.fromRadians(path.getTargetRot())));
+        } catch (Exception e){}
     }
 
     @Override

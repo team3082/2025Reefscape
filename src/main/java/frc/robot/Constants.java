@@ -10,7 +10,7 @@ import frc.robot.vision.AprilTag;
 
 public class Constants {
     public enum REEF_POSITIONS {
-        A(7, 18, false, new Vector2(-1, 0), new Vector2()),
+        A(7, 18, false),
         B(7, 18, true),
         C(8, 17, false),
         D(8, 17, true),
@@ -18,7 +18,7 @@ public class Constants {
         F(9, 22, true),
         G(10, 21, false),
         H(10, 21, true),
-        I(11, 20, false, new Vector2(-1, 0), new Vector2()),
+        I(11, 20, false),
         J(11, 20, true),
         K(6, 19, false),
         L(6, 19, true);

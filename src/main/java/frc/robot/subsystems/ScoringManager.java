@@ -13,12 +13,13 @@ public class ScoringManager {
     public enum ScoringPosition {
         DISABLED(0.0, 0.0),
         TEST(0.0, 0.0),
-        STOW(0.0, 0.0),
+        STOW(1.0, 0.0),
+        L1(1.0, 0),
         ALGAE1(8.6, Math.PI/3.0),
         ALGAE2(25, Math.PI/3.0),
         L2(18, Math.toRadians(30.0)),
         L3(33.4, Math.toRadians(30.0)),
-        L4(60.5, Math.toRadians(42)),
+        L4(62, Math.toRadians(42)),
         ALGAE_INTAKE(7.9, Math.PI / 2.0 + Math.toRadians(5));
 
         public double targetHeight;
