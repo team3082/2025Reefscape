@@ -95,10 +95,10 @@ public class Constants {
         
     };
 
-    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60, 85);
+    public static final Vector2 RIGHT_STARTING_POS = new Vector2(60, 50);
     public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60, 0);
     public static final Vector2 MIDDLE_WAIT_POS = new Vector2(80, 0);
-    public static final Vector2 LEFT_STARTING_POS = new Vector2(60, -85);
+    public static final Vector2 LEFT_STARTING_POS = new Vector2(60, -50);
     public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(293, 127);
     public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(293, -127);
 

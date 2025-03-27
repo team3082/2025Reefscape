@@ -21,7 +21,7 @@ public class EndEffector {
         OFF(0.0),
         INTAKE_CORAL(-0.285),
         HOLD_CORAL(0.0),
-        DROP_CORAL(-0.5),
+        DROP_CORAL(-0.4),
         INTAKE_ALGAE(0.5),
         DROP_ALGAE(-0.5),
         L1(0.275),
