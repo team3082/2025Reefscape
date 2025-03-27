@@ -14,7 +14,7 @@ public class ScoringManager {
         DISABLED(0.0, 0.0),
         TEST(0.0, 0.0),
         STOW(1.0, 0.0),
-        L1(12, Math.PI / 2.0 + Math.toRadians(25)),
+        L1(13, Math.PI / 2.0 + Math.toRadians(20)),
         ALGAE1(8.6, Math.PI/3.0),
         ALGAE2(25, Math.PI/3.0),
         L2(17, Math.toRadians(30.0)),

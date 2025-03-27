@@ -21,13 +21,13 @@ public class FollowCurve extends Command {
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
-        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
+        this.movePID = new PIDController(1.75, 0.025, 0.1575, 0.0, 0.0, maxVelMove);
         this.rotPID = new PIDController(0.35, 0.015, 0.08, 0.035, 0.1, maxVelMove);
     }
 
     public FollowCurve(Curve curve, double targetRot, double maxVelMove, double maxVelRot, double rotDead) {
         this.path = new RobotPath(curve.getPoints(), targetRot);
-        this.movePID = new PIDController(1.75, 0.025, 0.15, 0.0, 0.0, maxVelMove);
+        this.movePID = new PIDController(1.75, 0.025, 0.1575, 0.0, 0.0, maxVelMove);
         this.rotPID = new PIDController(0.35, 0.015, 0.08, rotDead, 0.1, maxVelMove);
     }
 
