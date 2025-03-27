@@ -233,7 +233,11 @@ public class OI {
             drivingToReef = false;
             ScoringManager.setScoringPosition(savedLevel);
         }
-        if (driverStick.getRawButtonPressed(lockOut)) ScoringManager.setScoringPosition(ScoringPosition.STOW);
+        if (driverStick.getRawButtonPressed(lockOut)) {
+            ScoringManager.setScoringPosition(ScoringPosition.STOW);
+            aligningState = AutoAlignState.NOT_ALIGNING;
+            drivingToReef = false;
+        }
     }
 
     public static void operatorInput() {
