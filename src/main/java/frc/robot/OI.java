@@ -15,6 +15,7 @@ import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.vision.VisionManager;
 import frc.robot.utils.RMath;
+import frc.robot.utils.RTime;
 
 public class OI {
     public static Joystick driverStick;
@@ -60,12 +61,14 @@ public class OI {
 
 
     public static ScoringPosition savedLevel = ScoringPosition.STOW;
+    private static double startTime = 0;
 
     enum AutoAlignState {
         NOT_ALIGNING,
         DRIVING_TO_REEF,
         ELEVATOR_RAISING,
         SCORING,
+        SCORINGL4,
         ELEVATOR_DESCENDING
     }
 
@@ -209,7 +212,11 @@ public class OI {
             case ELEVATOR_RAISING:
                 ScoringManager.setScoringPosition(savedLevel);
                 if (ScoringManager.transitoryState == TransitoryState.FINISHED) {
-                    aligningState = AutoAlignState.SCORING;
+                    if(savedLevel == ScoringPosition.L4){
+                        startTime = RTime.now();
+                        aligningState = AutoAlignState.SCORINGL4;
+                    }
+                    else aligningState = AutoAlignState.SCORING;
                 }
                 break;
 
@@ -217,6 +224,15 @@ public class OI {
                 ScoringManager.endEffector.outtake();
                 if (!ScoringManager.endEffector.isHoldingCoral()) {
                     aligningState = AutoAlignState.ELEVATOR_DESCENDING;
+                }
+                break;
+            
+            case SCORINGL4:
+                if (RTime.now() > startTime + 0.1) {
+                    ScoringManager.endEffector.outtake();
+                    if (!ScoringManager.endEffector.isHoldingCoral()) {
+                        aligningState = AutoAlignState.ELEVATOR_DESCENDING;
+                    }
                 }
                 break;
 

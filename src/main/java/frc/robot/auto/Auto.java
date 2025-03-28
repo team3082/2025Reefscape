@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -104,24 +105,32 @@ public class Auto {
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
-            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
-            new IntakeCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(
+                    new FollowCurve(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)
+                )
+            ),
             new InstantCommand(() -> VisionManager.enableLeftCam()),
 
             new InstantCommand(() -> VisionManager.disableRightCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.REEF_POSITIONS.D.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
-            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.D_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
-            new IntakeCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.D_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
+            ),
             new InstantCommand(() -> VisionManager.enableRightCam()),
             
             new InstantCommand(() -> VisionManager.disableLeftCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_C, Constants.REEF_POSITIONS.C.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
-            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.C_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075)),
-            new IntakeCoral()
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.C_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
+            )
         );
     }
 
@@ -137,24 +146,30 @@ public class Auto {
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
-            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075)),
-            new IntakeCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075))
+            ),
             new InstantCommand(() -> VisionManager.enableRightCam()),
 
             new InstantCommand(() -> VisionManager.disableLeftCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.REEF_POSITIONS.K.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
-            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075)),
-            new IntakeCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075))
+            ),
             new InstantCommand(() -> VisionManager.enableLeftCam()),
 
             new InstantCommand(() -> VisionManager.disableRightCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.REEF_POSITIONS.L.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
-            new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.L_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075)),
-            new IntakeCoral()
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.L_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075))
+            )
         );
     }
 
