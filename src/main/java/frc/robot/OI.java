@@ -178,6 +178,11 @@ public class OI {
         else if (driverStick.getRawAxis(outtake) > 0.25) ScoringManager.endEffector.outtake();
         else ScoringManager.endEffector.setIntakeState(IntakeState.HOLD_CORAL);
 
+        if ((ScoringManager.scoringPosition == ScoringPosition.ALGAE1 || ScoringManager.scoringPosition == ScoringPosition.ALGAE2) && ScoringManager.transitoryState == TransitoryState.FINISHED) {
+            if (driverStick.getRawAxis(outtake) > 0.25) ScoringManager.endEffector.setPivotAngle(ScoringPosition.ALGAE1.targetAngle);
+            else ScoringManager.endEffector.setPivotAngle(Math.PI / 2.0);
+        }
+
         /*--------------------------------------------------------------------------------------------------------*/
         // SWERVE
         // if (drivingToReef){
