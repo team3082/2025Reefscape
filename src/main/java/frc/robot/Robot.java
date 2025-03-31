@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -26,6 +27,7 @@ import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.RTime;
 import frc.robot.utils.Vector2;
+import frc.robot.utils.ChickenPlanner.ChickenParser;
 import frc.robot.vision.VisionManager;
 
 public class Robot extends LoggedRobot {
@@ -41,6 +43,7 @@ public class Robot extends LoggedRobot {
     RTime.init();
     VisionManager.init();
     Auto.init();
+    ChickenParser.init();
 
     // Swerve
     Pigeon.init();

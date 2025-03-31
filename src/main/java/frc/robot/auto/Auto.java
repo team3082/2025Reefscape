@@ -2,18 +2,20 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.auto.commands.MoveToStation;
 import frc.robot.Constants;
+import frc.robot.auto.commands.CrashTest;
 import frc.robot.auto.commands.DropCoral;
+import frc.robot.auto.commands.FollowChickenRoutine;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.routineManager.AutoRoutine;
 import frc.robot.auto.routineManager.RoutineManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.auto.commands.RotateAndDriveTo;
+import frc.robot.auto.commands.SimulateCrash;
 
 
 /**
@@ -32,64 +34,55 @@ public class Auto {
         return routineManager.getAutoSelector();
     }
 
-
-    /**
-     * Example autonomous routine #1.
-     * This method will be automatically detected and registered by {@link RoutineManager}.
-     */
-    @AutoRoutine
-    public static SequentialCommandGroup autoRoutineOne() {
-        // Define autonomous routine logic here.
+    public SequentialCommandGroup scoreAt(int aprilTag, ScoringPosition position){
         return new SequentialCommandGroup(
-            Commands.runOnce(()->System.out.println("Test One")),
-            Commands.runOnce(()->System.out.println("Test Two")),
-            Commands.runOnce(()->System.out.println("Test Three"))
-        );
-    }
-
-    /**
-     * Example autonomous routine #2.
-     * This method will also be automatically detected and registered.
-     */
-    @AutoRoutine
-    public static SequentialCommandGroup autoRoutineTwo() {
-        // Define autonomous routine logic here.
-        return new SequentialCommandGroup(
-            Commands.runOnce(()->System.out.println("But")),
-            new WaitCommand(1.0),
-            Commands.runOnce(()->System.out.println("When")),
-            new WaitCommand(1.0),
-            Commands.runOnce(()->System.out.println("You Close Your Eyes"))
-        );
-    }
-
-    @AutoRoutine
-    public SequentialCommandGroup scoringManagerTest(){
-        return new SequentialCommandGroup(
-            new RotateAndDriveTo(Constants.APRIL_TAGS[10].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[10].getLeftPosition()),
+            new RotateAndDriveTo(Constants.APRIL_TAGS[aprilTag].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[aprilTag].getLeftPosition()),
             new MoveToScorePos(ScoringPosition.L4),
             new DropCoral(1),
             new WaitCommand(1.0),
-            new MoveToScorePos(ScoringPosition.STOW),
-            new RotateAndDriveTo(Constants.APRIL_TAGS[2].getRotationZ() - Math.PI/2,Constants.APRIL_TAGS[2].getLeftPosition()),
-            new IntakeCoral(),
-            new RotateAndDriveTo(Constants.APRIL_TAGS[8].getRotationZ() + Math.PI/2,Constants.APRIL_TAGS[8].getLeftPosition()),
-            new MoveToScorePos(ScoringPosition.L4),
-            new DropCoral(1),
             new MoveToScorePos(ScoringPosition.STOW)
         );
     }
 
-    @AutoRoutine
-    public SequentialCommandGroup playerStationTest(){
+    public SequentialCommandGroup intakeAt(int aprilTag){
         return new SequentialCommandGroup(
-            new MoveToStation(true, true),
-            new MoveToStation(true, false),
-            new MoveToStation(false, true),
-            new MoveToStation(false, false)
+            new MoveToScorePos(ScoringPosition.STOW),
+            new RotateAndDriveTo(Constants.APRIL_TAGS[aprilTag].getRotationZ() - Math.PI/2,Constants.APRIL_TAGS[aprilTag].getLeftPosition()),
+            new WaitCommand(2)
         );
     }
 
+
+    @AutoRoutine
+    public SequentialCommandGroup TushPush2Piece(){
+        return new FollowChickenRoutine("TushPush2Piece", true,
+            scoreAt(9, ScoringPosition.L4), 
+            intakeAt(2), 
+            scoreAt(8, ScoringPosition.L4)
+        );
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup ThreePiece(){
+        return new FollowChickenRoutine("3Piece", true,
+            scoreAt(9, ScoringPosition.L4),
+            intakeAt(2), 
+            scoreAt(8, ScoringPosition.L4),
+            intakeAt(2), 
+            scoreAt(8, ScoringPosition.L4)
+        );
+    }
+
+
+    @AutoRoutine
+    public SequentialCommandGroup ExtreemTestPath(){
+        return new FollowChickenRoutine("ExtreemTestPath", true);
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup BowlingCrash(){
+        return new FollowChickenRoutine("bowlngCrash", true);
+    }
 
     /**
      * Initializes the autonomous system by creating a {@link RoutineManager}

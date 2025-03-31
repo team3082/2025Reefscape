@@ -8,7 +8,6 @@ import frc.robot.utils.RTime;
  * this is read from during sim instead of real motor values
  */
 public class EndEffectorSim {
-
     private static PIDController posPID = new PIDController(7.5, 0, 0, 0, 0, 7.5);
 
     private static double targetPos, targetSpeed; // Radians, PercentOut
