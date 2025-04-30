@@ -119,6 +119,8 @@ public class Constants {
     }
 
     public static final class Swerve {
+        public static final double PERCENT_OUT_TO_MOVE_VEL = 16 * 12; // inches per second / percent out (-1 to 1)
+        public static final double PERCENT_OUT_TO_ROTATE_VEL = 1; // radians per second / percent out (-1 to 1)
 
         public static final int DRIVEID0 = 5;
         public static final int DRIVEID1 = 7;

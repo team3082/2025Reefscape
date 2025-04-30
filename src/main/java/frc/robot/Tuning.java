@@ -22,6 +22,7 @@ public final class Tuning {
     public static final double ROTDEAD = 0.02;
     public static final double ROTVELDEAD = 0.05;
     public static final double ROTMAXSPEED = 0.3;
+
  
      // TODO Tune
      public static final double SWERVE_TRJ_PPOS = 0.05;
@@ -42,7 +43,25 @@ public final class Tuning {
  
      public static final int CURVE_RESOLUTION = 100;
      public static final double CURVE_DEADBAND = 0.5; // bro this is inches who had it at 0.001
+     public static final double ROT_DEADBAND = 0.03; // radians
     
+
+    // Trapezoidal Tuning
+    public static final double MOVE_PRECISE_VEL = 16 * 12;
+    public static final double MOVE_PRECISE_ACC = 8 * 12;
+    public static final double MOVE_PRECISE_DEC = 8 * 12;
+
+    public static final double MOVE_FAST_VEL = 16 * 12;
+    public static final double MOVE_FAST_ACC = 10 * 12;
+    public static final double MOVE_FAST_DEC = 10 * 12;
+
+    public static final double ROT_PRECISE_VEL = 1.0;
+    public static final double ROT_PRECISE_ACC = 0.5;
+    public static final double ROT_PRECISE_DEC = 0.5;
+
+    public static final double ROT_FAST_VEL = 1.0;
+    public static final double ROT_FAST_ACC = 0.5;
+    public static final double ROT_FAST_DEC = 0.5;
 
     //Vision
 

@@ -13,9 +13,12 @@ import frc.robot.Tuning;
 import frc.robot.auto.commands.AlignToReef;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.FollowCurve;
+import frc.robot.auto.commands.FollowCurveTrapezoidal;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.commands.MoveToAndExtend;
+import frc.robot.auto.commands.MoveToAndExtendTrapezoidal;
 import frc.robot.auto.commands.MoveToAndStow;
+import frc.robot.auto.commands.MoveToAndStowTrapezoidal;
 import frc.robot.auto.commands.MoveToCoralStation;
 import frc.robot.auto.commands.MoveToScorePos;
 import frc.robot.auto.commands.OverrideWristPos;
@@ -25,6 +28,8 @@ import frc.robot.subsystems.EndEffector.IntakeState;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwervePosition;
+import frc.robot.utils.TrapezoidalProfile;
+import frc.robot.utils.TrapezoidalProfile.TrapezoidalPreset;
 import frc.robot.vision.VisionManager;
 import frc.robot.auto.commands.ScoreAtLevel;
 import frc.robot.auto.commands.SetIntakeState;
@@ -197,6 +202,17 @@ public class Auto {
             new MoveToScorePos(ScoringPosition.STOW)
         );
         return auto;
+    }
+
+    @AutoRoutine
+    public SequentialCommandGroup TrapezoidalTest() {
+        if (Robot.isSimulation()) SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
+
+        return new SequentialCommandGroup (
+            new MoveToAndExtendTrapezoidal(ScoringPosition.L4, new FollowCurveTrapezoidal(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), new TrapezoidalProfile(TrapezoidalPreset.MOVE_PRECISE), 0.5)),
+            new MoveToAndStowTrapezoidal(new FollowCurveTrapezoidal(Tuning.AutoPaths.E_TO_STATION, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, new TrapezoidalProfile(TrapezoidalPreset.MOVE_FAST), 0.5))
+        );
     }
 
     /**
