@@ -126,6 +126,8 @@ public class ScoringManager {
         elevator.update();
     }
 
+    private static double max_safe_height = 12.0; // inches
+
     /**
      * Sets the wrist to a safe angle.
      * Transitions to the elevator moving state when the wrist is at the correct position.
@@ -134,6 +136,25 @@ public class ScoringManager {
         endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
         if (endEffector.atPosition()) {
             transitoryState = TransitoryState.ELEVATOR_MOVING;
+        }
+
+        // make elevator move earlier but constrain it to safe positions
+        if (elevator.getElevatorHeight() < max_safe_height + 5.0) {
+            double set_height = 0;
+            if (scoringPosition.targetHeight < max_safe_height) {
+                set_height = scoringPosition.targetHeight;
+            } else {
+                set_height = max_safe_height;
+            }
+            elevator.setElevatorHeight(set_height);
+        } else {
+            double set_height = 0;
+            if (scoringPosition.targetHeight > max_safe_height) {
+                set_height = scoringPosition.targetHeight;
+            } else {
+                set_height = max_safe_height;
+            }
+            elevator.setElevatorHeight(set_height);
         }
     }
 

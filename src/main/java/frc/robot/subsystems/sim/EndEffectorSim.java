@@ -9,7 +9,7 @@ import frc.robot.utils.RTime;
  */
 public class EndEffectorSim {
 
-    private static PIDController posPID = new PIDController(7.5, 0, 0, 0, 0, 7.5);
+    private static PIDController posPID = new PIDController(7.5, 0, 0, 0, 0, 12.5);
 
     private static double targetPos, targetSpeed; // Radians, PercentOut
     private static double pos, speed; // Radians, PercentOut
