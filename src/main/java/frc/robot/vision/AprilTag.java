@@ -76,6 +76,20 @@ public class AprilTag {
         return getCenterPosition().add(alignOffset);
     }
 
+    public Vector2 getCenterL1Position() {
+        return getPosition().add(new Vector2(Constants.Swerve.WIDTH/2 + 16, 0).rotate(getRotationZ()));
+    }
+
+    public Vector2 getLeftL1Position() {
+        Vector2 alignOffset = new Vector2(12.0, 0.0).rotate(getRotationZ() - Math.PI / 2);
+        return getCenterL1Position().add(alignOffset);
+    }
+
+    public Vector2 getRightL1Position() {
+        Vector2 alignOffset = new Vector2(12.0, 0.0).rotate(getRotationZ() + Math.PI / 2);
+        return getCenterL1Position().add(alignOffset);
+    }
+
     /**
      * Returns the x, y and z field coordinates of the Apriltag
      * @return Vector3(x, y, z)

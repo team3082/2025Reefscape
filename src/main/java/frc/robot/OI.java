@@ -133,37 +133,67 @@ public class OI {
             
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
-                
                 int startIndex = 6;
-                
-                // Find the shortest scoring position from the robot
-                double min;
-                if (isRight)
-                    min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getRightPosition()).mag();
-                else 
-                    min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getLeftPosition()).mag();
-                
-                int minIndex = startIndex;
 
-                for (int i = startIndex + 1; i < startIndex + 6; i++){
-                    Vector2 aprilPosition;
-                    if (isRight)
-                        aprilPosition = Constants.APRIL_TAGS[i].getRightPosition();
-                    else 
-                        aprilPosition = Constants.APRIL_TAGS[i].getLeftPosition();
+                if (savedLevel == ScoringPosition.L1) {
+                    Vector2 closestPosition;
+                    int minIndex = startIndex;
 
-                    if(currentPos.sub(aprilPosition).mag() < min){
-                        minIndex = i;
-                        min = currentPos.sub(aprilPosition).mag();
+                    closestPosition = Constants.APRIL_TAGS[startIndex].getCenterL1Position();
+
+                    for (int i = startIndex; i < startIndex + 6; i++){
+                        Vector2 centerPosition = Constants.APRIL_TAGS[i].getCenterL1Position();
+                        Vector2 leftPosition = Constants.APRIL_TAGS[i].getLeftL1Position();
+                        Vector2 rightPosition = Constants.APRIL_TAGS[i].getRightL1Position();
+    
+                        if(currentPos.sub(leftPosition).mag() < currentPos.sub(closestPosition).mag()){
+                            minIndex = i;
+                            closestPosition = leftPosition;
+                        }
+                        if(currentPos.sub(centerPosition).mag() < currentPos.sub(closestPosition).mag()){
+                            minIndex = i;
+                            closestPosition = centerPosition;
+                        }
+                        if(currentPos.sub(rightPosition).mag() < currentPos.sub(closestPosition).mag()){
+                            minIndex = i;
+                            closestPosition = rightPosition;
+                        }
                     }
-                }
 
-                // Set destination and rotation based on AprilTag data
-                Vector2 targetPosition =  isRight ?  Constants.APRIL_TAGS[minIndex].getRightPosition() : Constants.APRIL_TAGS[minIndex].getLeftPosition();
-                // SwervePID.setDestPt(targetPosition);
-                // SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
-                SwervePID.setDestState(targetPosition, Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
-                aligningState = AutoAlignState.DRIVING_TO_REEF;
+                    SwervePID.setDestState(closestPosition, Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
+                    aligningState = AutoAlignState.DRIVING_TO_REEF;
+
+                } else {
+                
+                    // Find the shortest scoring position from the robot
+                    double min;
+                    if (isRight)
+                        min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getRightPosition()).mag();
+                    else 
+                        min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getLeftPosition()).mag();
+                    
+                    int minIndex = startIndex;
+
+                    for (int i = startIndex + 1; i < startIndex + 6; i++){
+                        Vector2 aprilPosition;
+                        if (isRight)
+                            aprilPosition = Constants.APRIL_TAGS[i].getRightPosition();
+                        else 
+                            aprilPosition = Constants.APRIL_TAGS[i].getLeftPosition();
+
+                        if(currentPos.sub(aprilPosition).mag() < min){
+                            minIndex = i;
+                            min = currentPos.sub(aprilPosition).mag();
+                        }
+                    }
+
+                    // Set destination and rotation based on AprilTag data
+                    Vector2 targetPosition =  isRight ?  Constants.APRIL_TAGS[minIndex].getRightPosition() : Constants.APRIL_TAGS[minIndex].getLeftPosition();
+                    // SwervePID.setDestPt(targetPosition);
+                    // SwervePID.setDestRot(Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
+                    SwervePID.setDestState(targetPosition, Constants.APRIL_TAGS[minIndex].getRotationZ() + Math.PI / 2.0);
+                    aligningState = AutoAlignState.DRIVING_TO_REEF;
+                }
 
             } else {
                 aligningState = AutoAlignState.NOT_ALIGNING;
@@ -235,7 +265,9 @@ public class OI {
                 break;
 
             case SCORING:
+                // if (savedLevel != ScoringPosition.L1) {
                 ScoringManager.endEffector.outtake();
+                // }
                 if (!ScoringManager.endEffector.isHoldingCoral()) {
                     aligningState = AutoAlignState.ELEVATOR_DESCENDING;
                 }
