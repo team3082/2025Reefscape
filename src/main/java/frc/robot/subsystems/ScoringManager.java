@@ -134,6 +134,7 @@ public class ScoringManager {
      */
     private static void handleElevatorWaiting() {
         endEffector.setPivotAngle(Tuning.EndEffector.SAFE_ANGLE);
+        
         if (endEffector.atPosition()) {
             transitoryState = TransitoryState.ELEVATOR_MOVING;
         }

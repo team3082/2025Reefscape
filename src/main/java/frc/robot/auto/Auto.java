@@ -13,9 +13,11 @@ import frc.robot.Tuning;
 import frc.robot.auto.commands.AlignToReef;
 import frc.robot.auto.commands.DropCoral;
 import frc.robot.auto.commands.FollowCurve;
+import frc.robot.auto.commands.FollowCurveStraight;
 import frc.robot.auto.commands.FollowCurveTrapezoidal;
 import frc.robot.auto.commands.IntakeCoral;
 import frc.robot.auto.commands.MoveToAndExtend;
+import frc.robot.auto.commands.MoveToAndExtendStraight;
 import frc.robot.auto.commands.MoveToAndExtendTrapezoidal;
 import frc.robot.auto.commands.MoveToAndStow;
 import frc.robot.auto.commands.MoveToAndStowTrapezoidal;
@@ -29,6 +31,7 @@ import frc.robot.subsystems.ScoringManager.ScoringPosition;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.TrapezoidalProfile;
+import frc.robot.utils.Vector2;
 import frc.robot.utils.TrapezoidalProfile.TrapezoidalPreset;
 import frc.robot.vision.VisionManager;
 import frc.robot.auto.commands.ScoreAtLevel;
@@ -107,7 +110,7 @@ public class Auto {
 
         return new SequentialCommandGroup(
             new InstantCommand(() -> VisionManager.disableLeftCam()),
-            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3)),
+            new MoveToAndExtendStraight(ScoringPosition.L4, new FollowCurveStraight(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
@@ -148,7 +151,7 @@ public class Auto {
         Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
         return new SequentialCommandGroup(
             new InstantCommand(() -> VisionManager.disableRightCam()),
-            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
+            new MoveToAndExtendStraight(ScoringPosition.L4, new FollowCurveStraight(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
             Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
