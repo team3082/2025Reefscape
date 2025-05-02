@@ -187,7 +187,7 @@ public class Auto {
         auto.addCommands(
             new InstantCommand(() -> VisionManager.enableRightCam()),
             new InstantCommand(() -> VisionManager.disableLeftCam()),
-            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_A, Constants.REEF_POSITIONS.A.getRotation(), 1.0, 0.3)),
+            new MoveToAndExtend(ScoringPosition.L2, new FollowCurve(Tuning.AutoPaths.STATION_TO_A, Constants.REEF_POSITIONS.A.getRotation(), 1.0, 0.3)),
             new DropCoral(),
             new MoveToScorePos(ScoringPosition.STOW)
         );
@@ -200,7 +200,7 @@ public class Auto {
         auto.addCommands(
             new InstantCommand(() -> VisionManager.enableLeftCam()),
             new InstantCommand(() -> VisionManager.disableRightCam()),
-            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_B, Constants.REEF_POSITIONS.B.getRotation(), 1.0, 0.3)),
+            new MoveToAndExtend(ScoringPosition.L2, new FollowCurve(Tuning.AutoPaths.STATION_TO_B, Constants.REEF_POSITIONS.B.getRotation(), 1.0, 0.3)),
             new DropCoral(),
             new MoveToScorePos(ScoringPosition.STOW)
         );

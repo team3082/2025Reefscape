@@ -126,7 +126,7 @@ public final class Tuning {
         public static final Curve STATION_TO_D = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.REEF_POSITIONS.D.getPosition());
         public static final Curve STATION_TO_E = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.REEF_POSITIONS.E.getPosition());
         public static final Curve STATION_TO_F = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(130, 70), Constants.REEF_POSITIONS.F.getPosition());
-        public static final Curve STATION_TO_B = new LinearBezier(Constants.CORAL_STATION_RIGHT_POSITION, Constants.REEF_POSITIONS.B.getPosition());
+        public static final Curve STATION_TO_B = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(270, 0), Constants.REEF_POSITIONS.B.getPosition());
         public static final Curve STATION_TO_G = new QuadraticBezier(Constants.CORAL_STATION_RIGHT_POSITION, new Vector2(95, 95), Constants.REEF_POSITIONS.G.getPosition());
 
         public static final Curve C_TO_STATION = STATION_TO_C.reverse();
