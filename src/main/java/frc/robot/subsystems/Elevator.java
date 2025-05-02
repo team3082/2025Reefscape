@@ -49,7 +49,7 @@ public class Elevator {
 
         TalonFXConfiguration extensionMotor2Config = new TalonFXConfiguration();
 
-        extensionMotor2Config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        extensionMotor2Config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         extensionMotor1.getConfigurator().apply(extensionMotor1Config);
         extensionMotor2.getConfigurator().apply(extensionMotor2Config);
