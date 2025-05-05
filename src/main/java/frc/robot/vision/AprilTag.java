@@ -77,7 +77,7 @@ public class AprilTag {
     }
 
     public Vector2 getCenterL1Position() {
-        return getPosition().add(new Vector2(Constants.Swerve.WIDTH/2 + 16, 0).rotate(getRotationZ()));
+        return getPosition().add(new Vector2(Constants.Swerve.WIDTH/2 + 5, 0).rotate(getRotationZ()));
     }
 
     public Vector2 getLeftL1Position() {

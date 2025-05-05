@@ -62,6 +62,7 @@ public class OI {
 
     public static ScoringPosition savedLevel = ScoringPosition.STOW;
     private static double startTime = 0;
+    private static double L1ejectStartTime = 0.0;
     private static boolean delaying = false;
 
     enum AutoAlignState {
@@ -243,17 +244,11 @@ public class OI {
                 double rotOutput = SwervePID.updateOutputRot();
                 Vector2 driveOutput = SwervePID.updateOutputVel();
                 SwerveManager.rotateAndDrive(rotOutput, driveOutput);
-                if(savedLevel == ScoringPosition.L4)
-                    ScoringManager.setScoringPosition(ScoringPosition.L3);
-                else
-                    ScoringManager.setScoringPosition(savedLevel);
+                ScoringManager.setScoringPosition(savedLevel);
                 break;
 
             case ELEVATOR_RAISING:
-                if(savedLevel == ScoringPosition.L4)
-                    ScoringManager.setScoringPosition(ScoringPosition.L3);
-                else
-                    ScoringManager.setScoringPosition(savedLevel);
+                ScoringManager.setScoringPosition(savedLevel);
 
                 if (ScoringManager.transitoryState == TransitoryState.FINISHED) {
                     if(savedLevel == ScoringPosition.L4){
@@ -269,13 +264,21 @@ public class OI {
                 ScoringManager.endEffector.outtake();
                 // }
                 if (!ScoringManager.endEffector.isHoldingCoral()) {
-                    aligningState = AutoAlignState.ELEVATOR_DESCENDING;
+                    if (savedLevel == ScoringPosition.L1) {
+                        if (L1ejectStartTime == 0.0) {
+                            L1ejectStartTime = RTime.now();
+                        } else if (RTime.now() > L1ejectStartTime + 0.15) {
+                            L1ejectStartTime = 0.0;
+                            aligningState = AutoAlignState.ELEVATOR_DESCENDING;
+                        }
+                    } else {
+                        aligningState = AutoAlignState.ELEVATOR_DESCENDING;
+                    }
                 }
                 break;
             
             case SCORINGL4:
-                if(ScoringManager.scoringPosition != ScoringPosition.L4)
-                    ScoringManager.setScoringPosition(ScoringPosition.L4);
+                ScoringManager.setScoringPosition(ScoringPosition.L4);
                 
                 if (ScoringManager.getElevator().atPosition() && !delaying) {
                     startTime = RTime.now();

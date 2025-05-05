@@ -111,7 +111,6 @@ public class Auto {
         return new SequentialCommandGroup(
             new InstantCommand(() -> VisionManager.disableLeftCam()),
             new MoveToAndExtendStraight(ScoringPosition.L4, new FollowCurveStraight(Tuning.AutoPaths.START_TO_E, Constants.REEF_POSITIONS.E.getRotation(), 0.75, 0.3)),
-            Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
@@ -123,7 +122,6 @@ public class Auto {
 
             new InstantCommand(() -> VisionManager.disableRightCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_D, Constants.REEF_POSITIONS.D.getRotation(), 0.75, 0.3)),
-            Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
@@ -133,7 +131,6 @@ public class Auto {
             
             new InstantCommand(() -> VisionManager.disableLeftCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_C, Constants.REEF_POSITIONS.C.getRotation(), 0.75, 0.3)),
-            Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
@@ -152,7 +149,6 @@ public class Auto {
         return new SequentialCommandGroup(
             new InstantCommand(() -> VisionManager.disableRightCam()),
             new MoveToAndExtendStraight(ScoringPosition.L4, new FollowCurveStraight(Tuning.AutoPaths.START_TO_J, Constants.REEF_POSITIONS.J.getRotation(), 0.75, 0.3)),
-            Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
@@ -162,7 +158,6 @@ public class Auto {
 
             new InstantCommand(() -> VisionManager.disableLeftCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_K, Constants.REEF_POSITIONS.K.getRotation(), 0.75, 0.3)),
-            Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
@@ -172,7 +167,6 @@ public class Auto {
 
             new InstantCommand(() -> VisionManager.disableRightCam()),
             new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_L, Constants.REEF_POSITIONS.L.getRotation(), 0.75, 0.3)),
-            Commands.waitSeconds(.1),
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),

@@ -16,7 +16,7 @@ public class ScoringManager {
         STOW(1.0, 0.0),
         ALGAE1(8.6, Math.PI/3.0),
         ALGAE2(25, Math.PI/3.0),
-        L1(13, Math.PI / 2.0 + Math.toRadians(30)),
+        L1(18, Math.PI / 2.0 + Math.toRadians(45)),
         L2(15.5, Math.toRadians(30.0)),
         L3(31, Math.toRadians(30.0)),
         L4(62.25, Math.toRadians(60)),
