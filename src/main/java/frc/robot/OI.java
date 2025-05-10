@@ -168,19 +168,13 @@ public class OI {
                 
                     // Find the shortest scoring position from the robot
                     double min;
-                    if (isRight)
-                        min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getRightPosition()).mag();
-                    else 
-                        min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getLeftPosition()).mag();
+                    min = currentPos.sub(Constants.APRIL_TAGS[startIndex].getCenterPosition()).mag();
                     
                     int minIndex = startIndex;
 
                     for (int i = startIndex + 1; i < startIndex + 6; i++){
                         Vector2 aprilPosition;
-                        if (isRight)
-                            aprilPosition = Constants.APRIL_TAGS[i].getRightPosition();
-                        else 
-                            aprilPosition = Constants.APRIL_TAGS[i].getLeftPosition();
+                        aprilPosition = Constants.APRIL_TAGS[i].getCenterPosition();
 
                         if(currentPos.sub(aprilPosition).mag() < min){
                             minIndex = i;
