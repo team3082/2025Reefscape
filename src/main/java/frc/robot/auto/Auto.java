@@ -152,7 +152,7 @@ public class Auto {
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
-                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075))
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.J_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
             ),
             new InstantCommand(() -> VisionManager.enableRightCam()),
 
@@ -161,7 +161,7 @@ public class Auto {
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
-                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075))
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.K_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
             ),
             new InstantCommand(() -> VisionManager.enableLeftCam()),
 
@@ -170,7 +170,7 @@ public class Auto {
             new DropCoral(),
             new ParallelDeadlineGroup(
                 new IntakeCoral(),
-                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.L_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 0.9, 0.3, 0.075))
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.L_TO_STATION, Constants.APRIL_TAGS[1].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
             )
         );
     }
@@ -202,8 +202,70 @@ public class Auto {
     }
 
     @AutoRoutine
+    public SequentialCommandGroup threePieceRightCompatability() {
+        if (Robot.isSimulation()) SwervePosition.setPosition(Constants.COMPAT_RIGHT_START_POSITION);
+
+        Pigeon.setYawRad((2.0 * Math.PI) / 2.0);
+        return new SequentialCommandGroup (
+            new InstantCommand(() -> VisionManager.enableLeftCam()),
+            new InstantCommand(() -> VisionManager.disableRightCam()),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_B_RIGHT_COMPAT, Constants.REEF_POSITIONS.B.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.B_TO_STATION_RIGHT_COMPAT, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
+            ),
+
+            new InstantCommand(() -> VisionManager.enableRightCam()),
+            new InstantCommand(() -> VisionManager.disableLeftCam()),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_A_RIGHT_COMPAT, Constants.REEF_POSITIONS.A.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.A_TO_STATION_RIGHT_COMPAT, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
+            ),
+
+            new InstantCommand(() -> VisionManager.enableLeftCam()),
+            new InstantCommand(() -> VisionManager.disableRightCam()),
+            new MoveToAndExtend(ScoringPosition.L2, new FollowCurve(Tuning.AutoPaths.STATION_TO_B_RIGHT_COMPAT, Constants.REEF_POSITIONS.B.getRotation(), 0.75, 0.3)),
+            new DropCoral()
+            );
+    }
+
+    @AutoRoutine    
+    public SequentialCommandGroup threePieceLeftCompatability() {
+        if (Robot.isSimulation()) SwervePosition.setPosition(Constants.COMPAT_LEFT_START_POSITION);
+        Pigeon.setYawRad(0);
+
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> VisionManager.enableRightCam()),
+            new InstantCommand(() -> VisionManager.disableLeftCam()),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.START_TO_A_LEFT_COMPAT, Constants.REEF_POSITIONS.A.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.A_TO_STATION_LEFT_COMPAT, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
+            ),
+
+            new InstantCommand(() -> VisionManager.enableLeftCam()),
+            new InstantCommand(() -> VisionManager.disableRightCam()),
+            new MoveToAndExtend(ScoringPosition.L4, new FollowCurve(Tuning.AutoPaths.STATION_TO_B_LEFT_COMPAT, Constants.REEF_POSITIONS.B.getRotation(), 0.75, 0.3)),
+            new DropCoral(),
+            new ParallelDeadlineGroup(
+                new IntakeCoral(),
+                new MoveToAndStow(new FollowCurve(Tuning.AutoPaths.B_TO_STATION_LEFT_COMPAT, Constants.APRIL_TAGS[2].getRotationZ() + Math.PI, 1.0, 0.3, 0.075))
+            ),
+
+            new InstantCommand(() -> VisionManager.enableRightCam()),
+            new InstantCommand(() -> VisionManager.disableLeftCam()),
+            new MoveToAndExtend(ScoringPosition.L2, new FollowCurve(Tuning.AutoPaths.STATION_TO_A_LEFT_COMPAT, Constants.REEF_POSITIONS.A.getRotation(), 0.75, 0.3)),
+            new DropCoral()
+        );
+    }
+
+    @AutoRoutine
     public SequentialCommandGroup TrapezoidalTest() {
-        if (Robot.isSimulation()) SwervePosition.setPosition(Constants.RIGHT_STARTING_POS);
+        if (Robot.isSimulation()) SwervePosition.setPosition(Constants.COMPAT_LEFT_START_POSITION);
         Pigeon.setYawRad((3.0 * Math.PI) / 2.0);
 
         return new SequentialCommandGroup (

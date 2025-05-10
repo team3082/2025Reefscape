@@ -79,7 +79,7 @@ public class RobotPath {
         // get a vector of magnitude 1 that points in the direction of the next closest point from the robot's current position
         Vector2 targetPoint;
         try {
-            targetPoint = points.get((int) (getClosestT() * CURVE_RESOLUTION) + 5);
+            targetPoint = points.get((int) (getClosestT() * CURVE_RESOLUTION) + 10);
         } catch (IndexOutOfBoundsException e) {
             targetPoint = points.get(points.size() - 1);
         }

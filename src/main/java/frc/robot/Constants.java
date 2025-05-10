@@ -99,8 +99,12 @@ public class Constants {
     public static final Vector2 MIDDLE_STARTING_POS = new Vector2(60, 0);
     public static final Vector2 MIDDLE_WAIT_POS = new Vector2(80, 0);
     public static final Vector2 LEFT_STARTING_POS = new Vector2(60, -50);
-    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(290, 125);
-    public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(290, -125);
+    public static final Vector2 CORAL_STATION_RIGHT_POSITION = new Vector2(280, 132);
+    public static final Vector2 CORAL_STATION_LEFT_POSITION = new Vector2(280, -132);
+    public static final Vector2 COMPAT_RIGHT_START_POSITION = new Vector2(70, 130);
+    public static final Vector2 COMPAT_LEFT_START_POSITION = new Vector2(70, -130);
+    public static final Vector2 COMPAT_RIGHT_STATION_POSITION = new Vector2(315, 105);
+    public static final Vector2 COMPAT_LEFT_STATION_POSITION = new Vector2(315, -105);
 
     public static final class Elevator {
         public static final int MOTORID1 = 9;

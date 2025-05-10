@@ -4,6 +4,7 @@ package frc.robot;
 import frc.robot.Constants.REEF_POSITIONS;
 import frc.robot.utils.Vector2;
 import frc.robot.utils.trajectories.QuadraticBezier;
+import frc.robot.utils.trajectories.CubicBezier;
 import frc.robot.utils.trajectories.Curve;
 import frc.robot.utils.trajectories.LinearBezier;
 
@@ -165,6 +166,22 @@ public final class Tuning {
 
         public static final Curve WAIT_TO_BACK_ALGAE = new LinearBezier(Constants.MIDDLE_WAIT_POS, new Vector2(REEF_POSITIONS.G.redTag.getCenterPosition().x - 18, REEF_POSITIONS.G.redTag.getCenterPosition().y));
         public static final Curve BACK_ALGAE_TO_WAIT = WAIT_TO_BACK_ALGAE.reverse();
+
+        // Compatability Auto Paths
+        public static final Curve START_TO_A_RIGHT_COMPAT = new CubicBezier(new Vector2(200, 130), new Vector2(280, 145), new Vector2(280, -5), REEF_POSITIONS.A.getPosition());
+        public static final Curve START_TO_B_RIGHT_COMPAT = new CubicBezier(new Vector2(200, 130), new Vector2(280, 145), new Vector2(280, -5), REEF_POSITIONS.B.getPosition());
+        public static final Curve START_TO_A_LEFT_COMPAT = START_TO_B_RIGHT_COMPAT.flipHorizontal();
+        public static final Curve START_TO_B_LEFT_COMPAT = START_TO_A_RIGHT_COMPAT.flipHorizontal();
+
+        public static final Curve A_TO_STATION_RIGHT_COMPAT = new CubicBezier(REEF_POSITIONS.A.getPosition(), new Vector2(305, 122), new Vector2(270, 35), Constants.COMPAT_RIGHT_STATION_POSITION);
+        public static final Curve B_TO_STATION_RIGHT_COMPAT = new CubicBezier(REEF_POSITIONS.B.getPosition(), new Vector2(305, 122), new Vector2(270, 35), Constants.COMPAT_RIGHT_STATION_POSITION);
+        public static final Curve A_TO_STATION_LEFT_COMPAT = B_TO_STATION_RIGHT_COMPAT.flipHorizontal();
+        public static final Curve B_TO_STATION_LEFT_COMPAT = A_TO_STATION_RIGHT_COMPAT.flipHorizontal();
+
+        public static final Curve STATION_TO_A_RIGHT_COMPAT = A_TO_STATION_RIGHT_COMPAT.reverse();
+        public static final Curve STATION_TO_B_RIGHT_COMPAT = B_TO_STATION_RIGHT_COMPAT.reverse();
+        public static final Curve STATION_TO_A_LEFT_COMPAT = A_TO_STATION_LEFT_COMPAT.reverse();
+        public static final Curve STATION_TO_B_LEFT_COMPAT = B_TO_STATION_LEFT_COMPAT.reverse();
 
         public static Curve getAutoPath(Curve path) {
             return path;
