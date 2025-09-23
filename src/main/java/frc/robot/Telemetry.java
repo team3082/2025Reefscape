@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.Auto;
+import frc.robot.auto.AutoSelector;
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.sensors.Pigeon;
 import frc.robot.subsystems.visualizer.ElevatorVisualizer;
@@ -107,8 +107,7 @@ public class Telemetry {
         // robotTab.add(Auto.getAutoSelector());
 
         
-
-        robotTab.add("Auto Selector", Auto.routineManager.autoSelector);
+        robotTab.add("Auto Selector", AutoSelector.autoChooser);
     }
 
     public static void update() {

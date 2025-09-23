@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 // AUTO
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.auto.Auto;
-
+import frc.robot.auto.AutoSelector;
+import frc.robot.auto.CommandAuto;
 // SUBSYSTEMS
 import frc.robot.subsystems.ScoringManager;
 import frc.robot.subsystems.ScoringManager.ScoringPosition;
@@ -36,9 +36,11 @@ public class Robot extends LoggedRobot {
         e.printStackTrace();
       }
     }
+    
+    AutoSelector.setup();
+
     RTime.init();
     VisionManager.init();
-    Auto.init();
 
     // Swerve
     Pigeon.init();
@@ -72,6 +74,7 @@ public class Robot extends LoggedRobot {
       Logger.addDataReceiver(new NT4Publisher());
     }
 
+
     Logger.start(); // Start logging
 
     actuator = new PWM(1);
@@ -89,12 +92,21 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousInit() {
-    Auto.startRoutine();
+    RTime.init();
+    Pigeon.setYaw(90);
+    CommandScheduler.getInstance().enable();
+    AutoSelector.run();
   }
   
   @Override
   public void autonomousPeriodic() {
-    Auto.update();
+    try {
+      CommandAuto.update();
+      //Shooter.update();
+    } catch (Exception e) {
+      System.out.println("oopsies" + e.toString());
+      e.printStackTrace();
+    }
   }
 
   PWM actuator;
