@@ -41,7 +41,10 @@ public class OI {
     // End Effector Control 
     static final int intake                      = LogitechF310.AXIS_LEFT_TRIGGER;
     static final int outtake                     = LogitechF310.AXIS_RIGHT_TRIGGER;
- 
+
+    static final int changeSafeMode              = LogitechF310.BUTTON_A; // turns safe mode off
+    private static boolean safeMode              = true; // this mode means we can't raise the elevator to score if we don't have a piece 
+
     private static boolean drivingToReef         = false;
     private static boolean previouslyPressedPOV  = false; // Checks if we previously pressed the dpad because getPOV() doesn't do that
  
@@ -131,6 +134,10 @@ public class OI {
         if ((driverStick.getRawButtonPressed(funnyButtonLeft) || driverStick.getRawButtonPressed(funnyButtonRight)) && !previouslyPressedPOV) {
             drivingToReef = !drivingToReef;
             boolean isRight = (driverStick.getRawButton(funnyButtonRight));
+
+            if (safeMode && !ScoringManager.endEffector.holdingPiece) { // doesn't break robot by aligning with piece in funnel
+                drivingToReef = false;
+            }
             
             if(drivingToReef) {
                 Vector2 currentPos = SwervePosition.getPosition();
@@ -296,8 +303,18 @@ public class OI {
                 break;
         }
 
+        
+        if (driverStick.getRawButtonPressed(changeSafeMode)) { // disables safe mode if necessary
+            safeMode = !safeMode;
+        }
+
 
         if (driverStick.getRawButtonPressed(lockIn)) {
+
+            if (safeMode && (savedLevel == ScoringPosition.L1 || savedLevel == ScoringPosition.L2 || savedLevel == ScoringPosition.L3 || savedLevel == ScoringPosition.L4)) { // doesn't prevent elevator movement for algae
+                return;
+            }
+
             drivingToReef = false;
             ScoringManager.setScoringPosition(savedLevel);
         }
