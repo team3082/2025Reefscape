@@ -311,7 +311,7 @@ public class OI {
 
         if (driverStick.getRawButtonPressed(lockIn)) {
 
-            if (safeMode && (savedLevel == ScoringPosition.L1 || savedLevel == ScoringPosition.L2 || savedLevel == ScoringPosition.L3 || savedLevel == ScoringPosition.L4)) { // doesn't prevent elevator movement for algae
+            if ((safeMode && !ScoringManager.endEffector.isHoldingCoral()) && (savedLevel == ScoringPosition.L1 || savedLevel == ScoringPosition.L2 || savedLevel == ScoringPosition.L3 || savedLevel == ScoringPosition.L4)) { // doesn't prevent elevator movement for algae
                 return;
             }
 
