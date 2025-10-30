@@ -14,6 +14,7 @@ import frc.robot.swerve.SwervePID;
 import frc.robot.swerve.SwervePosition;
 import frc.robot.utils.Vector2;
 import frc.robot.vision.VisionManager;
+import frc.robot.utils.AutoRotate;
 import frc.robot.utils.RMath;
 import frc.robot.utils.RTime;
 
@@ -44,6 +45,9 @@ public class OI {
 
     static final int changeSafeMode              = LogitechF310.BUTTON_A; // turns safe mode off
     private static boolean safeMode              = true; // this mode means we can't raise the elevator to score if we don't have a piece 
+
+    static final int toggleAutoRotate            = LogitechF310.BUTTON_RIGHT_STICK;
+    private static boolean autoRotateEnabled     = false; // this mode enabled auto rotation to game objectives 
 
     private static boolean drivingToReef         = false;
     private static boolean previouslyPressedPOV  = false; // Checks if we previously pressed the dpad because getPOV() doesn't do that
@@ -231,7 +235,17 @@ public class OI {
         //     VisionManager.enableVision();
         //     SwerveManager.rotateAndDrive(rotate, drive);
         // }
+        
+        // Autorotate possible
+
+
         VisionManager.enableVision();
+
+        // This might break it all
+        if (autoRotateEnabled) {
+            rotate = AutoRotate.getRotation(SwervePosition.getPosition());
+        }
+
         switch (aligningState) {
             case NOT_ALIGNING:
                 delaying = false;
@@ -306,6 +320,10 @@ public class OI {
         
         if (driverStick.getRawButtonPressed(changeSafeMode)) { // disables safe mode if necessary
             safeMode = !safeMode;
+        }
+
+        if (driverStick.getRawButtonPressed(toggleAutoRotate)) { // toggle auto rotation
+            autoRotateEnabled = !autoRotateEnabled;
         }
 
 
